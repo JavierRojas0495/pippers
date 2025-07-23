@@ -312,7 +312,7 @@ function iniciarCarrusel(idCarrusel, idPrev, idNext) {
     carrusel.addEventListener('mouseenter', () => clearInterval(autoplay));
     carrusel.addEventListener('mouseleave', () => resetAutoplay());
 }
-// Coverflow Carousel Logic para múltiples carruseles
+// Coverflow Carousel Logic para múltiples carruseles con auto-play
 function initCoverflowCarousels() {
   const containers = document.querySelectorAll('.coverflow-carousel-container');
   containers.forEach(container => {
@@ -321,6 +321,7 @@ function initCoverflowCarousels() {
     const prevBtn = container.querySelector('.coverflow-btn-prev');
     const nextBtn = container.querySelector('.coverflow-btn-next');
     let current = 0;
+    let autoplay = null;
     function updateSlides() {
       slides.forEach((slide, i) => {
         slide.classList.remove('active', 'left', 'right');
@@ -337,9 +338,26 @@ function initCoverflowCarousels() {
       current = (idx + slides.length) % slides.length;
       updateSlides();
     }
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
+    function next() {
+      goTo(current + 1);
+    }
+    function prev() {
+      goTo(current - 1);
+    }
+    function startAutoplay() {
+      if (autoplay) clearInterval(autoplay);
+      autoplay = setInterval(next, 3500);
+    }
+    function stopAutoplay() {
+      if (autoplay) clearInterval(autoplay);
+    }
+    prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
+    nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
+    // Pausar autoplay al pasar el mouse (solo en desktop)
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
     updateSlides();
+    startAutoplay();
   });
 }
 window.addEventListener('DOMContentLoaded', () => {
