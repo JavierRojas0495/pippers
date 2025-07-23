@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piper's Pizza</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Logo Piper's Pizza" class="logo">
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#menu">Menú</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="inicio">
+            <h1>Bienvenido a Piper's Pizza</h1>
+            <p>¡Las mejores pizzas artesanales, con los ingredientes más frescos y deliciosos!</p>
+            <div class="info-general">
+                <h2>Pizzas Clásicas</h2>
+                <p><strong>Sabores:</strong> Hawaiana, Jamón y Queso, Pollo y Champiñones, Pollo Maíz, Margarita, Pollo Tocineta, Pollo Jamón, Maduro Cabano, Cabano Piña, Jamón Salami</p>
+                <p><strong>Tamaños y valores:</strong></p>
+                <ul>
+                    <li>Personal (4 porciones): $9.000</li>
+                    <li>Pequeña (6 porciones): $15.000</li>
+                    <li>Mediana (8 porciones): $23.000</li>
+                    <li>Grande (10 porciones): $29.000</li>
+                    <li>Extragrande (12 porciones): $36.000</li>
+                </ul>
+                <div class="coverflow-carousel-container">
+                  <div class="coverflow-carousel">
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_2e887240.jpg" alt="Pizza Clásica 1"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_70c05990.jpg" alt="Pizza Clásica 2"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Pizza Clásica 3"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.11_c870ed37.jpg" alt="Pizza Clásica 4"></div>
+                  </div>
+                  <button class="coverflow-btn coverflow-btn-prev">&#10094;</button>
+                  <button class="coverflow-btn coverflow-btn-next">&#10095;</button>
+                </div>
+                <h2>Pizzas Especiales</h2>
+                <p><strong>Sabores:</strong> Vegetariana sal, Vegetariana dulce, Petete, Zamba, Kaipirinha, Mexicana, Ranchera, Tres carnes, Pollo BBQ, Criolla</p>
+                <p><strong>Tamaños y valores:</strong></p>
+                <ul>
+                    <li>Personal (4 porciones): $10.000</li>
+                    <li>Pequeña (6 porciones): $17.000</li>
+                    <li>Mediana (8 porciones): $25.000</li>
+                    <li>Grande (10 porciones): $31.000</li>
+                    <li>Extragrande (12 porciones): $39.000</li>
+                </ul>
+                <div class="coverflow-carousel-container">
+                  <div class="coverflow-carousel">
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Pizza Especial 1"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.11_c870ed37.jpg" alt="Pizza Especial 2"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.10_163cdfa4.jpg" alt="Pizza Especial 3"></div>
+                  </div>
+                  <button class="coverflow-btn coverflow-btn-prev">&#10094;</button>
+                  <button class="coverflow-btn coverflow-btn-next">&#10095;</button>
+                </div>
+                <h2>Pizzas Premium</h2>
+                <p><strong>Sabores:</strong> Especial, La Carnívora, Detodito, Maíz, Maduro</p>
+                <p><strong>Tamaños y valores:</strong></p>
+                <ul>
+                    <li>Personal (4 porciones): $11.000</li>
+                    <li>Pequeña (6 porciones): $18.000</li>
+                    <li>Mediana (8 porciones): $26.000</li>
+                    <li>Grande (10 porciones): $33.000</li>
+                    <li>Extragrande (12 porciones): $42.000</li>
+                </ul>
+                <div class="coverflow-carousel-container">
+                  <div class="coverflow-carousel">
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.08_9818a7b6.jpg" alt="Pizza Premium 1"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.10_163cdfa4.jpg" alt="Pizza Premium 2"></div>
+                    <div class="coverflow-slide"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_2e887240.jpg" alt="Pizza Premium 3"></div>
+                  </div>
+                  <button class="coverflow-btn coverflow-btn-prev">&#10094;</button>
+                  <button class="coverflow-btn coverflow-btn-next">&#10095;</button>
+                </div>
+            </div>
+        </section>
+        <section id="menu">
+            <h2>Haz tu pedido</h2>
+            <div id="menu-dinamico"></div>
+        </section>
+        <section id="contacto">
+            <h2>Contacto</h2>
+            <form id="form-contacto">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" required>
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" required>
+                <button type="submit">Enviar pedido por WhatsApp</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Piper's Pizza. Todos los derechos reservados.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html> 
