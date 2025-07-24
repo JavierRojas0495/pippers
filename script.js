@@ -117,6 +117,8 @@ const tiposProducto = [
   { tipo: 'premium', nombre: 'Pizza Premium', icono: '👑' },
   { tipo: 'lasagna', nombre: 'Lasaña', icono: '🍝' },
   { tipo: 'pantalone', nombre: 'Pizza Pantalone', icono: '🍕' },
+  { tipo: 'granizado_maiz', nombre: 'Granizado de Maíz', icono: '🌽' },
+  { tipo: 'granizado_maduro', nombre: 'Granizado de Maduro', icono: '🍌' },
   { tipo: 'bebidas', nombre: 'Bebidas', icono: '🥤' }
 ];
 
@@ -188,6 +190,12 @@ const preciosPorTipo = {
     pequena: 9000,
     grande: 19000
   },
+  granizado_maiz: {
+    unica: 9000
+  },
+  granizado_maduro: {
+    unica: 9000
+  },
   bebidas: {
     unidad: 5000
   }
@@ -252,6 +260,10 @@ function renderSelectorTamanoProducto() {
       { key: 'pequena', label: 'Pequeña' },
       { key: 'grande', label: 'Grande' }
     ];
+  } else if (tipo === 'granizado_maiz' || tipo === 'granizado_maduro') {
+    tamanosDisponibles = [
+      { key: 'unica', label: 'Única' }
+    ];
   } else {
     tamanosDisponibles = [
       { key: 'personal', label: 'Personal (4 porciones)' },
@@ -280,7 +292,7 @@ function renderSelectorTamanoProducto() {
   document.querySelectorAll('.btn-tamano-pizza').forEach(btn => {
     btn.onclick = () => {
       pedidoActual.detalles.tamano = btn.getAttribute('data-tamano');
-      if (tipo === 'lasagna' || tipo === 'pantalone') {
+      if (tipo === 'lasagna' || tipo === 'pantalone' || tipo === 'granizado_maiz' || tipo === 'granizado_maduro') {
         renderSelectorCantidadProducto();
       } else {
         renderSelectorIngredientesPizza();
@@ -671,6 +683,8 @@ function agregarAlPedido() {
     let descripcion = '';
     if (tipo === 'lasagna' || tipo === 'pantalone') {
       descripcion = `${tiposProducto.find(t => t.tipo === tipo)?.nombre} ${tamano}`;
+    } else if (tipo === 'granizado_maiz' || tipo === 'granizado_maduro') {
+      descripcion = `${tiposProducto.find(t => t.tipo === tipo)?.nombre}`;
     } else {
       descripcion = `${tiposProducto.find(t => t.tipo === tipo)?.nombre} ${tamano} - Sabores: ${pedidoActual.detalles.ingredientes.join(', ')}`;
     }
