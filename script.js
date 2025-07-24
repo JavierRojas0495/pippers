@@ -15,7 +15,7 @@ function mostrarSeccion(id) {
 }
 
 // También aplicar la navegación a cualquier enlace con href="#menu" o href="#inicio" o href="#contacto"
-document.querySelectorAll('a[href="#menu"], a[href="#inicio"], a[href="#contacto"]').forEach(link => {
+document.querySelectorAll('a[href="#menu"], a[href="#inicio"], a[href="#contacto"], .logo-link').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').replace('#', '');
