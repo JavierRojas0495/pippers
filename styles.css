@@ -23,6 +23,7 @@ header {
     justify-content: space-between;
     padding: 10px 30px;
     box-shadow: 0 2px 12px var(--negro-pipers, #010001, 0.13);
+    min-height: 70px;
 }
 .logo {
     height: 60px;
@@ -32,12 +33,19 @@ header {
     box-shadow: 0 2px 8px rgba(40,82,147,0.10);
     border: 2px solid var(--negro-pipers);
 }
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1 1 auto;
+}
 nav ul {
     list-style: none;
     display: flex;
     gap: 30px;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 nav a {
     color: #f3ebd3;
@@ -400,11 +408,19 @@ nav a.active {
 @media (max-width: 700px) {
     header {
         flex-direction: column;
-        gap: 10px;
-        padding: 10px 8px;
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px 4px;
+    }
+    .header-content {
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 4px;
     }
     nav ul {
-        gap: 12px;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
     }
     .logo {
         height: 44px;
@@ -799,10 +815,18 @@ nav a.active {
 @media (max-width: 600px) {
   .otros-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 28px;
   }
   .otros-productos {
     padding: 0 2px;
+  }
+  .otros-card {
+    width: 100%;
+    max-width: 400px;
+    min-width: 0;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 14px 8px 12px 8px;
   }
 } 
 .comidas-grid, .bebidas-grid {
@@ -1497,4 +1521,44 @@ body {
   .promo-icono {
     font-size: 2em;
   }
+} 
+.navbar-cart {
+  background: transparent;
+  border-radius: 50%;
+  padding: 4px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navbar-cart:hover {
+  background: #ffd700;
+  box-shadow: 0 2px 12px #28529333;
+}
+.navbar-cart:hover svg {
+  stroke: #285293;
+  background: transparent;
+}
+.navbar-cart svg {
+  transition: stroke 0.2s;
+} 
+.navbar-cart-bg {
+  background: #ffd700;
+  border-radius: 50%;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px #28529333;
+}
+.navbar-cart:hover .navbar-cart-bg {
+  background: #285293;
+}
+.navbar-cart:hover svg {
+  stroke: #ffd700;
+}
+.navbar-cart svg {
+  transition: stroke 0.2s;
 } 
