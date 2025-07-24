@@ -22,6 +22,7 @@ links.forEach(link => {
 // Mostrar solo la sección de inicio al cargar
 window.addEventListener('DOMContentLoaded', () => {
     mostrarSeccion('inicio');
+    initCoverflowCarousels();
 });
 
 // Datos del menú
@@ -312,6 +313,7 @@ function iniciarCarrusel(idCarrusel, idPrev, idNext) {
     carrusel.addEventListener('mouseenter', () => clearInterval(autoplay));
     carrusel.addEventListener('mouseleave', () => resetAutoplay());
 }
+
 // Coverflow Carousel Logic para múltiples carruseles con auto-play
 function initCoverflowCarousels() {
   const containers = document.querySelectorAll('.coverflow-carousel-container');
@@ -320,8 +322,12 @@ function initCoverflowCarousels() {
     const slides = Array.from(carousel.querySelectorAll('.coverflow-slide'));
     const prevBtn = container.querySelector('.coverflow-btn-prev');
     const nextBtn = container.querySelector('.coverflow-btn-next');
+    
+    if (!carousel || slides.length === 0) return;
+    
     let current = 0;
     let autoplay = null;
+    
     function updateSlides() {
       slides.forEach((slide, i) => {
         slide.classList.remove('active', 'left', 'right');
@@ -334,36 +340,239 @@ function initCoverflowCarousels() {
         }
       });
     }
+    
     function goTo(idx) {
       current = (idx + slides.length) % slides.length;
       updateSlides();
     }
+    
     function next() {
       goTo(current + 1);
     }
+    
     function prev() {
       goTo(current - 1);
     }
+    
     function startAutoplay() {
       if (autoplay) clearInterval(autoplay);
       autoplay = setInterval(next, 3500);
     }
+    
     function stopAutoplay() {
       if (autoplay) clearInterval(autoplay);
     }
-    prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
-    nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => { 
+        prev(); 
+        startAutoplay(); 
+      });
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => { 
+        next(); 
+        startAutoplay(); 
+      });
+    }
+    
     // Pausar autoplay al pasar el mouse (solo en desktop)
     carousel.addEventListener('mouseenter', stopAutoplay);
     carousel.addEventListener('mouseleave', startAutoplay);
+    
     updateSlides();
     startAutoplay();
   });
 }
-window.addEventListener('DOMContentLoaded', () => {
-    mostrarSeccion('inicio');
-    iniciarCarrusel('carrusel-clasicas', 'prev-clasicas', 'next-clasicas');
-    iniciarCarrusel('carrusel-especiales', 'prev-especiales', 'next-especiales');
-    iniciarCarrusel('carrusel-premium', 'prev-premium', 'next-premium');
-    initCoverflowCarousels();
-}); 
+
+// Datos para el menú dinámico
+const tiposProducto = [
+  { tipo: 'clasica', nombre: 'Pizza Clásica' },
+  { tipo: 'especial', nombre: 'Pizza Especial' },
+  { tipo: 'premium', nombre: 'Pizza Premium' }
+];
+
+const bebidasDisponibles = [
+  { nombre: 'Jugo Natural (agua)', precio: 5000 },
+  { nombre: 'Jugo Natural (leche)', precio: 6000 },
+  { nombre: 'Limonada', precio: 8000 },
+  { nombre: 'Gaseosa Personal (400ml)', precio: 3000 },
+  { nombre: 'Gaseosa 1.5L', precio: 6500 }
+];
+
+// --- NUEVO FLUJO DE MENÚ DINÁMICO ---
+
+const menuDinamico = document.getElementById('menu-dinamico');
+
+// Listas de sabores/ingredientes por tipo
+const saboresPorTipo = {
+  clasica: [
+    'Hawaiana', 'Jamón y Queso', 'Pollo y Champiñones', 'Pollo Maíz', 'Margarita', 'Pollo Tocineta', 'Pollo Jamón', 'Maduro Cabano', 'Cabano Piña', 'Jamón Salami'
+  ],
+  especial: [
+    'Vegetariana sal', 'Vegetariana dulce', 'Petete', 'Zamba', 'Kaipirinha', 'Mexicana', 'Ranchera', 'Tres carnes', 'Pollo BBQ', 'Criolla'
+  ],
+  premium: [
+    'Especial', 'La Carnívora', 'Detodito', 'Maíz', 'Maduro'
+  ]
+};
+
+// Reglas de cantidad de ingredientes por tamaño
+const reglasIngredientes = {
+  Personal: { min: 1, max: 1 },
+  Pequeña: { min: 1, max: 2 },
+  Mediana: { min: 1, max: 2 },
+  Grande: { min: 1, max: 2 },
+  Extragrande: { min: 1, max: 3 }
+};
+
+let pedidoActual = {
+  producto: null,
+  detalles: {},
+  bebida: null
+};
+
+// Paso 1: Selección de tipo
+function renderSelectorTipoProducto() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Qué tipo de pizza deseas?</h3>
+      <div class="selector-tipo-producto">
+        <button class="btn-tipo-pizza" data-tipo="clasica">Clásica</button>
+        <button class="btn-tipo-pizza" data-tipo="especial">Especial</button>
+        <button class="btn-tipo-pizza" data-tipo="premium">Premium</button>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.btn-tipo-pizza').forEach(btn => {
+    btn.onclick = () => {
+      pedidoActual = { producto: btn.getAttribute('data-tipo'), detalles: {}, bebida: null };
+      renderSelectorTamanoPizza();
+    };
+  });
+}
+
+// Paso 2: Selección de tamaño
+function renderSelectorTamanoPizza() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Qué tamaño?</h3>
+      <div class="selector-tamano-pizza">
+        <button class="btn-tamano-pizza" data-tamano="Personal">Personal</button>
+        <button class="btn-tamano-pizza" data-tamano="Pequeña">Pequeña</button>
+        <button class="btn-tamano-pizza" data-tamano="Mediana">Mediana</button>
+        <button class="btn-tamano-pizza" data-tamano="Grande">Grande</button>
+        <button class="btn-tamano-pizza" data-tamano="Extragrande">Extra grande</button>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.btn-tamano-pizza').forEach(btn => {
+    btn.onclick = () => {
+      pedidoActual.detalles.tamano = btn.getAttribute('data-tamano');
+      renderSelectorIngredientesPizza();
+    };
+  });
+}
+
+// Paso 3: Selección de ingredientes/sabores
+function renderSelectorIngredientesPizza() {
+  const tipo = pedidoActual.producto;
+  const tamano = pedidoActual.detalles.tamano;
+  const sabores = saboresPorTipo[tipo];
+  const regla = reglasIngredientes[tamano];
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>Elige de ${regla.min} a ${regla.max} ingredientes/sabores</h3>
+      <div class="selector-ingredientes">
+        ${sabores.map((s, i) => `
+          <label style="display:block;margin-bottom:8px;">
+            <input type="checkbox" class="chk-ingrediente" value="${s}"> ${s}
+          </label>
+        `).join('')}
+      </div>
+      <label>Cantidad:
+        <input type="number" id="cantidad-pizza" min="1" value="1">
+      </label>
+      <button id="btn-continuar-ingredientes">Continuar</button>
+      <div id="msg-error-ingredientes" style="color:#e74c3c;margin-top:8px;"></div>
+    </div>
+  `;
+  const checkboxes = document.querySelectorAll('.chk-ingrediente');
+  checkboxes.forEach(cb => {
+    cb.onchange = () => {
+      const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
+      if (seleccionados.length > regla.max) {
+        cb.checked = false;
+      }
+    };
+  });
+  document.getElementById('btn-continuar-ingredientes').onclick = () => {
+    const seleccionados = Array.from(document.querySelectorAll('.chk-ingrediente:checked')).map(cb => cb.value);
+    if (seleccionados.length < regla.min || seleccionados.length > regla.max) {
+      document.getElementById('msg-error-ingredientes').textContent = `Debes seleccionar entre ${regla.min} y ${regla.max} ingredientes/sabores.`;
+      return;
+    }
+    pedidoActual.detalles.ingredientes = seleccionados;
+    pedidoActual.detalles.cantidad = document.getElementById('cantidad-pizza').value;
+    renderPreguntaBebida();
+  };
+}
+
+function renderPreguntaBebida() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Deseas agregar una bebida?</h3>
+      <div style="display:flex; gap:20px; justify-content:center;">
+        <button id="btn-bebida-si">Sí</button>
+        <button id="btn-bebida-no">No</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('btn-bebida-si').onclick = renderSelectorBebida;
+  document.getElementById('btn-bebida-no').onclick = renderResumenPedido;
+}
+
+function renderSelectorBebida() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>Selecciona tu bebida (opcional)</h3>
+      <div class="selector-bebidas">
+        ${bebidasDisponibles.map((b, i) => `
+          <label style="display:block;margin-bottom:8px;">
+            <input type="checkbox" class="chk-bebida" value="${b.nombre}" data-precio="${b.precio}"> ${b.nombre} <span class="precio">$${b.precio.toLocaleString()}</span>
+          </label>
+        `).join('')}
+      </div>
+      <button id="btn-continuar-bebida">Continuar</button>
+    </div>
+  `;
+  document.getElementById('btn-continuar-bebida').onclick = () => {
+    const seleccionadas = Array.from(document.querySelectorAll('.chk-bebida:checked')).map(cb => ({ nombre: cb.value, precio: parseInt(cb.getAttribute('data-precio')) }));
+    pedidoActual.bebida = seleccionadas;
+    renderResumenPedido();
+  };
+}
+
+function renderResumenPedido() {
+  let resumen = `<div class="form-pizza"><h3>Resumen de tu pedido</h3>`;
+  resumen += `<p><strong>Producto:</strong> ${tiposProducto.find(t=>t.tipo===pedidoActual.producto)?.nombre || ''}</p>`;
+  Object.entries(pedidoActual.detalles).forEach(([k,v]) => {
+    resumen += `<p><strong>${k.charAt(0).toUpperCase()+k.slice(1)}:</strong> ${v}</p>`;
+  });
+  if (pedidoActual.bebida && pedidoActual.bebida.length > 0) {
+    resumen += `<p><strong>Bebidas:</strong><ul>`;
+    pedidoActual.bebida.forEach(b => {
+      resumen += `<li>${b.nombre} <span class="precio">$${b.precio.toLocaleString()}</span></li>`;
+    });
+    resumen += `</ul></p>`;
+  } else {
+    resumen += `<p><em>Sin bebida</em></p>`;
+  }
+  resumen += `<button id="btn-nuevo-pedido">Nuevo pedido</button></div>`;
+  menuDinamico.innerHTML = resumen;
+  document.getElementById('btn-nuevo-pedido').onclick = renderSelectorTipoProducto;
+}
+
+// Inicializar menú dinámico
+renderSelectorTipoProducto(); 

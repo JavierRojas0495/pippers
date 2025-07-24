@@ -684,6 +684,7 @@ nav a.active {
     flex-wrap: wrap;
     gap: 32px;
     justify-content: center;
+    padding-bottom: 3%;
 }
 .otros-card {
     background: #fff;
@@ -818,4 +819,93 @@ nav a.active {
         grid-template-columns: 1fr;
         gap: 12px;
     }
+} 
+
+/* Estilos para el menú dinámico */
+.selector-tipo-producto,
+.selector-tamano-pizza {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.btn-tipo-pizza,
+.btn-tamano-pizza {
+    background: #285293;
+    color: #ffd700;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(40,82,147,0.15);
+}
+
+.btn-tipo-pizza:hover,
+.btn-tamano-pizza:hover {
+    background: #ffd700;
+    color: #285293;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(40,82,147,0.25);
+}
+
+.selector-ingredientes {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #28529333;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    background: #f3ebd3;
+}
+
+.selector-ingredientes label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.selector-ingredientes label:hover {
+    background: #28529311;
+}
+
+.selector-ingredientes input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #285293;
+}
+
+.selector-bebidas {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #28529333;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    background: #f3ebd3;
+}
+
+.selector-bebidas label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.selector-bebidas label:hover {
+    background: #28529311;
+}
+
+.selector-bebidas input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #285293;
 } 
