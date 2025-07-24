@@ -110,145 +110,772 @@ const reglasSabores = {
 
 let pedido = [];
 
-function renderMenu() {
-    const menuDiv = document.getElementById('menu-dinamico');
-    menuDiv.innerHTML = '';
-    Object.entries(menuData).forEach(([catKey, cat]) => {
-        const section = document.createElement('div');
-        section.className = 'categoria-menu';
-        section.innerHTML = `<h3>${cat.nombre}</h3>`;
-        // Formulario para agregar pizza
-        const form = document.createElement('form');
-        form.className = 'form-pizza';
-        form.innerHTML = `
-            <label>Tamaño:
-                <select name="tamano">
-                    ${tamanos.map(t => `<option value="${t.key}">${t.label}</option>`).join('')}
-                </select>
-            </label>
-            <label>Sabor(es):
-                <select name="sabor" multiple size="${cat.sabores.length > 5 ? 5 : cat.sabores.length}">
-                    ${cat.sabores.map(s => `<option value="${s}">${s}</option>`).join('')}
-                </select>
-            </label>
-            <label>Cantidad:
-                <input type="number" name="cantidad" min="1" value="1">
-            </label>
-            <span class="precio-pizza">Precio: $<span>0</span></span>
-            <button type="submit">Agregar al pedido</button>
-        `;
-        // Actualizar precio al cambiar tamaño o cantidad
-        const tamanoSelect = form.querySelector('select[name="tamano"]');
-        const cantidadInput = form.querySelector('input[name="cantidad"]');
-        const saborSelect = form.querySelector('select[name="sabor"]');
-        const precioSpan = form.querySelector('.precio-pizza span');
-        function updatePrecio() {
-            const tamano = tamanoSelect.value;
-            const cantidad = parseInt(cantidadInput.value) || 1;
-            const precio = cat.precios[tamano] * cantidad;
-            precioSpan.textContent = precio.toLocaleString();
+// Datos para el menú dinámico
+const tiposProducto = [
+  { tipo: 'clasica', nombre: 'Pizza Clásica', icono: '🍕' },
+  { tipo: 'especial', nombre: 'Pizza Especial', icono: '🥗' },
+  { tipo: 'premium', nombre: 'Pizza Premium', icono: '👑' },
+  { tipo: 'lasagna', nombre: 'Lasaña', icono: '🍝' },
+  { tipo: 'pantalone', nombre: 'Pizza Pantalone', icono: '🍕' },
+  { tipo: 'bebidas', nombre: 'Bebidas', icono: '🥤' }
+];
+
+const bebidasDisponibles = [
+  { 
+    nombre: 'Jugos Naturales', 
+    tipo: 'jugos',
+    sabores: ['mora', 'mango', 'lulo', 'maracuyá', 'fresa', 'uva', 'guanábana'],
+    tipos: [
+      { nombre: 'en agua', precio: 5000 },
+      { nombre: 'en leche', precio: 6000 }
+    ]
+  },
+  { 
+    nombre: 'Limonadas', 
+    tipo: 'limonadas',
+    sabores: ['cerezada', 'coco'],
+    precio: 8000
+  },
+  { nombre: 'Gaseosa Personal (400ml)', tipo: 'gaseosa', precio: 3000 },
+  { nombre: 'Gaseosa 1.5L', tipo: 'gaseosa', precio: 6500 }
+];
+
+// --- MENÚ DINÁMICO ---
+
+const menuDinamico = document.getElementById('menu-dinamico');
+
+// Listas de sabores/ingredientes por tipo
+const saboresPorTipo = {
+  clasica: [
+    'Hawaiana', 'Jamón y Queso', 'Pollo y Champiñones', 'Pollo Maíz', 'Margarita', 'Pollo Tocineta', 'Pollo Jamón', 'Maduro Cabano', 'Cabano Piña', 'Jamón Salami'
+  ],
+  especial: [
+    'Vegetariana sal', 'Vegetariana dulce', 'Petete', 'Zamba', 'Kaipirinha', 'Mexicana', 'Ranchera', 'Tres carnes', 'Pollo BBQ', 'Criolla'
+  ],
+  premium: [
+    'Especial', 'La Carnívora', 'Detodito', 'Maíz', 'Maduro'
+  ]
+};
+
+// Precios por tipo y tamaño
+const preciosPorTipo = {
+  clasica: {
+    personal: 9000,
+    pequena: 15000,
+    mediana: 23000,
+    grande: 29000,
+    extragrande: 36000
+  },
+  especial: {
+    personal: 10000,
+    pequena: 17000,
+    mediana: 25000,
+    grande: 31000,
+    extragrande: 39000
+  },
+  premium: {
+    personal: 11000,
+    pequena: 18000,
+    mediana: 26000,
+    grande: 33000,
+    extragrande: 42000
+  },
+  lasagna: {
+    pequena: 9000,
+    grande: 18000
+  },
+  pantalone: {
+    pequena: 9000,
+    grande: 19000
+  },
+  bebidas: {
+    unidad: 5000
+  }
+};
+
+// Reglas de cantidad de ingredientes por tamaño
+const reglasIngredientes = {
+  personal: { min: 1, max: 1 },
+  pequena: { min: 1, max: 2 },
+  mediana: { min: 1, max: 2 },
+  grande: { min: 1, max: 2 },
+  extragrande: { min: 1, max: 3 }
+};
+
+let pedidoActual = {
+  producto: null,
+  detalles: {},
+  bebida: null
+};
+
+// Paso 1: Selección de tipo de producto
+function renderSelectorTipoProducto() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Qué tipo de producto deseas?</h3>
+      <div class="selector-tipo-producto">
+        ${tiposProducto.map(producto => `
+          <button class="btn-tipo-pizza" data-tipo="${producto.tipo}">
+            <span class="producto-icono">${producto.icono}</span>
+            <span class="producto-nombre">${producto.nombre}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  document.querySelectorAll('.btn-tipo-pizza').forEach(btn => {
+    btn.onclick = () => {
+      pedidoActual = { 
+        producto: btn.getAttribute('data-tipo'), 
+        detalles: {}, 
+        bebida: null 
+      };
+      renderSelectorTamanoProducto();
+    };
+  });
+}
+
+// Paso 2: Selección de tamaño
+function renderSelectorTamanoProducto() {
+  const tipo = pedidoActual.producto;
+  let tamanosDisponibles = [];
+  
+  if (tipo === 'bebidas') {
+    // Para bebidas, ir directamente a la selección de bebidas
+    renderSelectorBebidas();
+    return;
+  }
+  
+  if (tipo === 'lasagna' || tipo === 'pantalone') {
+    tamanosDisponibles = [
+      { key: 'pequena', label: 'Pequeña' },
+      { key: 'grande', label: 'Grande' }
+    ];
+  } else {
+    tamanosDisponibles = [
+      { key: 'personal', label: 'Personal (4 porciones)' },
+      { key: 'pequena', label: 'Pequeña (6 porciones)' },
+      { key: 'mediana', label: 'Mediana (8 porciones)' },
+      { key: 'grande', label: 'Grande (10 porciones)' },
+      { key: 'extragrande', label: 'Extragrande (12 porciones)' }
+    ];
+  }
+  
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Qué tamaño?</h3>
+      <div class="selector-tamano-pizza">
+        ${tamanosDisponibles.map(tamano => `
+          <button class="btn-tamano-pizza" data-tamano="${tamano.key}">
+            ${tamano.label}
+            <span class="precio-tamano">$${preciosPorTipo[tipo][tamano.key].toLocaleString()}</span>
+          </button>
+        `).join('')}
+      </div>
+      <button id="btn-volver-tipo" class="btn-volver">← Volver</button>
+    </div>
+  `;
+  
+  document.querySelectorAll('.btn-tamano-pizza').forEach(btn => {
+    btn.onclick = () => {
+      pedidoActual.detalles.tamano = btn.getAttribute('data-tamano');
+      if (tipo === 'lasagna' || tipo === 'pantalone') {
+        renderSelectorCantidadProducto();
+      } else {
+        renderSelectorIngredientesPizza();
+      }
+    };
+  });
+  
+  document.getElementById('btn-volver-tipo').onclick = renderSelectorTipoProducto;
+}
+
+// Paso 3: Selección de ingredientes/sabores (solo para pizzas)
+function renderSelectorIngredientesPizza() {
+  const tipo = pedidoActual.producto;
+  const tamano = pedidoActual.detalles.tamano;
+  const sabores = saboresPorTipo[tipo];
+  const regla = reglasIngredientes[tamano] || reglasIngredientes.personal;
+  
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>Elige de ${regla.min} a ${regla.max} ingredientes/sabores</h3>
+      <div class="selector-ingredientes">
+        ${sabores.map((s, i) => `
+          <label class="ingrediente-checkbox">
+            <input type="checkbox" class="chk-ingrediente" value="${s}">
+            <span class="ingrediente-texto">${s}</span>
+          </label>
+        `).join('')}
+      </div>
+      <label>Cantidad:
+        <input type="number" id="cantidad-pizza" min="1" value="1">
+      </label>
+      
+      <button id="btn-continuar-ingredientes" style="margin-top: 20px; padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Continuar</button>
+      <button id="btn-volver-tamano" class="btn-volver">← Volver</button>
+      <div id="msg-error-ingredientes" style="color:#e74c3c;margin-top:8px;"></div>
+    </div>
+  `;
+  
+  const checkboxes = document.querySelectorAll('.chk-ingrediente');
+  
+  function actualizarEstadoCheckboxes() {
+    const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
+    const cantidadSeleccionados = seleccionados.length;
+    
+    checkboxes.forEach(cb => {
+      const label = cb.parentElement;
+      if (cb.checked) {
+        // Los seleccionados siempre están habilitados
+        cb.disabled = false;
+        label.classList.remove('disabled');
+      } else {
+        // Los no seleccionados se deshabilitan si ya se alcanzó el máximo
+        if (cantidadSeleccionados >= regla.max) {
+          cb.disabled = true;
+          label.classList.add('disabled');
+        } else {
+          cb.disabled = false;
+          label.classList.remove('disabled');
         }
-        tamanoSelect.addEventListener('change', function() {
-            updatePrecio();
-            // Limpiar selección de sabores al cambiar tamaño
-            Array.from(saborSelect.options).forEach(opt => opt.selected = false);
+      }
+    });
+    
+    // Actualizar mensaje de estado
+    const msgElement = document.getElementById('msg-error-ingredientes');
+    if (cantidadSeleccionados < regla.min) {
+      msgElement.textContent = `Selecciona al menos ${regla.min} ingrediente${regla.min > 1 ? 's' : ''} (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.style.color = '#f39c12';
+    } else if (cantidadSeleccionados > regla.max) {
+      msgElement.textContent = `Máximo ${regla.max} ingredientes permitidos (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.style.color = '#e74c3c';
+    } else {
+      msgElement.textContent = `Perfecto! ${cantidadSeleccionados} ingrediente${cantidadSeleccionados > 1 ? 's' : ''} seleccionado${cantidadSeleccionados > 1 ? 's' : ''} (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.style.color = '#27ae60';
+    }
+  }
+  
+  checkboxes.forEach(cb => {
+    cb.onchange = () => {
+      const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
+      const cantidadSeleccionados = seleccionados.length;
+      
+      // Si intenta seleccionar más del máximo, no permitir
+      if (!cb.checked && cantidadSeleccionados >= regla.max) {
+        cb.checked = false;
+        return;
+      }
+      
+      // Actualizar el estado de todos los checkboxes
+      actualizarEstadoCheckboxes();
+    };
+  });
+  
+  // Inicializar el estado
+  actualizarEstadoCheckboxes();
+  
+  document.getElementById('btn-continuar-ingredientes').onclick = () => {
+    const seleccionados = Array.from(document.querySelectorAll('.chk-ingrediente:checked')).map(cb => cb.value);
+    if (seleccionados.length < regla.min) {
+      document.getElementById('msg-error-ingredientes').textContent = `Debes seleccionar al menos ${regla.min} ingrediente${regla.min > 1 ? 's' : ''}.`;
+      return;
+    }
+    pedidoActual.detalles.ingredientes = seleccionados;
+    pedidoActual.detalles.cantidad = document.getElementById('cantidad-pizza').value;
+    agregarAlPedido();
+  };
+  
+  document.getElementById('btn-volver-tamano').onclick = renderSelectorTamanoProducto;
+}
+
+// Paso 3b: Selección de cantidad (para lasañas y pantalone)
+function renderSelectorCantidadProducto() {
+  const tipo = pedidoActual.producto;
+  const tamano = pedidoActual.detalles.tamano;
+  
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>¿Cuántas ${tiposProducto.find(t => t.tipo === tipo)?.nombre} quieres?</h3>
+      <label>Cantidad:
+        <input type="number" id="cantidad-producto" min="1" value="1">
+      </label>
+      <p class="precio-total">Precio: $<span id="precio-total">${preciosPorTipo[tipo][tamano].toLocaleString()}</span></p>
+      
+      <button id="btn-continuar-cantidad" style="margin-top: 20px; padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Continuar</button>
+      <button id="btn-volver-tamano-2" class="btn-volver">← Volver</button>
+    </div>
+  `;
+  
+  const cantidadInput = document.getElementById('cantidad-producto');
+  const precioSpan = document.getElementById('precio-total');
+  
+  cantidadInput.addEventListener('input', () => {
+    const cantidad = parseInt(cantidadInput.value) || 1;
+    const precio = preciosPorTipo[tipo][tamano] * cantidad;
+    precioSpan.textContent = precio.toLocaleString();
+  });
+  
+  document.getElementById('btn-continuar-cantidad').onclick = () => {
+    pedidoActual.detalles.cantidad = cantidadInput.value;
+    agregarAlPedido();
+  };
+  
+  document.getElementById('btn-volver-tamano-2').onclick = renderSelectorTamanoProducto;
+}
+
+
+
+
+function renderSelectorBebidas() {
+  menuDinamico.innerHTML = `
+    <div class="form-pizza">
+      <h3>Selecciona tus bebidas</h3>
+      <div class="selector-bebidas">
+        ${bebidasDisponibles.map((b, i) => `
+          <label style="display:block;margin-bottom:15px;padding:10px;border:1px solid #ddd;border-radius:5px;">
+            <input type="checkbox" class="chk-bebida" value="${b.nombre}" data-tipo="${b.tipo || 'simple'}" data-index="${i}"> 
+            <strong>${b.nombre}</strong>
+            ${b.tipo === 'jugos' ? `<span class="precio">$${b.tipos[0].precio.toLocaleString()} - $${b.tipos[1].precio.toLocaleString()}</span>` : 
+              b.tipo === 'limonadas' ? `<span class="precio">$${b.precio.toLocaleString()}</span>` :
+              `<span class="precio">$${b.precio.toLocaleString()}</span>`}
+          </label>
+        `).join('')}
+      </div>
+      <label>Cantidad:
+        <input type="number" id="cantidad-bebidas" min="1" value="1">
+      </label>
+      <button id="btn-continuar-bebidas" style="margin-top: 20px; padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Continuar</button>
+      <button id="btn-volver-bebidas" class="btn-volver">← Volver</button>
+    </div>
+  `;
+  
+  // Event listeners para checkboxes
+  document.querySelectorAll('.chk-bebida').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const tipo = this.getAttribute('data-tipo');
+      const index = parseInt(this.getAttribute('data-index'));
+      
+      if (this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
+        // Mostrar selector de sabores
+        mostrarSelectorSabores(tipo, index);
+      } else if (!this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
+        // Limpiar todos los sabores y tipos seleccionados cuando se desmarca
+        limpiarSaboresSeleccionados(tipo, index);
+      }
+    });
+  });
+  
+  document.getElementById('btn-continuar-bebidas').onclick = () => {
+    const bebidasMarcadas = document.querySelectorAll('.chk-bebida:checked');
+    
+    if (bebidasMarcadas.length === 0) {
+      alert('Por favor selecciona al menos una bebida.');
+      return;
+    }
+    
+    const seleccionadas = [];
+    
+    bebidasMarcadas.forEach(cb => {
+      const tipo = cb.getAttribute('data-tipo');
+      const index = parseInt(cb.getAttribute('data-index'));
+      const bebida = bebidasDisponibles[index];
+      
+      if (tipo === 'jugos') {
+        // Buscar el contenedor específico de esta bebida
+        const label = cb.parentElement;
+        const selectorSabores = label.querySelector('.selector-sabores');
+        
+        if (selectorSabores) {
+          const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-jugo:checked')).map(s => s.value);
+          const tiposSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-tipo-jugo:checked')).map(t => t.value);
+          
+          if (saboresSeleccionados.length === 0 || tiposSeleccionados.length === 0) {
+            alert('Por favor selecciona al menos un sabor y un tipo para los jugos.');
+            return;
+          }
+          
+          seleccionadas.push({
+            nombre: bebida.nombre,
+            tipo: 'jugos',
+            sabores: saboresSeleccionados,
+            tipos: tiposSeleccionados,
+            bebida: bebida
+          });
+        }
+      } else if (tipo === 'limonadas') {
+        // Buscar el contenedor específico de esta bebida
+        const label = cb.parentElement;
+        const selectorSabores = label.querySelector('.selector-sabores');
+        
+        if (selectorSabores) {
+          const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-limonada:checked')).map(s => s.value);
+          
+          if (saboresSeleccionados.length === 0) {
+            alert('Por favor selecciona al menos un sabor para las limonadas.');
+            return;
+          }
+          
+          seleccionadas.push({
+            nombre: bebida.nombre,
+            tipo: 'limonadas',
+            sabores: saboresSeleccionados,
+            precio: bebida.precio,
+            bebida: bebida
+          });
+        }
+      } else {
+        // Bebidas simples (gaseosas)
+        seleccionadas.push({
+          nombre: bebida.nombre,
+          tipo: 'simple',
+          precio: bebida.precio,
+          bebida: bebida
         });
-        cantidadInput.addEventListener('input', updatePrecio);
-        updatePrecio();
-        // Validar cantidad de sabores
-        saborSelect.addEventListener('change', function() {
-            const tamano = tamanoSelect.value;
-            const regla = reglasSabores[tamano];
-            if (saborSelect.selectedOptions.length > regla.max) {
-                alert(`Solo puedes elegir hasta ${regla.max} sabor(es) para este tamaño.`);
-                // Desmarcar el último seleccionado
-                saborSelect.options[saborSelect.selectedIndex].selected = false;
-            }
-        });
-        // Agregar al pedido
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const tamano = tamanoSelect.value;
-            const cantidad = parseInt(cantidadInput.value) || 1;
-            const sabores = Array.from(saborSelect.selectedOptions).map(opt => opt.value);
-            const regla = reglasSabores[tamano];
-            if (sabores.length < regla.min || sabores.length > regla.max) {
-                alert(`Debes elegir entre ${regla.min} y ${regla.max} sabor(es) para este tamaño.`);
-                return;
-            }
+      }
+    });
+    
+    if (seleccionadas.length === 0) {
+      return; // Ya se mostró un error específico arriba
+    }
+    
+    pedidoActual.detalles.bebidas = seleccionadas;
+    pedidoActual.detalles.cantidad = document.getElementById('cantidad-bebidas').value;
+    agregarAlPedido();
+  };
+  
+  document.getElementById('btn-volver-bebidas').onclick = renderSelectorTipoProducto;
+}
+
+function mostrarSelectorSabores(tipo, index) {
+  const bebida = bebidasDisponibles[index];
+  const checkbox = document.querySelector(`[data-tipo="${tipo}"][data-index="${index}"]`);
+  const label = checkbox.parentElement;
+  
+  let contenidoSabores = '';
+  
+  if (tipo === 'jugos') {
+    contenidoSabores = `
+      <div class="selector-sabores" data-bebida-index="${index}" style="margin-top:10px;padding:10px;background:#f9f9f9;border-radius:5px;">
+        <h4>Sabores disponibles:</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <strong>Sabores:</strong><br>
+            ${bebida.sabores.map(sabor => `
+              <label style="display:block;margin:5px 0;">
+                <input type="checkbox" class="chk-sabor-jugo" data-bebida-index="${index}" value="${sabor}"> ${sabor}
+              </label>
+            `).join('')}
+          </div>
+          <div>
+            <strong>Tipo:</strong><br>
+            ${bebida.tipos.map(tipo => `
+              <label style="display:block;margin:5px 0;">
+                <input type="checkbox" class="chk-tipo-jugo" data-bebida-index="${index}" value="${tipo.nombre}" data-precio="${tipo.precio}"> ${tipo.nombre} ($${tipo.precio.toLocaleString()})
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (tipo === 'limonadas') {
+    contenidoSabores = `
+      <div class="selector-sabores" data-bebida-index="${index}" style="margin-top:10px;padding:10px;background:#f9f9f9;border-radius:5px;">
+        <h4>Sabores disponibles:</h4>
+        ${bebida.sabores.map(sabor => `
+          <label style="display:block;margin:5px 0;">
+            <input type="checkbox" class="chk-sabor-limonada" data-bebida-index="${index}" value="${sabor}"> ${sabor}
+          </label>
+        `).join('')}
+      </div>
+    `;
+  }
+  
+  // Remover selector anterior si existe
+  const selectorAnterior = label.querySelector('.selector-sabores');
+  if (selectorAnterior) {
+    selectorAnterior.remove();
+  }
+  
+  // Agregar nuevo selector
+  label.insertAdjacentHTML('beforeend', contenidoSabores);
+}
+
+function limpiarSaboresSeleccionados(tipo, index) {
+  const checkbox = document.querySelector(`[data-tipo="${tipo}"][data-index="${index}"]`);
+  const label = checkbox.parentElement;
+  
+  // Remover el selector de sabores
+  const selectorSabores = label.querySelector('.selector-sabores');
+  if (selectorSabores) {
+    selectorSabores.remove();
+  }
+}
+
+function agregarAlPedido() {
+  const tipo = pedidoActual.producto;
+  
+  if (tipo === 'bebidas') {
+    // Manejo especial para bebidas
+    const bebidas = pedidoActual.detalles.bebidas;
+    const cantidad = parseInt(pedidoActual.detalles.cantidad) || 1;
+    
+    bebidas.forEach(bebida => {
+      if (bebida.tipo === 'jugos') {
+        // Para jugos, crear un ítem por cada combinación de sabor y tipo
+        bebida.sabores.forEach(sabor => {
+          bebida.tipos.forEach(tipoSeleccionado => {
+            const tipoBebida = bebida.bebida.tipos.find(t => t.nombre === tipoSeleccionado);
             pedido.push({
-                categoria: cat.nombre,
-                tamano: tamanos.find(t => t.key === tamano).label,
-                sabores,
-                cantidad,
-                precio: cat.precios[tamano] * cantidad
+              categoria: 'Bebidas',
+              tamano: 'unidad',
+              descripcion: `Jugo de ${sabor} ${tipoSeleccionado}`,
+              cantidad: cantidad,
+              precio: tipoBebida.precio * cantidad,
+              bebidas: []
             });
-            renderPedido();
-            form.reset();
-            updatePrecio();
+          });
         });
-        section.appendChild(form);
-        menuDiv.appendChild(section);
+      } else if (bebida.tipo === 'limonadas') {
+        // Para limonadas, crear un ítem por cada sabor
+        bebida.sabores.forEach(sabor => {
+          pedido.push({
+            categoria: 'Bebidas',
+            tamano: 'unidad',
+            descripcion: `Limonada de ${sabor}`,
+            cantidad: cantidad,
+            precio: bebida.precio * cantidad,
+            bebidas: []
+          });
+        });
+      } else {
+        // Para bebidas simples (gaseosas)
+        pedido.push({
+          categoria: 'Bebidas',
+          tamano: 'unidad',
+          descripcion: bebida.nombre,
+          cantidad: cantidad,
+          precio: bebida.precio * cantidad,
+          bebidas: []
+        });
+      }
     });
-    // Mostrar resumen del pedido
-    const resumenDiv = document.createElement('div');
-    resumenDiv.id = 'resumen-pedido';
-    menuDiv.appendChild(resumenDiv);
-    renderPedido();
+  } else {
+    // Manejo normal para otros productos
+    const tamano = pedidoActual.detalles.tamano;
+    const cantidad = parseInt(pedidoActual.detalles.cantidad) || 1;
+    const precioUnitario = preciosPorTipo[tipo][tamano];
+    const precioTotal = precioUnitario * cantidad;
+    
+    let descripcion = '';
+    if (tipo === 'lasagna' || tipo === 'pantalone') {
+      descripcion = `${tiposProducto.find(t => t.tipo === tipo)?.nombre} ${tamano}`;
+    } else {
+      descripcion = `${tiposProducto.find(t => t.tipo === tipo)?.nombre} ${tamano} - Sabores: ${pedidoActual.detalles.ingredientes.join(', ')}`;
+    }
+    
+    pedido.push({
+      categoria: tiposProducto.find(t => t.tipo === tipo)?.nombre || '',
+      tamano: tamano,
+      descripcion: descripcion,
+      cantidad: cantidad,
+      precio: precioTotal,
+      bebidas: pedidoActual.bebida || []
+    });
+  }
+  
+  renderResumenPedido();
 }
 
-function renderPedido() {
-    const resumenDiv = document.getElementById('resumen-pedido');
-    if (!resumenDiv) return;
-    if (pedido.length === 0) {
-        resumenDiv.innerHTML = '<p>No has agregado nada al pedido aún.</p>';
-        return;
-    }
-    let html = '<h4>Tu pedido:</h4><ul>';
+function renderResumenPedido() {
+  let resumen = `<div class="form-pizza"><h3>Resumen de tu pedido</h3>`;
+  
+  if (pedido.length === 0) {
+    resumen += `<p>No has agregado nada al pedido aún.</p>`;
+  } else {
+    resumen += `<ul class="lista-pedido">`;
     pedido.forEach((item, idx) => {
-        html += `<li>${item.cantidad} x ${item.categoria} - ${item.tamano} - Sabores: ${item.sabores.join(', ')} ($${item.precio.toLocaleString()}) <button data-idx="${idx}" class="btn-eliminar">Eliminar</button></li>`;
+      resumen += `<li>${item.cantidad} x ${item.descripcion} ($${item.precio.toLocaleString()})`;
+      if (item.bebidas && item.bebidas.length > 0) {
+        resumen += `<br><small>Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}</small>`;
+      }
+      resumen += ` <button data-idx="${idx}" class="btn-eliminar">Eliminar</button></li>`;
     });
-    html += '</ul>';
-    html += `<p><strong>Total: $${pedido.reduce((acc, item) => acc + item.precio, 0).toLocaleString()}</strong></p>`;
-    resumenDiv.innerHTML = html;
+    resumen += `</ul>`;
+    
+    const total = pedido.reduce((acc, item) => {
+      let itemTotal = item.precio;
+      if (item.bebidas) {
+        itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
+      }
+      return acc + itemTotal;
+    }, 0);
+    
+    resumen += `<p class="total-pedido"><strong>Total: $${total.toLocaleString()}</strong></p>`;
+  }
+  
+  resumen += `
+    <div class="botones-pedido">
+      <button id="btn-nuevo-pedido">Agregar más productos</button>
+      ${pedido.length > 0 ? '<button id="btn-enviar-pedido-final" class="btn-enviar">Enviar pedido por WhatsApp</button>' : ''}
+    </div>
+  </div>`;
+  
+  menuDinamico.innerHTML = resumen;
+  
+  // Event listeners
+  document.getElementById('btn-nuevo-pedido').onclick = renderSelectorTipoProducto;
+  
+  if (pedido.length > 0) {
+    document.getElementById('btn-enviar-pedido-final').onclick = enviarPedidoWhatsApp;
+    
     // Botones eliminar
-    resumenDiv.querySelectorAll('.btn-eliminar').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const idx = parseInt(this.getAttribute('data-idx'));
-            pedido.splice(idx, 1);
-            renderPedido();
-        });
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.onclick = () => {
+        const idx = parseInt(btn.getAttribute('data-idx'));
+        pedido.splice(idx, 1);
+        renderResumenPedido();
+      };
     });
+  }
 }
 
-renderMenu();
+function enviarPedidoWhatsApp() {
+  if (pedido.length === 0) {
+    alert('Agrega al menos un producto al pedido.');
+    return;
+  }
+  
+  // Mostrar formulario de contacto
+  mostrarFormularioContacto();
+}
 
-// Manejo del formulario de contacto/pedido
-const form = document.getElementById('form-contacto');
-form.addEventListener('submit', function(e) {
+function mostrarFormularioContacto() {
+  const menuDiv = document.getElementById('menu-dinamico');
+  menuDiv.innerHTML = `
+    <div class="form-pizza">
+      <h3>Datos de entrega</h3>
+      <form id="form-contacto-pedido">
+        <label for="nombre-pedido">Nombre:</label>
+        <input type="text" id="nombre-pedido" name="nombre" required>
+        
+        <label for="direccion-pedido">Dirección:</label>
+        <input type="text" id="direccion-pedido" name="direccion" required>
+        
+        <label for="telefono-pedido">Teléfono:</label>
+        <input type="text" id="telefono-pedido" name="telefono" required>
+        
+        <div class="resumen-pedido-final">
+          <h4>Resumen del pedido:</h4>
+          <ul>
+            ${pedido.map(item => {
+              let descripcion = `${item.cantidad} x ${item.descripcion} ($${item.precio.toLocaleString()})`;
+              if (item.bebidas && item.bebidas.length > 0) {
+                descripcion += `<br><small>Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}</small>`;
+              }
+              return `<li>${descripcion}</li>`;
+            }).join('')}
+          </ul>
+          <p><strong>Total: $${pedido.reduce((acc, item) => {
+            let itemTotal = item.precio;
+            if (item.bebidas) {
+              itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
+            }
+            return acc + itemTotal;
+          }, 0).toLocaleString()}</strong></p>
+        </div>
+        
+        <button type="submit">Enviar pedido por WhatsApp</button>
+        <button type="button" id="btn-volver-menu">Volver al menú</button>
+      </form>
+    </div>
+  `;
+  
+  // Event listeners
+  document.getElementById('form-contacto-pedido').addEventListener('submit', function(e) {
     e.preventDefault();
-    if (pedido.length === 0) {
-        alert('Agrega al menos una pizza al pedido.');
-        return;
+    procesarEnvioWhatsApp();
+  });
+  
+  document.getElementById('btn-volver-menu').addEventListener('click', function() {
+    renderResumenPedido();
+  });
+}
+
+function procesarEnvioWhatsApp() {
+  const nombre = document.getElementById('nombre-pedido').value.trim();
+  const direccion = document.getElementById('direccion-pedido').value.trim();
+  const telefono = document.getElementById('telefono-pedido').value.trim();
+  
+  if (!nombre || !direccion || !telefono) {
+    alert('Por favor, completa todos los datos de contacto.');
+    return;
+  }
+  
+  let mensaje = `¡Hola! Quiero hacer un pedido:\n\n`;
+  pedido.forEach(item => {
+    mensaje += `• ${item.cantidad} x ${item.descripcion}\n`;
+    mensaje += `  Precio: $${item.precio.toLocaleString()}\n`;
+    if (item.bebidas && item.bebidas.length > 0) {
+      mensaje += `  Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}\n`;
     }
-    const nombre = form.nombre.value.trim();
-    const direccion = form.direccion.value.trim();
-    const telefono = form.telefono.value.trim();
-    if (!nombre || !direccion || !telefono) {
-        alert('Por favor, completa todos los datos de contacto.');
-        return;
+    mensaje += `\n`;
+  });
+  
+  const total = pedido.reduce((acc, item) => {
+    let itemTotal = item.precio;
+    if (item.bebidas) {
+      itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
     }
-    let mensaje = `¡Hola! Quiero hacer un pedido:\n`;
-    pedido.forEach(item => {
-        mensaje += `- ${item.cantidad} x ${item.categoria} (${item.tamano}), Sabores: ${item.sabores.join(', ')} ($${item.precio.toLocaleString()})\n`;
+    return acc + itemTotal;
+  }, 0);
+  
+  mensaje += `💰 Total: $${total.toLocaleString()}\n\n`;
+  mensaje += `📋 Datos de entrega:\n`;
+  mensaje += `👤 Nombre: ${nombre}\n`;
+  mensaje += `📍 Dirección: ${direccion}\n`;
+  mensaje += `📞 Teléfono: ${telefono}`;
+  
+  // Número de WhatsApp de la pizzería (modificar por el real)
+  const numero = '573001234567';
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
+  
+  // Limpiar pedido después de enviar
+  pedido = [];
+  alert('¡Pedido enviado! Gracias por tu compra.');
+  renderSelectorTipoProducto();
+}
+
+// Manejo del formulario de contacto/pedido original
+const form = document.getElementById('form-contacto');
+if (form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (pedido.length === 0) {
+            alert('Agrega al menos una pizza al pedido.');
+            return;
+        }
+        const nombre = form.nombre.value.trim();
+        const direccion = form.direccion.value.trim();
+        const telefono = form.telefono.value.trim();
+        if (!nombre || !direccion || !telefono) {
+            alert('Por favor, completa todos los datos de contacto.');
+            return;
+        }
+        let mensaje = `¡Hola! Quiero hacer un pedido:\n`;
+        pedido.forEach(item => {
+            mensaje += `- ${item.cantidad} x ${item.categoria} (${item.tamano}), Sabores: ${item.sabores.join(', ')} ($${item.precio.toLocaleString()})\n`;
+        });
+        mensaje += `Total: $${pedido.reduce((acc, item) => acc + item.precio, 0).toLocaleString()}\n`;
+        mensaje += `\nDatos de entrega:\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}`;
+        // Número de WhatsApp de la pizzería (modificar por el real)
+        const numero = '573001234567';
+        const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
     });
-    mensaje += `Total: $${pedido.reduce((acc, item) => acc + item.precio, 0).toLocaleString()}\n`;
-    mensaje += `\nDatos de entrega:\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}`;
-    // Número de WhatsApp de la pizzería (modificar por el real)
-    const numero = '573001234567';
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-});
+}
 
 // Carruseles de imágenes en la sección de inicio (moderno)
 function iniciarCarrusel(idCarrusel, idPrev, idNext) {
@@ -384,194 +1011,6 @@ function initCoverflowCarousels() {
     updateSlides();
     startAutoplay();
   });
-}
-
-// Datos para el menú dinámico
-const tiposProducto = [
-  { tipo: 'clasica', nombre: 'Pizza Clásica' },
-  { tipo: 'especial', nombre: 'Pizza Especial' },
-  { tipo: 'premium', nombre: 'Pizza Premium' }
-];
-
-const bebidasDisponibles = [
-  { nombre: 'Jugo Natural (agua)', precio: 5000 },
-  { nombre: 'Jugo Natural (leche)', precio: 6000 },
-  { nombre: 'Limonada', precio: 8000 },
-  { nombre: 'Gaseosa Personal (400ml)', precio: 3000 },
-  { nombre: 'Gaseosa 1.5L', precio: 6500 }
-];
-
-// --- NUEVO FLUJO DE MENÚ DINÁMICO ---
-
-const menuDinamico = document.getElementById('menu-dinamico');
-
-// Listas de sabores/ingredientes por tipo
-const saboresPorTipo = {
-  clasica: [
-    'Hawaiana', 'Jamón y Queso', 'Pollo y Champiñones', 'Pollo Maíz', 'Margarita', 'Pollo Tocineta', 'Pollo Jamón', 'Maduro Cabano', 'Cabano Piña', 'Jamón Salami'
-  ],
-  especial: [
-    'Vegetariana sal', 'Vegetariana dulce', 'Petete', 'Zamba', 'Kaipirinha', 'Mexicana', 'Ranchera', 'Tres carnes', 'Pollo BBQ', 'Criolla'
-  ],
-  premium: [
-    'Especial', 'La Carnívora', 'Detodito', 'Maíz', 'Maduro'
-  ]
-};
-
-// Reglas de cantidad de ingredientes por tamaño
-const reglasIngredientes = {
-  Personal: { min: 1, max: 1 },
-  Pequeña: { min: 1, max: 2 },
-  Mediana: { min: 1, max: 2 },
-  Grande: { min: 1, max: 2 },
-  Extragrande: { min: 1, max: 3 }
-};
-
-let pedidoActual = {
-  producto: null,
-  detalles: {},
-  bebida: null
-};
-
-// Paso 1: Selección de tipo
-function renderSelectorTipoProducto() {
-  menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>¿Qué tipo de pizza deseas?</h3>
-      <div class="selector-tipo-producto">
-        <button class="btn-tipo-pizza" data-tipo="clasica">Clásica</button>
-        <button class="btn-tipo-pizza" data-tipo="especial">Especial</button>
-        <button class="btn-tipo-pizza" data-tipo="premium">Premium</button>
-      </div>
-    </div>
-  `;
-  document.querySelectorAll('.btn-tipo-pizza').forEach(btn => {
-    btn.onclick = () => {
-      pedidoActual = { producto: btn.getAttribute('data-tipo'), detalles: {}, bebida: null };
-      renderSelectorTamanoPizza();
-    };
-  });
-}
-
-// Paso 2: Selección de tamaño
-function renderSelectorTamanoPizza() {
-  menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>¿Qué tamaño?</h3>
-      <div class="selector-tamano-pizza">
-        <button class="btn-tamano-pizza" data-tamano="Personal">Personal</button>
-        <button class="btn-tamano-pizza" data-tamano="Pequeña">Pequeña</button>
-        <button class="btn-tamano-pizza" data-tamano="Mediana">Mediana</button>
-        <button class="btn-tamano-pizza" data-tamano="Grande">Grande</button>
-        <button class="btn-tamano-pizza" data-tamano="Extragrande">Extra grande</button>
-      </div>
-    </div>
-  `;
-  document.querySelectorAll('.btn-tamano-pizza').forEach(btn => {
-    btn.onclick = () => {
-      pedidoActual.detalles.tamano = btn.getAttribute('data-tamano');
-      renderSelectorIngredientesPizza();
-    };
-  });
-}
-
-// Paso 3: Selección de ingredientes/sabores
-function renderSelectorIngredientesPizza() {
-  const tipo = pedidoActual.producto;
-  const tamano = pedidoActual.detalles.tamano;
-  const sabores = saboresPorTipo[tipo];
-  const regla = reglasIngredientes[tamano];
-  menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>Elige de ${regla.min} a ${regla.max} ingredientes/sabores</h3>
-      <div class="selector-ingredientes">
-        ${sabores.map((s, i) => `
-          <label style="display:block;margin-bottom:8px;">
-            <input type="checkbox" class="chk-ingrediente" value="${s}"> ${s}
-          </label>
-        `).join('')}
-      </div>
-      <label>Cantidad:
-        <input type="number" id="cantidad-pizza" min="1" value="1">
-      </label>
-      <button id="btn-continuar-ingredientes">Continuar</button>
-      <div id="msg-error-ingredientes" style="color:#e74c3c;margin-top:8px;"></div>
-    </div>
-  `;
-  const checkboxes = document.querySelectorAll('.chk-ingrediente');
-  checkboxes.forEach(cb => {
-    cb.onchange = () => {
-      const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
-      if (seleccionados.length > regla.max) {
-        cb.checked = false;
-      }
-    };
-  });
-  document.getElementById('btn-continuar-ingredientes').onclick = () => {
-    const seleccionados = Array.from(document.querySelectorAll('.chk-ingrediente:checked')).map(cb => cb.value);
-    if (seleccionados.length < regla.min || seleccionados.length > regla.max) {
-      document.getElementById('msg-error-ingredientes').textContent = `Debes seleccionar entre ${regla.min} y ${regla.max} ingredientes/sabores.`;
-      return;
-    }
-    pedidoActual.detalles.ingredientes = seleccionados;
-    pedidoActual.detalles.cantidad = document.getElementById('cantidad-pizza').value;
-    renderPreguntaBebida();
-  };
-}
-
-function renderPreguntaBebida() {
-  menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>¿Deseas agregar una bebida?</h3>
-      <div style="display:flex; gap:20px; justify-content:center;">
-        <button id="btn-bebida-si">Sí</button>
-        <button id="btn-bebida-no">No</button>
-      </div>
-    </div>
-  `;
-  document.getElementById('btn-bebida-si').onclick = renderSelectorBebida;
-  document.getElementById('btn-bebida-no').onclick = renderResumenPedido;
-}
-
-function renderSelectorBebida() {
-  menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>Selecciona tu bebida (opcional)</h3>
-      <div class="selector-bebidas">
-        ${bebidasDisponibles.map((b, i) => `
-          <label style="display:block;margin-bottom:8px;">
-            <input type="checkbox" class="chk-bebida" value="${b.nombre}" data-precio="${b.precio}"> ${b.nombre} <span class="precio">$${b.precio.toLocaleString()}</span>
-          </label>
-        `).join('')}
-      </div>
-      <button id="btn-continuar-bebida">Continuar</button>
-    </div>
-  `;
-  document.getElementById('btn-continuar-bebida').onclick = () => {
-    const seleccionadas = Array.from(document.querySelectorAll('.chk-bebida:checked')).map(cb => ({ nombre: cb.value, precio: parseInt(cb.getAttribute('data-precio')) }));
-    pedidoActual.bebida = seleccionadas;
-    renderResumenPedido();
-  };
-}
-
-function renderResumenPedido() {
-  let resumen = `<div class="form-pizza"><h3>Resumen de tu pedido</h3>`;
-  resumen += `<p><strong>Producto:</strong> ${tiposProducto.find(t=>t.tipo===pedidoActual.producto)?.nombre || ''}</p>`;
-  Object.entries(pedidoActual.detalles).forEach(([k,v]) => {
-    resumen += `<p><strong>${k.charAt(0).toUpperCase()+k.slice(1)}:</strong> ${v}</p>`;
-  });
-  if (pedidoActual.bebida && pedidoActual.bebida.length > 0) {
-    resumen += `<p><strong>Bebidas:</strong><ul>`;
-    pedidoActual.bebida.forEach(b => {
-      resumen += `<li>${b.nombre} <span class="precio">$${b.precio.toLocaleString()}</span></li>`;
-    });
-    resumen += `</ul></p>`;
-  } else {
-    resumen += `<p><em>Sin bebida</em></p>`;
-  }
-  resumen += `<button id="btn-nuevo-pedido">Nuevo pedido</button></div>`;
-  menuDinamico.innerHTML = resumen;
-  document.getElementById('btn-nuevo-pedido').onclick = renderSelectorTipoProducto;
 }
 
 // Inicializar menú dinámico
