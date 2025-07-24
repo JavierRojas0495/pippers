@@ -7,11 +7,15 @@ function mostrarSeccion(id) {
         const el = document.getElementById(sec);
         if (el) el.style.display = (sec === id) ? 'block' : 'none';
     });
-    // Scroll al top al cambiar de sección
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Hacer scroll suave a la sección correspondiente
+    const seccion = document.getElementById(id);
+    if (seccion) {
+        seccion.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
-links.forEach(link => {
+// También aplicar la navegación a cualquier enlace con href="#menu" o href="#inicio" o href="#contacto"
+document.querySelectorAll('a[href="#menu"], a[href="#inicio"], a[href="#contacto"]').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href').replace('#', '');
@@ -23,6 +27,22 @@ links.forEach(link => {
 window.addEventListener('DOMContentLoaded', () => {
     mostrarSeccion('inicio');
     initCoverflowCarousels();
+    // Evento para la promo
+    const promoBtn = document.querySelector('.promo-btn');
+    if (promoBtn) {
+        promoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Agregar la promo al pedido
+            pedido.push({
+                cantidad: 1,
+                descripcion: 'Combo familiar: 2 Pizzas grandes + 1 gaseosa 1.5L',
+                precio: 55000,
+                bebidas: [{ nombre: 'Gaseosa 1.5L', precio: 0 }]
+            });
+            renderResumenPedido();
+            mostrarSeccion('menu');
+        });
+    }
 });
 
 // Datos del menú
