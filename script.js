@@ -45,6 +45,42 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Carrusel de promociones
+window.addEventListener('DOMContentLoaded', () => {
+  // Carrusel de promociones
+  const promoSlides = document.querySelectorAll('.promo-carrusel .promo-slide');
+  const prevBtn = document.querySelector('.promo-carrusel-btn-prev');
+  const nextBtn = document.querySelector('.promo-carrusel-btn-next');
+  let promoIndex = 0;
+
+  function showPromoSlide(idx) {
+    promoSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === idx);
+    });
+  }
+
+  function nextPromo() {
+    promoIndex = (promoIndex + 1) % promoSlides.length;
+    showPromoSlide(promoIndex);
+  }
+
+  function prevPromo() {
+    promoIndex = (promoIndex - 1 + promoSlides.length) % promoSlides.length;
+    showPromoSlide(promoIndex);
+  }
+
+  if (promoSlides.length > 1) {
+    prevBtn.style.display = '';
+    nextBtn.style.display = '';
+    prevBtn.addEventListener('click', prevPromo);
+    nextBtn.addEventListener('click', nextPromo);
+  } else {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  }
+  showPromoSlide(promoIndex);
+});
+
 // Datos del menú
 const menuData = {
     clasicas: {
