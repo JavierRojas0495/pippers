@@ -1228,3 +1228,54 @@ nav a.active {
     margin-top: 12px;
     transition: all 0.3s ease;
 } 
+.footer-redes {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: #fffbe6;
+  border-radius: 18px;
+  padding: 14px 0 10px 0;
+  box-shadow: 0 2px 8px #ffd70055;
+}
+.footer-redes a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #285293;
+  background: #ffd70055;
+  padding: 10px 22px;
+  border-radius: 22px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.13em;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #ffd70033;
+}
+.footer-redes a:hover {
+  background: #ffd700;
+  color: #285293;
+  text-decoration: underline;
+  box-shadow: 0 4px 16px #ffd70077;
+}
+.footer-redes .icono-red {
+  font-size: 1.7em;
+  margin-right: 6px;
+  filter: drop-shadow(0 1px 2px #ffd70088);
+}
+@media (max-width: 600px) {
+  .footer-redes {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  .footer-redes a {
+    width: 90vw;
+    justify-content: center;
+    font-size: 1em;
+    padding: 10px 0;
+  }
+} 
