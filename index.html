@@ -6,31 +6,36 @@
     <title>Piper's Pizza</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/jpeg" href="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.13_61ef9f11.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <a href="#inicio" class="logo-link"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Logo Piper's Pizza" class="logo"></a>
-            <span class="navbar-title">Piper's Pizza!</span>
+    <header class="navbar-header">
+        <div class="navbar-logo">
+            <a href="#inicio" class="logo-link"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.08_9dfb03ed.jpg" alt="Logo Piper's Pizza" class="logo" /></a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-                <li>
-                    <a href="#menu" class="navbar-cart" title="Carrito de compras">
-                        <span class="navbar-cart-bg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#285293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="9" cy="21" r="2.2" fill="#fff"/>
-                                <circle cx="19" cy="21" r="2.2" fill="#fff"/>
-                                <rect x="3" y="5" width="18" height="13" rx="4" fill="#ffd700" stroke="#285293"/>
-                                <path d="M5 6h2l1.68 9.39a2 2 0 0 0 2 1.61h6.72a2 2 0 0 0 2-1.61L21 8H7.42" />
-                            </svg>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div class="header-title">
+          <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Logo Piper's Pizza Curvado" class="logo-curvado" />
+        </div>
+        <div class="header-content">
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                    <li>
+                        <a href="#menu" class="navbar-cart" title="Carrito de compras">
+                            <span class="navbar-cart-bg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#285293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="2.2" fill="#fff"/>
+                                    <circle cx="19" cy="21" r="2.2" fill="#fff"/>
+                                    <rect x="3" y="5" width="18" height="13" rx="4" fill="#ffd700" stroke="#285293"/>
+                                    <path d="M5 6h2l1.68 9.39a2 2 0 0 0 2 1.61h6.72a2 2 0 0 0 2-1.61L21 8H7.42" />
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
         <section id="inicio">
@@ -39,7 +44,7 @@
                 <div class="hero-content">
                     <h1>¡Bienvenido a Piper's Pizza!</h1>
                     <p class="hero-eslogan">Las mejores pizzas artesanales, con los ingredientes más frescos y deliciosos. ¡Haz tu pedido ahora!</p>
-                    <a href="#menu" class="hero-btn">Realizar Pedido</a>
+                    <a href="#menu" class="hero-btn" id="realizar-pedido">Realizar Pedido</a>
                 </div>
             </div>
             <div class="dashboard-categorias">
@@ -110,7 +115,7 @@
                     <h3>¡Promoción del mes!</h3>
                     <p>Combo familiar: 2 Pizzas grandes + 1 gaseosa 1.5L por <span class="promo-precio">$55.000</span></p>
                     <div class="promo-btn-container">
-                      <a href="#menu" class="promo-btn">¡Quiero esta promo!</a>
+                      <a href="#realizar-pedido" class="promo-btn">¡Quiero esta promo!</a>
                     </div>
                   </div>
                 </div>
@@ -120,7 +125,7 @@
                     <h3>¡Promoción del mes!</h3>
                     <p>Combo familiar: 2 Pizzas grandes + 1 gaseosa 1.5L por <span class="promo-precio">$55.000</span></p>
                     <div class="promo-btn-container">
-                      <a href="#menu" class="promo-btn">¡Quiero esta promo!</a>
+                      <a href="#realizar-pedido" class="promo-btn">¡Quiero esta promo!</a>
                     </div>
                   </div>
                 </div>
@@ -130,7 +135,7 @@
                     <h3>¡Promoción del mes!</h3>
                     <p>Combo familiar: 2 Pizzas grandes + 1 gaseosa 1.5L por <span class="promo-precio">$55.000</span></p>
                     <div class="promo-btn-container">
-                      <a href="#menu" class="promo-btn">¡Quiero esta promo!</a>
+                      <a href="#realizar-pedido" class="promo-btn">¡Quiero esta promo!</a>
                     </div>
                   </div>
                 </div>
@@ -162,7 +167,7 @@
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🌽</span></div>
-                        <h3>Granizado de Maíz</h3>
+                        <h3>Desgranado de Maíz</h3>
                         <ul>
                             <li>Base de maíz dulce, jamón, pollo, tocineta, chorizo, cabano y queso gratinado al horno</li>
                         </ul>
@@ -170,7 +175,7 @@
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🍌</span></div>
-                        <h3>Granizado de Maduro</h3>
+                        <h3>Desgranado de Maduro</h3>
                         <ul>
                             <li>Base de maduro guayabo, jamón, pollo, tocineta, chorizo, cabano y queso gratinado al horno</li>
                         </ul>
