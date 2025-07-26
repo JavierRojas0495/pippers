@@ -1705,7 +1705,8 @@ body {
 @media (max-width: 600px) {
   .navbar-header {
     min-height: 60px;
-    gap: 1px;
+    gap: 8px;
+    padding: 8px 15px;
   }
   .header-title {
     max-height: 38px;
@@ -1721,6 +1722,23 @@ body {
   }
   .navbar-logo .logo {
     height: 28px !important;
+  }
+  .header-content {
+    gap: 15px;
+    padding: 0 10px;
+  }
+  .header-content nav ul {
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5px;
+  }
+  .header-content nav a {
+    font-size: 1em;
+    padding: 8px 12px;
+  }
+  .navbar-cart {
+    margin-right: 0;
   }
 } 
 @media (min-width: 1200px) {
@@ -1742,4 +1760,407 @@ body {
   .navbar-cart {
     margin-right: 32px;
   }
+} 
+/* Estilos para la sección de contacto */
+.contacto-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.contacto-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contacto-header h2 {
+    font-size: 2.5em;
+    color: var(--azul-pipers);
+    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.contacto-subtitulo {
+    font-size: 1.2em;
+    color: #666;
+    font-weight: 500;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.contacto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.contacto-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.1);
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.contacto-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.contacto-card:hover::before {
+    transform: scaleX(1);
+}
+
+.contacto-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(40, 82, 147, 0.15);
+    border-color: var(--azul-pipers);
+}
+
+.contacto-icono {
+    font-size: 3em;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.contacto-card h3 {
+    color: var(--azul-pipers);
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.contacto-info {
+    text-align: left;
+}
+
+.contacto-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.contacto-item:hover {
+    background: #e9ecef;
+}
+
+.contacto-label {
+    font-weight: 600;
+    color: var(--azul-pipers);
+    min-width: 120px;
+    margin-right: 10px;
+}
+
+.contacto-link {
+    color: var(--azul-pipers);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.contacto-link:hover {
+    color: var(--dorado-pipers);
+    text-decoration: underline;
+}
+
+.redes-sociales {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.red-social-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--azul-pipers);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.red-social-link:hover {
+    background: #fff;
+    border-color: var(--azul-pipers);
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(40, 82, 147, 0.1);
+}
+
+.red-social-icono {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.vision-mision-texto {
+    line-height: 1.8;
+    color: #555;
+    font-size: 1.05em;
+    text-align: justify;
+    margin: 0;
+}
+
+.formulario-pedido {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.1);
+    border: 2px solid #f0f0f0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.formulario-pedido h3 {
+    text-align: center;
+    color: var(--azul-pipers);
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--azul-pipers);
+    margin-bottom: 8px;
+    font-size: 1.05em;
+}
+
+.form-group input {
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--azul-pipers);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(40, 82, 147, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+.btn-pedido {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--azul-pipers), #1d3a6b);
+    color: var(--dorado-pipers);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 16px rgba(40, 82, 147, 0.2);
+}
+
+.btn-pedido:hover {
+    background: linear-gradient(135deg, var(--dorado-pipers), #ffed4e);
+    color: var(--azul-pipers);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(40, 82, 147, 0.3);
+}
+
+.btn-pedido span {
+    font-size: 1.2em;
+}
+
+/* Estilos para la sección de realizar pedido */
+.realizar-pedido-section {
+    background: linear-gradient(135deg, var(--azul-pipers), #1d3a6b);
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    margin-top: 40px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.15);
+    border: 2px solid var(--azul-pipers);
+}
+
+.pedido-content h3 {
+    color: var(--dorado-pipers);
+    font-size: 2.2em;
+    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.pedido-content p {
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-realizar-pedido {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 35px;
+    background: linear-gradient(135deg, var(--dorado-pipers), #ffed4e);
+    color: var(--azul-pipers);
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 1.2em;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+.btn-realizar-pedido:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(135deg, #fff, var(--dorado-pipers));
+}
+
+.btn-realizar-pedido span {
+    font-size: 1.4em;
+}
+
+/* Responsive para la sección de contacto */
+@media (max-width: 900px) {
+    .contacto-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .contacto-card {
+        padding: 25px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .formulario-pedido {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .contacto-container {
+        padding: 20px 15px;
+    }
+    
+    .contacto-header h2 {
+        font-size: 2em;
+    }
+    
+    .contacto-subtitulo {
+        font-size: 1.1em;
+    }
+    
+    .contacto-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .contacto-card {
+        padding: 20px;
+    }
+    
+    .contacto-icono {
+        font-size: 2.5em;
+    }
+    
+    .contacto-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .contacto-label {
+        min-width: auto;
+        margin-right: 0;
+    }
+    
+    .red-social-link {
+        padding: 12px;
+    }
+    
+    .red-social-icono {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .formulario-pedido {
+        padding: 25px 15px;
+    }
+    
+    .formulario-pedido h3 {
+        font-size: 1.5em;
+    }
+    
+    .btn-pedido {
+        padding: 16px;
+        font-size: 1em;
+    }
+    
+    .realizar-pedido-section {
+        padding: 40px 25px;
+        margin-top: 30px;
+    }
+    
+    .pedido-content h3 {
+        font-size: 1.8em;
+    }
+    
+    .pedido-content p {
+        font-size: 1.1em;
+    }
+    
+    .btn-realizar-pedido {
+        padding: 16px 25px;
+        font-size: 1.1em;
+    }
 } 
