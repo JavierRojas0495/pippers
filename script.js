@@ -497,8 +497,11 @@ function renderSelectorBebidas() {
     }
     
     const seleccionadas = [];
+    let hayError = false;
     
     bebidasMarcadas.forEach(cb => {
+      if (hayError) return; // Si ya hay error, no procesar más
+      
       const tipo = cb.getAttribute('data-tipo');
       const index = parseInt(cb.getAttribute('data-index'));
       const bebida = bebidasDisponibles[index];
@@ -514,6 +517,7 @@ function renderSelectorBebidas() {
           
           if (saboresSeleccionados.length === 0 || tiposSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor y un tipo para los jugos.');
+            hayError = true;
             return;
           }
           
@@ -535,6 +539,7 @@ function renderSelectorBebidas() {
           
           if (saboresSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor para las limonadas.');
+            hayError = true;
             return;
           }
           
@@ -557,8 +562,8 @@ function renderSelectorBebidas() {
       }
     });
     
-    if (seleccionadas.length === 0) {
-      return; // Ya se mostró un error específico arriba
+    if (hayError || seleccionadas.length === 0) {
+      return; // No continuar si hay errores
     }
     
     pedidoActual.detalles.bebidas = seleccionadas;

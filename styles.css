@@ -551,13 +551,31 @@ nav a.active {
     flex-direction: column;
     align-items: center;
     position: relative;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: all 0.3s ease;
     border: 2px solid #28529322;
     transform: scale(0.95);
+    overflow: hidden;
 }
+.categoria-tarjeta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.categoria-tarjeta:hover::before {
+    transform: scaleX(1);
+}
+
 .categoria-tarjeta:hover {
     box-shadow: 0 8px 32px #28529344;
     transform: scale(1.0) translateY(-4px);
+    border-color: var(--azul-pipers);
 }
 .cat-icono {
     font-size: 2.5em;
@@ -747,13 +765,32 @@ nav a.active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: all 0.3s ease;
   border: 2px solid #28529322;
   transform: scale(0.95);
+  position: relative;
+  overflow: hidden;
 }
+.otros-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.otros-card:hover::before {
+  transform: scaleX(1);
+}
+
 .otros-card:hover {
   box-shadow: 0 8px 32px #28529344;
   transform: scale(1.0) translateY(-4px);
+  border-color: var(--azul-pipers);
 }
 .otros-card-subtitulo {
   background: transparent !important;
