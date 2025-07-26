@@ -653,7 +653,8 @@ function agregarAlPedido() {
               tamano: 'unidad',
               descripcion: `Jugo de ${sabor} ${tipoSeleccionado}`,
               cantidad: cantidad,
-              precio: tipoBebida.precio * cantidad,
+              cantidadOriginal: cantidad,
+              precio: tipoBebida.precio,
               bebidas: []
             });
           });
@@ -666,7 +667,8 @@ function agregarAlPedido() {
             tamano: 'unidad',
             descripcion: `Limonada de ${sabor}`,
             cantidad: cantidad,
-            precio: bebida.precio * cantidad,
+            cantidadOriginal: cantidad,
+            precio: bebida.precio,
             bebidas: []
           });
         });
@@ -677,7 +679,8 @@ function agregarAlPedido() {
           tamano: 'unidad',
           descripcion: bebida.nombre,
           cantidad: cantidad,
-          precio: bebida.precio * cantidad,
+          cantidadOriginal: cantidad,
+          precio: bebida.precio,
           bebidas: []
         });
       }
@@ -703,7 +706,8 @@ function agregarAlPedido() {
       tamano: tamano,
       descripcion: descripcion,
       cantidad: cantidad,
-      precio: precioTotal,
+      cantidadOriginal: cantidad,
+      precio: precioUnitario,
       bebidas: pedidoActual.bebida || []
     });
   }
@@ -712,38 +716,85 @@ function agregarAlPedido() {
 }
 
 function renderResumenPedido() {
-  let resumen = `<div class="form-pizza"><h3>Resumen de tu pedido</h3>`;
-  
-  if (pedido.length === 0) {
-    resumen += `<p>No has agregado nada al pedido aún.</p>`;
-  } else {
-    resumen += `<ul class="lista-pedido">`;
-    pedido.forEach((item, idx) => {
-      resumen += `<li>${item.cantidad} x ${item.descripcion} ($${item.precio.toLocaleString()})`;
-      if (item.bebidas && item.bebidas.length > 0) {
-        resumen += `<br><small>Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}</small>`;
-      }
-      resumen += ` <button data-idx="${idx}" class="btn-eliminar">Eliminar</button></li>`;
-    });
-    resumen += `</ul>`;
-    
-    const total = pedido.reduce((acc, item) => {
-      let itemTotal = item.precio;
-      if (item.bebidas) {
-        itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
-      }
-      return acc + itemTotal;
-    }, 0);
-    
-    resumen += `<p class="total-pedido"><strong>Total: $${total.toLocaleString()}</strong></p>`;
-  }
-  
-  resumen += `
-    <div class="botones-pedido">
-      <button id="btn-nuevo-pedido">Agregar más productos</button>
-      ${pedido.length > 0 ? '<button id="btn-enviar-pedido-final" class="btn-enviar">Enviar pedido por WhatsApp</button>' : ''}
+  const total = pedido.reduce((acc, item) => {
+    let itemTotal = item.precio * item.cantidad;
+    if (item.bebidas) {
+      itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
+    }
+    return acc + itemTotal;
+  }, 0);
+
+  let resumen = `
+    <div class="resumen-pedido-mejorado">
+      <div class="resumen-header">
+        <div class="resumen-icono">🛒</div>
+        <h3>Resumen de tu Pedido</h3>
+        <p>Revisa los productos que has seleccionado</p>
+      </div>
+      
+      <div class="resumen-content">
+        ${pedido.length === 0 ? `
+          <div class="resumen-vacio">
+            <div class="vacio-icono">🍕</div>
+            <h4>Tu carrito está vacío</h4>
+            <p>Agrega algunos productos deliciosos para comenzar tu pedido</p>
+          </div>
+        ` : `
+          <div class="resumen-items">
+            ${pedido.map((item, idx) => {
+              let descripcion = `${item.descripcion}`;
+              let precio = `$${(item.precio * item.cantidad).toLocaleString()}`;
+              let bebidas = '';
+              if (item.bebidas && item.bebidas.length > 0) {
+                bebidas = `<div class="item-bebidas">🥤 ${item.bebidas.map(b => b.nombre).join(', ')}</div>`;
+              }
+                             return `
+                 <div class="resumen-item">
+                   <div class="item-info">
+                     <div class="item-descripcion">${item.descripcion}</div>
+                     ${bebidas}
+                   </div>
+                   <div class="item-actions">
+                     <div class="item-cantidad-controls">
+                       <button data-idx="${idx}" class="btn-cantidad btn-restar" ${item.cantidad <= 1 ? 'disabled' : ''}>
+                         <span>➖</span>
+                       </button>
+                       <span class="cantidad-display">${item.cantidad}</span>
+                       <button data-idx="${idx}" class="btn-cantidad btn-sumar">
+                         <span>➕</span>
+                       </button>
+                     </div>
+                     <div class="item-precio">${precio}</div>
+                     <button data-idx="${idx}" class="btn-eliminar-mejorado">
+                       <span>🗑️</span>
+                     </button>
+                   </div>
+                 </div>
+               `;
+            }).join('')}
+          </div>
+          
+          <div class="resumen-total">
+            <div class="total-label">Total a pagar:</div>
+            <div class="total-valor">$${total.toLocaleString()}</div>
+          </div>
+        `}
+      </div>
+      
+      <div class="resumen-botones">
+        <button id="btn-nuevo-pedido" class="btn-secundario">
+          <span>➕</span>
+          Agregar más productos
+        </button>
+        ${pedido.length > 0 ? `
+          <button id="btn-enviar-pedido-final" class="btn-principal">
+            <span>📱</span>
+            Enviar pedido por WhatsApp
+          </button>
+        ` : ''}
+      </div>
     </div>
-  </div>`;
+  `;
   
   menuDinamico.innerHTML = resumen;
   
@@ -754,10 +805,31 @@ function renderResumenPedido() {
     document.getElementById('btn-enviar-pedido-final').onclick = enviarPedidoWhatsApp;
     
     // Botones eliminar
-    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    document.querySelectorAll('.btn-eliminar-mejorado').forEach(btn => {
       btn.onclick = () => {
         const idx = parseInt(btn.getAttribute('data-idx'));
         pedido.splice(idx, 1);
+        renderResumenPedido();
+      };
+    });
+    
+    // Controles de cantidad
+    document.querySelectorAll('.btn-cantidad').forEach(btn => {
+      btn.onclick = () => {
+        const idx = parseInt(btn.getAttribute('data-idx'));
+        const item = pedido[idx];
+        
+        if (btn.classList.contains('btn-sumar')) {
+          item.cantidad++;
+        } else if (btn.classList.contains('btn-restar') && item.cantidad > 1) {
+          item.cantidad--;
+        }
+        
+        // Guardar cantidad original si no existe
+        if (!item.cantidadOriginal) {
+          item.cantidadOriginal = item.cantidad;
+        }
+        
         renderResumenPedido();
       };
     });
@@ -776,42 +848,94 @@ function enviarPedidoWhatsApp() {
 
 function mostrarFormularioContacto() {
   const menuDiv = document.getElementById('menu-dinamico');
+  const total = pedido.reduce((acc, item) => {
+    let itemTotal = item.precio;
+    if (item.bebidas) {
+      itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
+    }
+    return acc + itemTotal;
+  }, 0);
+
   menuDiv.innerHTML = `
-    <div class="form-pizza">
-      <h3>Datos de entrega</h3>
-      <form id="form-contacto-pedido">
-        <label for="nombre-pedido">Nombre:</label>
-        <input type="text" id="nombre-pedido" name="nombre" required>
-        
-        <label for="direccion-pedido">Dirección:</label>
-        <input type="text" id="direccion-pedido" name="direccion" required>
-        
-        <label for="telefono-pedido">Teléfono:</label>
-        <input type="text" id="telefono-pedido" name="telefono" required>
-        
-        <div class="resumen-pedido-final">
-          <h4>Resumen del pedido:</h4>
-          <ul>
-            ${pedido.map(item => {
-              let descripcion = `${item.cantidad} x ${item.descripcion} ($${item.precio.toLocaleString()})`;
-              if (item.bebidas && item.bebidas.length > 0) {
-                descripcion += `<br><small>Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}</small>`;
-              }
-              return `<li>${descripcion}</li>`;
-            }).join('')}
-          </ul>
-          <p><strong>Total: $${pedido.reduce((acc, item) => {
-            let itemTotal = item.precio;
-            if (item.bebidas) {
-              itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
-            }
-            return acc + itemTotal;
-          }, 0).toLocaleString()}</strong></p>
+    <div class="formulario-pedido-mejorado">
+      <div class="formulario-header">
+        <div class="formulario-icono">📋</div>
+        <h3>Datos de Entrega</h3>
+        <p>Completa tus datos para recibir tu pedido</p>
+      </div>
+      
+      <div class="formulario-container">
+        <div class="formulario-datos">
+          <form id="form-contacto-pedido">
+            <div class="form-group-mejorado">
+              <label for="nombre-pedido">
+                <span class="label-icon">👤</span>
+                Nombre completo
+              </label>
+              <input type="text" id="nombre-pedido" name="nombre" required placeholder="Tu nombre completo">
+            </div>
+            
+            <div class="form-group-mejorado">
+              <label for="direccion-pedido">
+                <span class="label-icon">📍</span>
+                Dirección de entrega
+              </label>
+              <input type="text" id="direccion-pedido" name="direccion" required placeholder="Dirección completa para la entrega">
+            </div>
+            
+            <div class="form-group-mejorado">
+              <label for="telefono-pedido">
+                <span class="label-icon">📞</span>
+                Teléfono
+              </label>
+              <input type="tel" id="telefono-pedido" name="telefono" required placeholder="Tu número de teléfono">
+            </div>
+          </form>
         </div>
         
-        <button type="submit">Enviar pedido por WhatsApp</button>
-        <button type="button" id="btn-volver-menu">Volver al menú</button>
-      </form>
+        <div class="resumen-pedido-mejorado">
+          <div class="resumen-header">
+            <div class="resumen-icono">🛒</div>
+            <h4>Resumen del Pedido</h4>
+          </div>
+          
+          <div class="resumen-items">
+            ${pedido.map(item => {
+              let descripcion = `${item.cantidad} x ${item.descripcion}`;
+              let precio = `$${item.precio.toLocaleString()}`;
+              let bebidas = '';
+              if (item.bebidas && item.bebidas.length > 0) {
+                bebidas = `<div class="item-bebidas">🥤 ${item.bebidas.map(b => b.nombre).join(', ')}</div>`;
+              }
+              return `
+                <div class="resumen-item">
+                  <div class="item-info">
+                    <div class="item-descripcion">${descripcion}</div>
+                    ${bebidas}
+                  </div>
+                  <div class="item-precio">${precio}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div class="resumen-total">
+            <div class="total-label">Total a pagar:</div>
+            <div class="total-valor">$${total.toLocaleString()}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="formulario-botones">
+        <button type="button" id="btn-volver-menu" class="btn-secundario">
+          <span>⬅️</span>
+          Volver al menú
+        </button>
+        <button type="submit" form="form-contacto-pedido" class="btn-principal">
+          <span>📱</span>
+          Enviar por WhatsApp
+        </button>
+      </div>
     </div>
   `;
   
@@ -839,7 +963,7 @@ function procesarEnvioWhatsApp() {
   let mensaje = `¡Hola! Quiero hacer un pedido:\n\n`;
   pedido.forEach(item => {
     mensaje += `• ${item.cantidad} x ${item.descripcion}\n`;
-    mensaje += `  Precio: $${item.precio.toLocaleString()}\n`;
+    mensaje += `  Precio: $${(item.precio * item.cantidad).toLocaleString()}\n`;
     if (item.bebidas && item.bebidas.length > 0) {
       mensaje += `  Bebidas: ${item.bebidas.map(b => b.nombre).join(', ')}\n`;
     }
@@ -847,7 +971,7 @@ function procesarEnvioWhatsApp() {
   });
   
   const total = pedido.reduce((acc, item) => {
-    let itemTotal = item.precio;
+    let itemTotal = item.precio * item.cantidad;
     if (item.bebidas) {
       itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
     }
@@ -860,8 +984,8 @@ function procesarEnvioWhatsApp() {
   mensaje += `📍 Dirección: ${direccion}\n`;
   mensaje += `📞 Teléfono: ${telefono}`;
   
-  // Número de WhatsApp de la pizzería (modificar por el real)
-  const numero = '573001234567';
+  // Número de WhatsApp de la pizzería
+  const numero = '573207182705';
   const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
   
