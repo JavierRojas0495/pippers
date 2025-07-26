@@ -117,7 +117,18 @@ const reglasSabores = {
     extragrande: { min: 1, max: 3 }
 };
 
-let pedido = [];
+// Función para cargar el pedido desde localStorage
+function cargarPedido() {
+  const pedidoGuardado = localStorage.getItem('pippersPedido');
+  return pedidoGuardado ? JSON.parse(pedidoGuardado) : [];
+}
+
+// Función para guardar el pedido en localStorage
+function guardarPedido() {
+  localStorage.setItem('pippersPedido', JSON.stringify(pedido));
+}
+
+let pedido = cargarPedido();
 
 // Datos para el menú dinámico
 const tiposProducto = [
@@ -717,6 +728,7 @@ function agregarAlPedido() {
     });
   }
   
+  guardarPedido(); // Guardar el pedido en localStorage
   renderResumenPedido();
 }
 
@@ -814,6 +826,7 @@ function renderResumenPedido() {
       btn.onclick = () => {
         const idx = parseInt(btn.getAttribute('data-idx'));
         pedido.splice(idx, 1);
+        guardarPedido(); // Guardar el pedido en localStorage
         renderResumenPedido();
       };
     });
@@ -835,6 +848,7 @@ function renderResumenPedido() {
           item.cantidadOriginal = item.cantidad;
         }
         
+        guardarPedido(); // Guardar el pedido en localStorage
         renderResumenPedido();
       };
     });
@@ -996,6 +1010,7 @@ function procesarEnvioWhatsApp() {
   
   // Limpiar pedido después de enviar
   pedido = [];
+  localStorage.removeItem('pippersPedido'); // Limpiar localStorage
   alert('¡Pedido enviado! Gracias por tu compra.');
   renderSelectorTipoProducto();
 }
@@ -1202,6 +1217,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 precio: 55000,
                 bebidas: [{ nombre: 'Gaseosa 1.5L', precio: 0 }]
             });
+            guardarPedido(); // Guardar el pedido en localStorage
             renderResumenPedido();
             mostrarSeccion('menu');
         });
@@ -1225,4 +1241,24 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // Inicializar menú dinámico
-renderSelectorTipoProducto(); 
+renderSelectorTipoProducto();
+
+// Evento del carrito de compras
+document.addEventListener('DOMContentLoaded', () => {
+  const navbarCart = document.querySelector('.navbar-cart');
+  if (navbarCart) {
+    navbarCart.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Si hay productos en el pedido, mostrar el resumen
+      if (pedido.length > 0) {
+        mostrarSeccion('menu');
+        renderResumenPedido();
+      } else {
+        // Si no hay productos, ir al menú normal
+        mostrarSeccion('menu');
+        renderSelectorTipoProducto();
+      }
+    });
+  }
+}); 
