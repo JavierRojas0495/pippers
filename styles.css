@@ -5,6 +5,12 @@
     --dorado-pipers: #ffd700;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -14,6 +20,8 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
 }
 header {
     background: var(--azul-pipers);
@@ -413,7 +421,7 @@ nav a.active {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
-        padding: 8px 4px;
+        padding: 20px 4px 8px 4px;
     }
     .header-content {
       justify-content: center;
@@ -1370,20 +1378,18 @@ nav a.active {
 .footer-pipers {
   background: var(--azul-pipers);
   color: #e0e0e0;
-  width: 100vw;
+  width: 100%;
   padding: 0 0 8px 0;
   border-radius: 0 0 0 0 !important;
   box-shadow: none;
   position: relative;
-  left: 0;
-  right: 0;
   overflow-x: hidden;
 }
 body {
   overflow-x: hidden;
 }
 .footer-container {
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1718,6 +1724,7 @@ body {
     align-items: stretch;
     min-height: 80px;
     gap: 2px;
+    padding: 15px 0 5px 0;
   }
   .header-title {
     position: static;
@@ -1732,7 +1739,7 @@ body {
     height: 120px;
     width: auto;
     transform: scaleX(1.1);
-    margin: 4vh auto 5vh auto;
+    margin: 5vh auto 6vh auto;
     display: block;
   }
   .navbar-logo {
@@ -1742,8 +1749,8 @@ body {
 @media (max-width: 600px) {
   .navbar-header {
     min-height: 60px;
-    gap: 8px;
-    padding: 8px 15px;
+    gap:20px;
+    padding: 25px 15px 8px 15px;
   }
   .header-title {
     max-height: 38px;
@@ -1754,7 +1761,7 @@ body {
     height: 90px;
     width: auto;
     transform: scaleX(1.05);
-    margin: 3vh auto 4vh auto;
+    margin: 6vh auto 3vh auto;
     display: block;
   }
   .navbar-logo .logo {
@@ -2635,6 +2642,10 @@ body {
     text-align: center;
     padding: 30px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .resumen-pedido-mejorado .resumen-header::before {
@@ -2653,6 +2664,7 @@ body {
     margin-bottom: 15px;
     position: relative;
     z-index: 1;
+    display: block;
 }
 
 .resumen-pedido-mejorado .resumen-header h3 {
@@ -2664,6 +2676,9 @@ body {
     z-index: 1;
     color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    width: 100%;
+    line-height: 1.2;
 }
 
 .resumen-pedido-mejorado .resumen-header p {
@@ -2673,6 +2688,10 @@ body {
     position: relative;
     z-index: 1;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 100%;
+    line-height: 1.4;
+    margin: 0;
 }
 
 .resumen-content {
@@ -2862,14 +2881,31 @@ body {
     
     .resumen-pedido-mejorado .resumen-header {
         padding: 25px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     
     .resumen-pedido-mejorado .resumen-header h3 {
         font-size: 1.6em;
+        text-align: center;
+        width: 100%;
+        line-height: 1.2;
+        margin-bottom: 8px;
+    }
+    
+    .resumen-pedido-mejorado .resumen-header p {
+        text-align: center;
+        width: 100%;
+        line-height: 1.3;
+        margin: 0;
     }
     
     .resumen-pedido-mejorado .resumen-icono {
         font-size: 2.5em;
+        display: block;
+        margin-bottom: 12px;
     }
     
     .resumen-content {
@@ -2903,6 +2939,27 @@ body {
     .resumen-botones {
         padding: 20px;
         gap: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .resumen-pedido-mejorado .resumen-header {
+        padding: 20px 15px;
+    }
+    
+    .resumen-pedido-mejorado .resumen-header h3 {
+        font-size: 1.4em;
+        line-height: 1.1;
+    }
+    
+    .resumen-pedido-mejorado .resumen-header p {
+        font-size: 1em;
+        line-height: 1.2;
+    }
+    
+    .resumen-pedido-mejorado .resumen-icono {
+        font-size: 2.2em;
+        margin-bottom: 10px;
     }
 }
 
