@@ -1,0 +1,86 @@
+/* ===== VARIABLES DE PRECIOS - PIPER'S PIZZA ===== */
+
+:root {
+  /* ===== PRECIOS DE PIZZAS ===== */
+  
+  /* Pizza Especial */
+  --precio-pizza-especial-personal: 9000;
+  --precio-pizza-especial-pequena: 15000;
+  --precio-pizza-especial-mediana: 23000;
+  --precio-pizza-especial-grande: 29000;
+  --precio-pizza-especial-extragrande: 36000;
+  
+  /* Pizza La Carnívora */
+  --precio-pizza-carnivora-personal: 10000;
+  --precio-pizza-carnivora-pequena: 17000;
+  --precio-pizza-carnivora-mediana: 25000;
+  --precio-pizza-carnivora-grande: 31000;
+  --precio-pizza-carnivora-extragrande: 39000;
+  
+  /* Pizza Detodito */
+  --precio-pizza-detodito-personal: 11000;
+  --precio-pizza-detodito-pequena: 18000;
+  --precio-pizza-detodito-mediana: 26000;
+  --precio-pizza-detodito-grande: 33000;
+  --precio-pizza-detodito-extragrande: 42000;
+  
+  /* ===== PRECIOS DE OTROS PRODUCTOS ===== */
+  
+  /* Lasañas */
+  --precio-lasana-pequena: 9000;
+  --precio-lasana-grande: 18000;
+  
+  /* Pizza Pantalone */
+  --precio-pantalone-pequena: 9000;
+  --precio-pantalone-grande: 19000;
+  
+  /* Desgranados */
+  --precio-desgranado-maiz: 9000;
+  --precio-desgranado-maduro: 9000;
+  
+  /* ===== PRECIOS DE BEBIDAS ===== */
+  
+  /* Jugos Naturales */
+  --precio-jugo-agua: 5000;
+  --precio-jugo-leche: 6000;
+  
+  /* Limonadas */
+  --precio-limonada: 8000;
+  
+  /* Gaseosas */
+  --precio-gaseosa-personal: 3000;
+  --precio-gaseosa-1-5l: 6500;
+  
+  /* ===== PRECIOS DE PROMOCIONES ===== */
+  --precio-combo-familiar: 55000;
+}
+
+/* ===== FUNCIONES CSS PARA FORMATEAR PRECIOS ===== */
+
+/* Función para formatear precios con separadores de miles */
+.precio-formateado::before {
+  content: "$" attr(data-precio);
+}
+
+/* ===== CLASES UTILITARIAS PARA PRECIOS ===== */
+
+/* Clases para mostrar precios con formato */
+.precio-personal::before { content: "$" var(--precio-pizza-especial-personal, 9000); }
+.precio-pequena::before { content: "$" var(--precio-pizza-especial-pequena, 15000); }
+.precio-mediana::before { content: "$" var(--precio-pizza-especial-mediana, 23000); }
+.precio-grande::before { content: "$" var(--precio-pizza-especial-grande, 29000); }
+.precio-extragrande::before { content: "$" var(--precio-pizza-especial-extragrande, 36000); }
+
+/* ===== FUNCIÓN PARA MOSTRAR PRECIOS DINÁMICAMENTE ===== */
+.precio[data-precio]::before {
+  content: "$" var(--precio-valor);
+}
+
+/* ===== MEDIA QUERIES PARA RESPONSIVE ===== */
+@media (max-width: 600px) {
+  /* Aquí puedes agregar precios específicos para móviles si es necesario */
+  :root {
+    /* Ejemplo: precios reducidos para móviles */
+    /* --precio-pizza-especial-personal: 8500; */
+  }
+} 

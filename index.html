@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piper's Pizza</title>
+    <link rel="stylesheet" href="css/precios.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/contact.css">
     <link rel="icon" type="image/jpeg" href="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.13_61ef9f11.jpg">
@@ -65,7 +66,7 @@
                     </div>
                     <ul class="cat-lista">
                         <li><strong>Sabores:</strong> Hawaiana, Jamón y Queso, Pollo y Champiñones, Pollo Maíz, Margarita, Pollo Tocineta, Pollo Jamón, Maduro Cabano, Cabano Piña, Jamón Salami</li>
-                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio">$9.000</span>, Pequeña <span class="precio">$15.000</span>, Mediana <span class="precio">$23.000</span>, Grande <span class="precio">$29.000</span>, Extragrande <span class="precio">$36.000</span></li>
+                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio" data-precio="var(--precio-pizza-especial-personal)">$9.000</span>, Pequeña <span class="precio" data-precio="var(--precio-pizza-especial-pequena)">$15.000</span>, Mediana <span class="precio" data-precio="var(--precio-pizza-especial-mediana)">$23.000</span>, Grande <span class="precio" data-precio="var(--precio-pizza-especial-grande)">$29.000</span>, Extragrande <span class="precio" data-precio="var(--precio-pizza-especial-extragrande)">$36.000</span></li>
                     </ul>
                 </div>
                 <div class="separador-decorativo"><span>★</span></div>
@@ -84,7 +85,7 @@
                     </div>
                     <ul class="cat-lista">
                         <li><strong>Sabores:</strong> Vegetariana sal, Vegetariana dulce, Petete, Zamba, Kaipirinha, Mexicana, Ranchera, Tres carnes, Pollo BBQ, Criolla</li>
-                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio">$10.000</span>, Pequeña <span class="precio">$17.000</span>, Mediana <span class="precio">$25.000</span>, Grande <span class="precio">$31.000</span>, Extragrande <span class="precio">$39.000</span></li>
+                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio" data-precio="var(--precio-pizza-carnivora-personal)">$10.000</span>, Pequeña <span class="precio" data-precio="var(--precio-pizza-carnivora-pequena)">$17.000</span>, Mediana <span class="precio" data-precio="var(--precio-pizza-carnivora-mediana)">$25.000</span>, Grande <span class="precio" data-precio="var(--precio-pizza-carnivora-grande)">$31.000</span>, Extragrande <span class="precio" data-precio="var(--precio-pizza-carnivora-extragrande)">$39.000</span></li>
                     </ul>
                 </div>
                 <div class="separador-decorativo"><span>★</span></div>
@@ -103,7 +104,7 @@
                     </div>
                     <ul class="cat-lista">
                         <li><strong>Sabores:</strong> Especial, La Carnívora, Detodito, Maíz, Maduro</li>
-                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio">$11.000</span>, Pequeña <span class="precio">$18.000</span>, Mediana <span class="precio">$26.000</span>, Grande <span class="precio">$33.000</span>, Extragrande <span class="precio">$42.000</span></li>
+                        <li><strong>Tamaños y valores:</strong> Personal <span class="precio" data-precio="var(--precio-pizza-detodito-personal)">$11.000</span>, Pequeña <span class="precio" data-precio="var(--precio-pizza-detodito-pequena)">$18.000</span>, Mediana <span class="precio" data-precio="var(--precio-pizza-detodito-mediana)">$26.000</span>, Grande <span class="precio" data-precio="var(--precio-pizza-detodito-grande)">$33.000</span>, Extragrande <span class="precio" data-precio="var(--precio-pizza-detodito-extragrande)">$42.000</span></li>
                     </ul>
                 </div>
             </div>
@@ -125,8 +126,8 @@
                             <li>Lasaña de pasta (mixta carne molida y pollo)</li>
                             <li>Lasaña de maduro (mixta carne molida y pollo)</li>
                         </ul>
-                        <p><strong>Pequeña:</strong> <span class="precio">$9.000</span></p>
-                        <p><strong>Grande:</strong> <span class="precio">$18.000</span></p>
+                        <p><strong>Pequeña:</strong> <span class="precio" data-precio="var(--precio-lasana-pequena)">$9.000</span></p>
+                        <p><strong>Grande:</strong> <span class="precio" data-precio="var(--precio-lasana-grande)">$18.000</span></p>
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🍕</span></div>
@@ -135,8 +136,8 @@
                             <li>Pequeña: piña, jamón, cabano y queso</li>
                             <li>Grande: todos los ingredientes de la carta</li>
                         </ul>
-                        <p><strong>Pequeña:</strong> <span class="precio">$9.000</span></p>
-                        <p><strong>Grande:</strong> <span class="precio">$19.000</span></p>
+                        <p><strong>Pequeña:</strong> <span class="precio" data-precio="var(--precio-pantalone-pequena)">$9.000</span></p>
+                        <p><strong>Grande:</strong> <span class="precio" data-precio="var(--precio-pantalone-grande)">$19.000</span></p>
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🌽</span></div>
@@ -144,7 +145,7 @@
                         <ul>
                             <li>Base de maíz dulce, jamón, pollo, tocineta, chorizo, cabano y queso gratinado al horno</li>
                         </ul>
-                        <p><span class="precio">$9.000</span></p>
+                        <p><span class="precio" data-precio="var(--precio-desgranado-maiz)">$9.000</span></p>
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🍌</span></div>
@@ -152,7 +153,7 @@
                         <ul>
                             <li>Base de maduro guayabo, jamón, pollo, tocineta, chorizo, cabano y queso gratinado al horno</li>
                         </ul>
-                        <p><span class="precio">$9.000</span></p>
+                        <p><span class="precio" data-precio="var(--precio-desgranado-maduro)">$9.000</span></p>
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🥤</span></div>
@@ -162,15 +163,15 @@
                             <li>En agua o en leche</li>
                             <li>Limonadas: cerezada y coco</li>
                         </ul>
-                        <p><span class="precio">$5.000</span> (agua) / <span class="precio">$6.000</span> (leche)</p>
-                        <p><strong>Limonada:</strong> <span class="precio">$8.000</span></p>
+                        <p><span class="precio" data-precio="var(--precio-jugo-agua)">$5.000</span> (agua) / <span class="precio" data-precio="var(--precio-jugo-leche)">$6.000</span> (leche)</p>
+                        <p><strong>Limonada:</strong> <span class="precio" data-precio="var(--precio-limonada)">$8.000</span></p>
                     </div>
                     <div class="otros-card">
                         <div class="otros-icono-circulo"><span class="otros-icono">🥤</span></div>
                         <h3>Gaseosas</h3>
                         <ul>
-                            <li>Personal <strong>400ml:</strong><span class="precio">$3.000</span></li>
-                            <li>1.5 litros: <span class="precio">$6.500</span></li>
+                            <li>Personal <strong>400ml:</strong><span class="precio" data-precio="var(--precio-gaseosa-personal)">$3.000</span></li>
+                            <li>1.5 litros: <span class="precio" data-precio="var(--precio-gaseosa-1-5l)">$6.500</span></li>
                         </ul>
                     </div>
                 </div>

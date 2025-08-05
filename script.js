@@ -1,3 +1,55 @@
+// ===== FUNCIÓN PARA OBTENER PRECIOS DESDE VARIABLES CSS =====
+function obtenerPrecioCSS(variable) {
+  const valor = getComputedStyle(document.documentElement).getPropertyValue(variable);
+  return parseInt(valor) || 0;
+}
+
+// Función para obtener todos los precios desde CSS
+function obtenerPreciosDesdeCSS() {
+  return {
+    // Precios de pizzas
+    clasica: {
+      personal: obtenerPrecioCSS('--precio-pizza-especial-personal'),
+      pequena: obtenerPrecioCSS('--precio-pizza-especial-pequena'),
+      mediana: obtenerPrecioCSS('--precio-pizza-especial-mediana'),
+      grande: obtenerPrecioCSS('--precio-pizza-especial-grande'),
+      extragrande: obtenerPrecioCSS('--precio-pizza-especial-extragrande')
+    },
+    especial: {
+      personal: obtenerPrecioCSS('--precio-pizza-carnivora-personal'),
+      pequena: obtenerPrecioCSS('--precio-pizza-carnivora-pequena'),
+      mediana: obtenerPrecioCSS('--precio-pizza-carnivora-mediana'),
+      grande: obtenerPrecioCSS('--precio-pizza-carnivora-grande'),
+      extragrande: obtenerPrecioCSS('--precio-pizza-carnivora-extragrande')
+    },
+    premium: {
+      personal: obtenerPrecioCSS('--precio-pizza-detodito-personal'),
+      pequena: obtenerPrecioCSS('--precio-pizza-detodito-pequena'),
+      mediana: obtenerPrecioCSS('--precio-pizza-detodito-mediana'),
+      grande: obtenerPrecioCSS('--precio-pizza-detodito-grande'),
+      extragrande: obtenerPrecioCSS('--precio-pizza-detodito-extragrande')
+    },
+    // Otros productos
+    lasagna: {
+      pequena: obtenerPrecioCSS('--precio-lasana-pequena'),
+      grande: obtenerPrecioCSS('--precio-lasana-grande')
+    },
+    pantalone: {
+      pequena: obtenerPrecioCSS('--precio-pantalone-pequena'),
+      grande: obtenerPrecioCSS('--precio-pantalone-grande')
+    },
+    granizado_maiz: {
+      unica: obtenerPrecioCSS('--precio-desgranado-maiz')
+    },
+    granizado_maduro: {
+      unica: obtenerPrecioCSS('--precio-desgranado-maduro')
+    },
+    bebidas: {
+      unidad: obtenerPrecioCSS('--precio-jugo-agua')
+    }
+  };
+}
+
 // Carrusel de promociones
 window.addEventListener('DOMContentLoaded', () => {
   // Carrusel de promociones
@@ -142,25 +194,30 @@ const tiposProducto = [
   { tipo: 'bebidas', nombre: 'Bebidas', icono: '🥤' }
 ];
 
-const bebidasDisponibles = [
-  { 
-    nombre: 'Jugos Naturales', 
-    tipo: 'jugos',
-    sabores: ['mora', 'mango', 'lulo', 'maracuyá', 'fresa', 'uva', 'guanábana'],
-    tipos: [
-      { nombre: 'en agua', precio: 5000 },
-      { nombre: 'en leche', precio: 6000 }
-    ]
-  },
-  { 
-    nombre: 'Limonadas', 
-    tipo: 'limonadas',
-    sabores: ['cerezada', 'coco'],
-    precio: 8000
-  },
-  { nombre: 'Gaseosa Personal (400ml)', tipo: 'gaseosa', precio: 3000 },
-  { nombre: 'Gaseosa 1.5L', tipo: 'gaseosa', precio: 6500 }
-];
+// Función para obtener bebidas con precios desde CSS
+function obtenerBebidasDesdeCSS() {
+  return [
+    { 
+      nombre: 'Jugos Naturales', 
+      tipo: 'jugos',
+      sabores: ['mora', 'mango', 'lulo', 'maracuyá', 'fresa', 'uva', 'guanábana'],
+      tipos: [
+        { nombre: 'en agua', precio: obtenerPrecioCSS('--precio-jugo-agua') },
+        { nombre: 'en leche', precio: obtenerPrecioCSS('--precio-jugo-leche') }
+      ]
+    },
+    { 
+      nombre: 'Limonadas', 
+      tipo: 'limonadas',
+      sabores: ['cerezada', 'coco'],
+      precio: obtenerPrecioCSS('--precio-limonada')
+    },
+    { nombre: 'Gaseosa Personal (400ml)', tipo: 'gaseosa', precio: obtenerPrecioCSS('--precio-gaseosa-personal') },
+    { nombre: 'Gaseosa 1.5L', tipo: 'gaseosa', precio: obtenerPrecioCSS('--precio-gaseosa-1-5l') }
+  ];
+}
+
+const bebidasDisponibles = obtenerBebidasDesdeCSS();
 
 // --- MENÚ DINÁMICO ---
 
@@ -179,47 +236,8 @@ const saboresPorTipo = {
   ]
 };
 
-// Precios por tipo y tamaño
-const preciosPorTipo = {
-  clasica: {
-    personal: 9000,
-    pequena: 15000,
-    mediana: 23000,
-    grande: 29000,
-    extragrande: 36000
-  },
-  especial: {
-    personal: 10000,
-    pequena: 17000,
-    mediana: 25000,
-    grande: 31000,
-    extragrande: 39000
-  },
-  premium: {
-    personal: 11000,
-    pequena: 18000,
-    mediana: 26000,
-    grande: 33000,
-    extragrande: 42000
-  },
-  lasagna: {
-    pequena: 9000,
-    grande: 18000
-  },
-  pantalone: {
-    pequena: 9000,
-    grande: 19000
-  },
-  granizado_maiz: {
-    unica: 9000
-  },
-  granizado_maduro: {
-    unica: 9000
-  },
-  bebidas: {
-    unidad: 5000
-  }
-};
+// Precios por tipo y tamaño - Obtenidos desde variables CSS
+let preciosPorTipo = obtenerPreciosDesdeCSS();
 
 // Reglas de cantidad de ingredientes por tamaño
 const reglasIngredientes = {
@@ -1689,4 +1707,36 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSelectorTipoProducto();
     });
   }
-}); 
+});
+
+// ===== FUNCIONES PARA ACTUALIZAR PRECIOS DINÁMICAMENTE =====
+
+// Función para actualizar precios en el HTML desde variables CSS
+function actualizarPreciosHTML() {
+  const elementosPrecio = document.querySelectorAll('.precio[data-precio]');
+  
+  elementosPrecio.forEach(elemento => {
+    const variableCSS = elemento.getAttribute('data-precio');
+    const nombreVariable = variableCSS.replace('var(', '').replace(')', '');
+    const precio = obtenerPrecioCSS(nombreVariable);
+    
+    if (precio > 0) {
+      elemento.textContent = `$${precio.toLocaleString()}`;
+    }
+  });
+}
+
+// Función para actualizar precios dinámicamente
+function actualizarPreciosDinamicos() {
+  // Actualizar precios en el HTML estático
+  actualizarPreciosHTML();
+  
+  // Actualizar precios en el JavaScript
+  preciosPorTipo = obtenerPreciosDesdeCSS();
+  bebidasDisponibles = obtenerBebidasDesdeCSS();
+}
+
+// Actualizar precios al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  actualizarPreciosDinamicos();
+});
