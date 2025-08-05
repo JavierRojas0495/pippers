@@ -1,0 +1,732 @@
+/* ===== SECCIÓN MENÚ ===== */
+
+/* Sección de menú principal */
+#menu {
+    padding: 80px 0;
+    background: var(--beige-pipers);
+    position: relative;
+}
+
+#menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, white, transparent);
+    pointer-events: none;
+}
+
+/* Dashboard de categorías */
+.dashboard-categorias {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Tarjetas de categorías */
+.categoria-tarjeta {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 2px solid #f0f0f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.categoria-tarjeta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.categoria-tarjeta:hover::before {
+    transform: scaleX(1);
+}
+
+.categoria-tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 48px rgba(40, 82, 147, 0.15);
+    border-color: var(--azul-pipers);
+}
+
+.categoria-tarjeta h2 {
+    color: var(--azul-pipers);
+    font-size: 1.8em;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.categoria-tarjeta p {
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.cat-icono {
+    font-size: 24px;
+    color: var(--azul-pipers);
+}
+
+/* Centrado de iconos circulares en categorías */
+.categoria-tarjeta .otros-icono-circulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    background: var(--beige-pipers);
+    border: 2px solid var(--dorado-pipers);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    box-shadow: 0 2px 8px #28529322;
+}
+
+.categoria-tarjeta .otros-icono-circulo .cat-icono {
+    font-size: 24px;
+    color: var(--azul-pipers);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cat-lista {
+    text-align: left;
+    margin-top: 24px;
+}
+
+.cat-lista li {
+    margin-bottom: 8px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.cat-lista strong {
+    color: var(--azul-pipers);
+    font-weight: 600;
+}
+
+/* Separador decorativo */
+.separador-decorativo {
+    width: 100%;
+    text-align: center;
+    margin: 32px 0 24px 0;
+    font-size: 1.3em;
+    color: var(--azul-pipers);
+    font-weight: bold;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    user-select: none;
+    border-top: 2px solid var(--dorado-pipers);
+    line-height: 0.1em;
+    background: transparent;
+}
+
+.separador-decorativo span {
+    background: #fff;
+    padding: 0 18px;
+    position: relative;
+    top: -0.7em;
+}
+
+/* Carrusel coverflow */
+.coverflow-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 32px auto 32px auto;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 48px;
+}
+
+.coverflow-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 220px;
+    perspective: 1200px;
+    position: relative;
+}
+
+.coverflow-slide {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 180px;
+    height: 180px;
+    transform: translateX(-50%);
+    transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+    opacity: 0.5;
+    z-index: 1;
+    box-shadow: 0 4px 24px #28529333;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    border: 2px solid #28529322;
+}
+
+.coverflow-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.coverflow-slide.active {
+    opacity: 1;
+    z-index: 3;
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 8px 32px #28529344;
+    border-color: var(--azul-pipers);
+}
+
+.coverflow-slide.left {
+    transform: translateX(-150%) scale(0.8);
+    z-index: 2;
+}
+
+.coverflow-slide.right {
+    transform: translateX(50%) scale(0.8);
+    z-index: 2;
+}
+
+.coverflow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--azul-pipers);
+    color: var(--dorado-pipers);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.7em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(40, 82, 147, 0.2);
+    z-index: 4;
+}
+
+.coverflow-btn:hover {
+    background: var(--dorado-pipers);
+    color: var(--azul-pipers);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(40, 82, 147, 0.3);
+}
+
+.coverflow-btn-prev {
+    left: -22px;
+}
+
+.coverflow-btn-next {
+    right: -22px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #menu {
+        padding: 60px 0;
+    }
+    
+    .dashboard-categorias {
+        padding: 0 16px;
+    }
+    
+    .categoria-tarjeta {
+        padding: 30px 20px;
+        margin-bottom: 30px;
+    }
+    
+    .coverflow-slide {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .coverflow-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    #menu {
+        padding: 40px 0;
+    }
+    
+    .dashboard-categorias {
+        padding: 0 12px;
+    }
+    
+    .categoria-tarjeta {
+        padding: 25px 15px;
+        margin-bottom: 25px;
+    }
+    
+    .categoria-tarjeta h2 {
+        font-size: 1.5em;
+    }
+    
+    .coverflow-slide {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .coverflow-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3em;
+    }
+} 
+
+/* ===== MENÚ DINÁMICO ===== */
+
+/* Categorías de pizza */
+.categoria-pizza {
+    margin-bottom: 60px;
+    padding: 40px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.1);
+    border: 2px solid #f0f0f0;
+}
+
+.categoria-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.categoria-icono {
+    font-size: 4em;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 12px rgba(40, 82, 147, 0.2));
+}
+
+.categoria-header h3 {
+    font-size: 2.5em;
+    color: var(--azul-pipers);
+    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.categoria-header p {
+    font-size: 1.2em;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Grid de pizzas */
+.pizzas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.pizza-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(40, 82, 147, 0.1);
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.pizza-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(40, 82, 147, 0.2);
+    border-color: var(--azul-pipers);
+}
+
+.pizza-imagen {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.pizza-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.pizza-card:hover .pizza-imagen img {
+    transform: scale(1.1);
+}
+
+.pizza-info {
+    padding: 25px;
+    text-align: center;
+}
+
+.pizza-info h4 {
+    font-size: 1.4em;
+    color: var(--azul-pipers);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.pizza-precio {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.btn-agregar-pizza {
+    background: linear-gradient(135deg, var(--azul-pipers) 0%, #1d3a6b 100%);
+    color: var(--dorado-pipers);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1em;
+}
+
+.btn-agregar-pizza:hover {
+    background: linear-gradient(135deg, var(--dorado-pipers) 0%, #ffed4e 100%);
+    color: var(--azul-pipers);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 82, 147, 0.3);
+}
+
+/* Información de categoría */
+.categoria-info {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid var(--azul-pipers);
+}
+
+.sabores-info, .precios-info {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.sabores-info strong, .precios-info strong {
+    color: var(--azul-pipers);
+    font-weight: 700;
+}
+
+/* Otros productos */
+.otros-productos {
+    margin-top: 60px;
+    padding: 40px;
+    background: linear-gradient(135deg, var(--beige-pipers) 0%, #fff 100%);
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(40, 82, 147, 0.1);
+    border: 2px solid var(--azul-pipers);
+}
+
+.otros-productos h3 {
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--azul-pipers);
+    margin-bottom: 40px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.producto-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(40, 82, 147, 0.1);
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(40, 82, 147, 0.15);
+    border-color: var(--azul-pipers);
+}
+
+.producto-icono {
+    font-size: 3em;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 8px rgba(40, 82, 147, 0.2));
+}
+
+.producto-card h4 {
+    font-size: 1.5em;
+    color: var(--azul-pipers);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.producto-card p, .producto-card ul {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.producto-card ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.producto-card li {
+    margin-bottom: 8px;
+}
+
+.producto-precios {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--azul-pipers);
+}
+
+.producto-precios span {
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+/* Modal de pizza */
+.modal-pizza {
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: slideIn 0.3s ease;
+}
+
+.tamanos-disponibles {
+    margin-top: 25px;
+}
+
+.tamanos-disponibles h4 {
+    color: var(--azul-pipers);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.tamano-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.tamano-option:hover {
+    background: #fff;
+    border-color: var(--azul-pipers);
+    box-shadow: 0 4px 12px rgba(40, 82, 147, 0.1);
+}
+
+.tamano-option button {
+    background: linear-gradient(135deg, var(--azul-pipers) 0%, #1d3a6b 100%);
+    color: var(--dorado-pipers);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tamano-option button:hover {
+    background: linear-gradient(135deg, var(--dorado-pipers) 0%, #ffed4e 100%);
+    color: var(--azul-pipers);
+    transform: scale(1.05);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .categoria-pizza {
+        padding: 30px 25px;
+        margin-bottom: 40px;
+    }
+    
+    .categoria-header h3 {
+        font-size: 2.2em;
+    }
+    
+    .categoria-header p {
+        font-size: 1.1em;
+    }
+    
+    .pizzas-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+    
+    .otros-productos {
+        padding: 30px 25px;
+        margin-top: 40px;
+    }
+    
+    .otros-productos h3 {
+        font-size: 2.2em;
+        margin-bottom: 30px;
+    }
+    
+    .productos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .categoria-pizza {
+        padding: 25px 20px;
+        margin-bottom: 30px;
+        border-radius: 20px;
+    }
+    
+    .categoria-header h3 {
+        font-size: 1.9em;
+        margin-bottom: 12px;
+    }
+    
+    .categoria-header p {
+        font-size: 1em;
+    }
+    
+    .categoria-icono {
+        font-size: 3em;
+        margin-bottom: 15px;
+    }
+    
+    .pizzas-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .pizza-card {
+        border-radius: 15px;
+    }
+    
+    .pizza-info {
+        padding: 20px;
+    }
+    
+    .pizza-info h4 {
+        font-size: 1.3em;
+    }
+    
+    .btn-agregar-pizza {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+    
+    .categoria-info {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    .sabores-info, .precios-info {
+        font-size: 1em;
+    }
+    
+    .otros-productos {
+        padding: 25px 20px;
+        margin-top: 30px;
+        border-radius: 20px;
+    }
+    
+    .otros-productos h3 {
+        font-size: 1.9em;
+        margin-bottom: 25px;
+    }
+    
+    .productos-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .producto-card {
+        padding: 25px 20px;
+        border-radius: 15px;
+    }
+    
+    .producto-icono {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+    }
+    
+    .producto-card h4 {
+        font-size: 1.3em;
+        margin-bottom: 12px;
+    }
+    
+    .modal-content {
+        padding: 25px 20px;
+        border-radius: 15px;
+    }
+    
+    .tamano-option {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+    
+    .tamano-option button {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+} 

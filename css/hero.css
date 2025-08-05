@@ -1,0 +1,128 @@
+/* ===== HERO/BANNER ===== */
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--azul-pipers);
+    /* Si prefieres un degradado muy suave, usa esto en vez de la línea anterior: */
+    /* background: linear-gradient(120deg, #285293 90%, #f3ebd3 100%); */
+    border-radius: 18px;
+    padding: 40px 20px 30px 20px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px #28529322;
+    position: relative;
+    overflow: hidden;
+    min-height: 260px;
+    animation: fadeIn 1.2s;
+}
+
+.hero-logo {
+    width: 180px;
+    height: 180px;
+    border-radius: 120px;
+    background: #fff;
+    box-shadow: 0 2px 16px #28529333;
+    margin-bottom: 18px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.hero h1 {
+    color: var(--dorado-pipers);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #28529388;
+}
+
+.hero-eslogan {
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 18px;
+    font-weight: 500;
+}
+
+.hero-btn {
+    background: var(--dorado-pipers);
+    color: var(--azul-pipers);
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 14px 36px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 2px 12px #28529333;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.hero-btn:hover {
+    background: var(--azul-pipers);
+    color: var(--dorado-pipers);
+    transform: scale(1.06);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .hero {
+        padding: 30px 15px 25px 15px;
+        min-height: 220px;
+    }
+    
+    .hero h1 {
+        font-size: 2.2em;
+    }
+    
+    .hero-eslogan {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding: 25px 10px 20px 10px;
+        min-height: 200px;
+        margin-bottom: 24px;
+    }
+    
+    .hero-logo {
+        width: 140px;
+        height: 140px;
+        border-radius: 100px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8em;
+        margin-bottom: 8px;
+    }
+    
+    .hero-eslogan {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+    
+    .hero-btn {
+        padding: 12px 28px;
+        font-size: 1em;
+    }
+} 

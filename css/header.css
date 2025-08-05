@@ -1,0 +1,366 @@
+/* ===== HEADER/NAVBAR ===== */
+
+/* Estilos base del header */
+header, .navbar-header {
+    background: var(--azul-pipers);
+    color: var(--beige-pipers);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    box-shadow: 0 2px 12px var(--negro-pipers, #010001, 0.13);
+    min-height: 70px;
+}
+
+/* Logo principal */
+.logo {
+    height: 65px;
+    border-radius: 14px;
+    background: #fff;
+    padding: 5px;
+    box-shadow: 0 2px 12px rgba(40,82,147,0.13);
+    border: 2px solid var(--negro-pipers);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo-link {
+    display: block;
+    text-decoration: none;
+}
+
+.navbar-logo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    z-index: 3;
+}
+
+/* Logo curvado central */
+.header-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    max-width: 60vw;
+    max-height: 90px;
+}
+
+.logo-curvado {
+    height: 180px;
+    max-height: 90px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    transform: scaleX(1.3);
+    margin: 0 auto;
+}
+
+/* Contenido del header */
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1 1 auto;
+}
+
+/* Navegación */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+nav a {
+    color: var(--beige-pipers);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.2s;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+nav a:hover, nav a.active {
+    color: var(--dorado-pipers);
+    background: #1d3a6b;
+}
+
+/* Carrito de compras */
+.navbar-cart {
+    margin-right: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.navbar-cart:hover {
+    transform: scale(1.08);
+}
+
+.navbar-cart:hover svg {
+    stroke: var(--dorado-pipers);
+}
+
+.navbar-cart svg {
+    transition: stroke 0.2s;
+}
+
+.navbar-cart-bg {
+    background: var(--dorado-pipers, #ffd700);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(49, 66, 139, 0.2);
+}
+
+.navbar-cart:hover .navbar-cart-bg {
+    background: var(--azul-pipers);
+}
+
+.navbar-cart:hover svg {
+    stroke: var(--dorado-pipers);
+}
+
+.navbar-cart svg {
+    transition: stroke 0.2s;
+}
+
+/* Responsive Desktop */
+@media (min-width: 901px) {
+    .navbar-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        position: relative;
+        min-height: 100px;
+        width: 100%;
+    }
+    
+    .navbar-logo {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+    }
+    
+    .header-title {
+        flex: 1 1 auto;
+        position: static;
+        left: auto;
+        top: auto;
+        transform: none;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        max-width: 420px;
+        min-width: 180px;
+        max-height: 120px;
+    }
+    
+    .logo-curvado {
+        height: 120px;
+        max-height: 120px;
+        width: auto;
+        max-width: 100%;
+        display: block;
+        object-fit: contain;
+        transform: scaleX(1.15);
+        margin: 0 auto;
+    }
+    
+    .header-content {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        z-index: 1;
+        position: relative;
+        min-width: 220px;
+    }
+    
+    .header-content nav ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 48px;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .header-content nav ul {
+        padding-right: 48px;
+    }
+    
+    .navbar-cart {
+        margin-right: 32px;
+    }
+}
+
+/* Responsive Tablet */
+@media (max-width: 900px) {
+    .navbar-header {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 80px;
+        gap: 2px;
+        padding: 15px 0 5px 0;
+    }
+    
+    .header-title {
+        position: static;
+        transform: none;
+        margin: 0 auto 0 auto;
+        max-width: 98vw;
+        max-height: 60px;
+        justify-content: center;
+    }
+    
+    .logo-curvado {
+        max-height: 120px;
+        height: 120px;
+        width: auto;
+        transform: scaleX(1.1);
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .navbar-logo {
+        display: none !important;
+    }
+}
+
+/* Responsive Mobile */
+@media (max-width: 600px) {
+    .navbar-header {
+        min-height: 60px;
+        gap: 20px;
+        padding: 25px 15px 8px 15px;
+    }
+    
+    .header-title {
+        max-height: 38px;
+        margin: 0 auto 0 auto;
+    }
+    
+    .logo-curvado {
+        max-height: 90px;
+        height: 90px;
+        width: auto;
+        transform: scaleX(1.05);
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .navbar-logo .logo {
+        height: 28px !important;
+    }
+    
+    .header-content {
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    .header-content nav ul {
+        gap: 20px;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 5px;
+    }
+    
+    .header-content nav a {
+        font-size: 1em;
+        padding: 8px 12px;
+    }
+    
+    .navbar-cart {
+        margin-right: 0;
+    }
+}
+
+/* Responsive Desktop grande */
+@media (min-width: 1200px) {
+    .header-content nav ul {
+        padding-right: 100px;
+    }
+}
+
+/* Responsive Desktop mediano */
+@media (min-width: 901px) and (max-width: 1199px) {
+    .header-content nav ul {
+        padding-right: 60px;
+    }
+}
+
+/* Responsive Desktop general */
+@media (min-width: 901px) {
+    .header-content nav ul {
+        justify-content: flex-end;
+        gap: 48px;
+        padding-right: 0;
+    }
+    
+    .navbar-cart {
+        margin-right: 32px;
+    }
+}
+
+/* Responsive Mobile general */
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        padding: 15px 20px;
+        min-height: 80px;
+    }
+    
+    .header-content {
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    nav ul {
+        gap: 20px;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .logo {
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 45px;
+    }
+} 

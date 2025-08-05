@@ -1,0 +1,193 @@
+/* ===== OTROS PRODUCTOS ===== */
+
+.otros-productos {
+  margin: 48px 0 0 0;
+  animation: fadeInUp 1.2s;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+
+.otros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  column-gap: 32px;
+  row-gap: 48px;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 0;
+  width: 100%;
+  grid-auto-flow: dense;
+}
+
+.otros-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #28529322;
+  padding: 28px 20px 18px 20px;
+  min-width: 220px;
+  max-width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 2px solid #28529322;
+  transform: scale(0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+.otros-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.otros-card:hover::before {
+  transform: scaleX(1);
+}
+
+.otros-card:hover {
+  box-shadow: 0 8px 32px #28529344;
+  transform: scale(1.0) translateY(-4px);
+  border-color: var(--azul-pipers);
+}
+
+.otros-card-subtitulo {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: -18px !important;
+  height: auto !important;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.otros-icono {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+  color: var(--dorado-pipers);
+  text-shadow: 0 2px 8px #28529333;
+}
+
+.otros-icono-circulo {
+  background: var(--beige-pipers);
+  border: 2px solid var(--dorado-pipers);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px #28529322;
+}
+
+.precio {
+  color: var(--dorado-pipers);
+  font-weight: bold;
+}
+
+.otros-card h3 {
+  color: var(--azul-pipers);
+  font-size: 1.2em;
+  font-weight: 800;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.otros-card ul {
+  color: var(--azul-pipers);
+  font-size: 0.98em;
+  margin-bottom: 10px;
+  padding-left: 18px;
+}
+
+.otros-card p {
+  color: #444;
+  font-size: 1em;
+  margin: 2px 0;
+  text-align: center;
+}
+
+/* Grids específicos para comidas y bebidas */
+.comidas-grid, .bebidas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.otros-separador {
+  width: 100%;
+  text-align: center;
+  margin: 32px 0 24px 0;
+  font-size: 1.3em;
+  color: var(--azul-pipers);
+  font-weight: bold;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  user-select: none;
+  border-top: 2px solid var(--dorado-pipers);
+  line-height: 0.1em;
+  background: transparent;
+}
+
+.otros-separador span {
+  background: #fff;
+  padding: 0 18px;
+  position: relative;
+  top: -0.7em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .otros-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .otros-productos {
+    padding: 0 8px;
+  }
+  .comidas-grid, .bebidas-grid {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .comidas-grid, .bebidas-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .otros-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .otros-productos {
+    padding: 0 2px;
+  }
+  .otros-card {
+    width: 100%;
+    max-width: 400px;
+    min-width: 0;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 14px 8px 12px 8px;
+  }
+} 

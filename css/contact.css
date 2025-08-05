@@ -1,0 +1,402 @@
+/* ===== SECCIÓN DE CONTACTO ===== */
+
+.contacto-header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 20px;
+}
+
+.contacto-header h2 {
+    font-size: 2.8em;
+    color: var(--azul-pipers);
+    margin-bottom: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(40, 82, 147, 0.1);
+}
+
+.contacto-subtitulo {
+    font-size: 1.3em;
+    color: #555;
+    font-weight: 500;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.contacto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom: 60px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+.contacto-card {
+    background: linear-gradient(145deg, #fff 0%, #fafafa 100%);
+    border-radius: 25px;
+    padding: 40px 35px;
+    box-shadow: 0 12px 40px rgba(40, 82, 147, 0.08);
+    border: 2px solid #f0f0f0;
+    transition: all 0.4s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contacto-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--azul-pipers), var(--dorado-pipers));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.contacto-card:hover::before {
+    transform: scaleX(1);
+}
+
+.contacto-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(40, 82, 147, 0.15);
+    border-color: var(--azul-pipers);
+    background: linear-gradient(145deg, #fff 0%, #f8f9fa 100%);
+}
+
+.contacto-icono {
+    font-size: 4em;
+    margin-bottom: 25px;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(40, 82, 147, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.contacto-card:hover .contacto-icono {
+    transform: scale(1.1);
+}
+
+.contacto-card h3 {
+    color: var(--azul-pipers);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.contacto-info {
+    text-align: left;
+}
+
+.contacto-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    padding: 15px;
+    background: linear-gradient(145deg, #f8f9fa 0%, #fff 100%);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(40, 82, 147, 0.05);
+}
+
+.contacto-item:hover {
+    background: linear-gradient(145deg, #fff 0%, #f8f9fa 100%);
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(40, 82, 147, 0.1);
+    border-color: var(--azul-pipers);
+}
+
+.contacto-label {
+    font-weight: 600;
+    color: var(--azul-pipers);
+    min-width: 130px;
+    margin-right: 15px;
+    font-size: 1.05em;
+}
+
+.contacto-link {
+    color: var(--azul-pipers);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 1.05em;
+}
+
+.contacto-link:hover {
+    color: var(--dorado-pipers);
+    text-decoration: underline;
+    transform: scale(1.02);
+}
+
+.redes-sociales {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.red-social-link {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    background: linear-gradient(145deg, #f8f9fa 0%, #fff 100%);
+    border-radius: 18px;
+    text-decoration: none;
+    color: var(--azul-pipers);
+    font-weight: 500;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(40, 82, 147, 0.08);
+    font-size: 1.05em;
+}
+
+.red-social-link:hover {
+    background: linear-gradient(145deg, #fff 0%, #f8f9fa 100%);
+    border-color: var(--azul-pipers);
+    transform: translateX(10px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(40, 82, 147, 0.15);
+}
+
+.red-social-icono {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.red-social-link:hover .red-social-icono {
+    transform: scale(1.1);
+}
+
+.vision-mision-texto {
+    line-height: 1.9;
+    color: #555;
+    font-size: 1.1em;
+    text-align: justify;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .contacto-header {
+        margin-bottom: 50px;
+    }
+    
+    .contacto-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        max-width: 600px;
+    }
+    
+    .contacto-card {
+        padding: 35px 30px;
+        min-height: auto;
+    }
+    
+    .contacto-header h2 {
+        font-size: 2.4em;
+    }
+}
+
+@media (max-width: 600px) {
+    .contacto-header {
+        padding: 0 15px;
+    }
+    
+    .contacto-header h2 {
+        font-size: 2.2em;
+        margin-bottom: 15px;
+    }
+    
+    .contacto-subtitulo {
+        font-size: 1.2em;
+    }
+    
+    .contacto-grid {
+        gap: 25px;
+        padding: 0 15px;
+    }
+    
+    .contacto-card {
+        padding: 30px 25px;
+        min-height: 260px;
+    }
+    
+    .contacto-icono {
+        font-size: 3em;
+        margin-bottom: 20px;
+    }
+    
+    .contacto-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+        padding: 20px;
+    }
+    
+    .contacto-label {
+        min-width: auto;
+        margin-right: 0;
+        font-size: 1em;
+    }
+    
+    .red-social-link {
+        padding: 18px;
+        font-size: 1em;
+    }
+    
+    .red-social-icono {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Sección "¿Listo para ordenar?" */
+.realizar-pedido-section {
+    background: linear-gradient(135deg, var(--beige-pipers) 0%, #fff 100%);
+    border-radius: 25px;
+    padding: 50px 40px;
+    margin: 60px auto;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(40, 82, 147, 0.12);
+    border: 2px solid var(--azul-pipers);
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+}
+
+.realizar-pedido-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--azul-pipers), var(--dorado-pipers));
+}
+
+.pedido-content h3 {
+    color: var(--azul-pipers);
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(40, 82, 147, 0.1);
+}
+
+.pedido-content p {
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    line-height: 1.7;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-realizar-pedido {
+    background: linear-gradient(135deg, var(--azul-pipers) 0%, #2c5aa0 100%);
+    color: var(--dorado-pipers);
+    text-decoration: none;
+    padding: 18px 35px;
+    border-radius: 35px;
+    font-weight: bold;
+    font-size: 1.15em;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 20px rgba(40, 82, 147, 0.25);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-realizar-pedido::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-realizar-pedido:hover::before {
+    left: 100%;
+}
+
+.btn-realizar-pedido:hover {
+    background: linear-gradient(135deg, var(--dorado-pipers) 0%, #ffed4e 100%);
+    color: var(--azul-pipers);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(40, 82, 147, 0.35);
+    border-color: var(--azul-pipers);
+}
+
+.btn-realizar-pedido span {
+    font-size: 1.3em;
+    transition: transform 0.3s ease;
+}
+
+.btn-realizar-pedido:hover span {
+    transform: scale(1.1);
+}
+
+/* Responsive para la sección de pedido */
+@media (max-width: 900px) {
+    .realizar-pedido-section {
+        padding: 40px 30px;
+        margin: 50px auto;
+        border-radius: 20px;
+    }
+    
+    .pedido-content h3 {
+        font-size: 1.9em;
+    }
+    
+    .pedido-content p {
+        font-size: 1.1em;
+    }
+    
+    .btn-realizar-pedido {
+        padding: 16px 30px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 600px) {
+    .realizar-pedido-section {
+        padding: 35px 25px;
+        margin: 40px auto;
+        border-radius: 18px;
+    }
+    
+    .pedido-content h3 {
+        font-size: 1.7em;
+        margin-bottom: 15px;
+    }
+    
+    .pedido-content p {
+        font-size: 1em;
+        margin-bottom: 25px;
+    }
+    
+    .btn-realizar-pedido {
+        padding: 15px 28px;
+        font-size: 1.05em;
+        border-radius: 30px;
+    }
+} 

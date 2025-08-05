@@ -239,29 +239,77 @@ let pedidoActual = {
 // Paso 1: Selección de tipo de producto
 function renderSelectorTipoProducto() {
   menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>¿Qué tipo de producto deseas?</h3>
-      <div class="selector-tipo-producto">
+    <div class="form-pizza-moderno">
+      <div class="selector-header">
+        <div class="selector-icono">🍕</div>
+        <h3 class="selector-titulo">¿Qué tipo de producto deseas?</h3>
+        <p class="selector-subtitulo">Elige tu opción favorita para comenzar tu pedido</p>
+      </div>
+      
+      <div class="selector-tipo-producto-moderno">
         ${tiposProducto.map(producto => `
-          <button class="btn-tipo-pizza" data-tipo="${producto.tipo}">
-            <span class="producto-icono">${producto.icono}</span>
-            <span class="producto-nombre">${producto.nombre}</span>
-          </button>
+          <div class="producto-card" data-tipo="${producto.tipo}">
+            <div class="producto-card-content">
+              <div class="producto-icono-grande">${producto.icono}</div>
+              <div class="producto-info">
+                <h4 class="producto-nombre-moderno">${producto.nombre}</h4>
+                <div class="producto-descripcion">${getProductoDescripcion(producto.tipo)}</div>
+              </div>
+              <div class="producto-arrow">→</div>
+            </div>
+          </div>
         `).join('')}
       </div>
     </div>
   `;
   
-  document.querySelectorAll('.btn-tipo-pizza').forEach(btn => {
-    btn.onclick = () => {
+  document.querySelectorAll('.producto-card').forEach(card => {
+    card.onclick = () => {
       pedidoActual = { 
-        producto: btn.getAttribute('data-tipo'), 
+        producto: card.getAttribute('data-tipo'), 
         detalles: {}, 
         bebida: null 
       };
       renderSelectorTamanoProducto();
     };
   });
+}
+
+// Función auxiliar para obtener descripciones de productos
+function getProductoDescripcion(tipo) {
+  const descripciones = {
+    clasica: 'Pizzas tradicionales con sabores clásicos',
+    especial: 'Pizzas gourmet con ingredientes especiales',
+    premium: 'Nuestras pizzas más exclusivas y premium',
+    lasagna: 'Deliciosas lasañas caseras',
+    pantalone: 'Pizzas estilo pantalone únicas',
+    granizado_maiz: 'Granizados refrescantes de maíz',
+    granizado_maduro: 'Granizados dulces de maduro',
+    bebidas: 'Bebidas naturales y gaseosas'
+  };
+  return descripciones[tipo] || 'Producto delicioso';
+}
+
+// Función auxiliar para obtener iconos de bebidas
+function getBebidaIcono(tipo) {
+  const iconos = {
+    jugos: '🧃',
+    limonadas: '🍋',
+    gaseosa: '🥤',
+    simple: '🥤'
+  };
+  return iconos[tipo] || '🥤';
+}
+
+// Función auxiliar para obtener descripciones de bebidas
+function getBebidaDescripcion(tipo) {
+  const descripciones = {
+    jugos: 'Jugos naturales frescos',
+    limonadas: 'Limonadas refrescantes',
+    gaseosa: 'Bebidas gaseosas',
+    simple: 'Bebida refrescante'
+  };
+  return descripciones[tipo] || 'Bebida deliciosa';
 }
 
 // Paso 2: Selección de tamaño
@@ -277,41 +325,59 @@ function renderSelectorTamanoProducto() {
   
   if (tipo === 'lasagna' || tipo === 'pantalone') {
     tamanosDisponibles = [
-      { key: 'pequena', label: 'Pequeña' },
-      { key: 'grande', label: 'Grande' }
+      { key: 'pequena', label: 'Pequeña', icono: '🍽️', descripcion: 'Porción individual perfecta' },
+      { key: 'grande', label: 'Grande', icono: '🍽️', descripcion: 'Porción familiar abundante' }
     ];
   } else if (tipo === 'granizado_maiz' || tipo === 'granizado_maduro') {
     tamanosDisponibles = [
-      { key: 'unica', label: 'Única' }
+      { key: 'unica', label: 'Única', icono: '🥤', descripcion: 'Tamaño estándar refrescante' }
     ];
   } else {
     tamanosDisponibles = [
-      { key: 'personal', label: 'Personal (4 porciones)' },
-      { key: 'pequena', label: 'Pequeña (6 porciones)' },
-      { key: 'mediana', label: 'Mediana (8 porciones)' },
-      { key: 'grande', label: 'Grande (10 porciones)' },
-      { key: 'extragrande', label: 'Extragrande (12 porciones)' }
+      { key: 'personal', label: 'Personal', icono: '🍕', descripcion: '4 porciones - Ideal para uno' },
+      { key: 'pequena', label: 'Pequeña', icono: '🍕', descripcion: '6 porciones - Para compartir' },
+      { key: 'mediana', label: 'Mediana', icono: '🍕', descripcion: '8 porciones - Familia pequeña' },
+      { key: 'grande', label: 'Grande', icono: '🍕', descripcion: '10 porciones - Familia completa' },
+      { key: 'extragrande', label: 'Extragrande', icono: '🍕', descripcion: '12 porciones - Fiesta' }
     ];
   }
   
   menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>¿Qué tamaño?</h3>
-      <div class="selector-tamano-pizza">
+    <div class="form-pizza-moderno">
+      <div class="selector-header">
+        <div class="selector-icono">📏</div>
+        <h3 class="selector-titulo">¿Qué tamaño prefieres?</h3>
+        <p class="selector-subtitulo">Elige el tamaño perfecto para tu pedido</p>
+      </div>
+      
+      <div class="selector-tamano-moderno">
         ${tamanosDisponibles.map(tamano => `
-          <button class="btn-tamano-pizza" data-tamano="${tamano.key}">
-            ${tamano.label}
-            <span class="precio-tamano">$${preciosPorTipo[tipo][tamano.key].toLocaleString()}</span>
-          </button>
+          <div class="tamano-card" data-tamano="${tamano.key}">
+            <div class="tamano-card-content">
+              <div class="tamano-icono-grande">${tamano.icono}</div>
+              <div class="tamano-info">
+                <h4 class="tamano-nombre-moderno">${tamano.label}</h4>
+                <div class="tamano-descripcion">${tamano.descripcion}</div>
+                <div class="tamano-precio-moderno">$${preciosPorTipo[tipo][tamano.key].toLocaleString()}</div>
+              </div>
+              <div class="tamano-arrow">→</div>
+            </div>
+          </div>
         `).join('')}
       </div>
-      <button id="btn-volver-tipo" class="btn-volver">← Volver</button>
+      
+      <div class="selector-botones">
+        <button id="btn-volver-tipo" class="btn-secundario">
+          <span>←</span>
+          Volver
+        </button>
+      </div>
     </div>
   `;
   
-  document.querySelectorAll('.btn-tamano-pizza').forEach(btn => {
-    btn.onclick = () => {
-      pedidoActual.detalles.tamano = btn.getAttribute('data-tamano');
+  document.querySelectorAll('.tamano-card').forEach(card => {
+    card.onclick = () => {
+      pedidoActual.detalles.tamano = card.getAttribute('data-tamano');
       if (tipo === 'lasagna' || tipo === 'pantalone' || tipo === 'granizado_maiz' || tipo === 'granizado_maduro') {
         renderSelectorCantidadProducto();
       } else {
@@ -331,46 +397,83 @@ function renderSelectorIngredientesPizza() {
   const regla = reglasIngredientes[tamano] || reglasIngredientes.personal;
   
   menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>Elige de ${regla.min} a ${regla.max} ingredientes/sabores</h3>
-      <div class="selector-ingredientes">
-        ${sabores.map((s, i) => `
-          <label class="ingrediente-checkbox">
-            <input type="checkbox" class="chk-ingrediente" value="${s}">
-            <span class="ingrediente-texto">${s}</span>
-          </label>
+    <div class="form-pizza-moderno">
+      <div class="selector-header">
+        <div class="selector-icono">🍕</div>
+        <h3 class="selector-titulo">Elige tus sabores favoritos</h3>
+        <p class="selector-subtitulo">Selecciona de ${regla.min} a ${regla.max} sabores para tu pizza</p>
+      </div>
+      
+      <div class="selector-sabores-pizza-moderno">
+        ${sabores.map((sabor, i) => `
+          <div class="sabor-pizza-card" data-sabor="${sabor}">
+            <div class="sabor-pizza-card-content">
+              <div class="sabor-pizza-checkbox">
+                <input type="checkbox" class="chk-ingrediente" value="${sabor}" data-index="${i}">
+                <span class="checkbox-custom-pizza"></span>
+              </div>
+              <div class="sabor-pizza-icono">🍕</div>
+              <div class="sabor-pizza-info">
+                <h4 class="sabor-pizza-nombre">${sabor}</h4>
+                <div class="sabor-pizza-descripcion">Sabor delicioso y fresco</div>
+              </div>
+              <div class="sabor-pizza-arrow">→</div>
+            </div>
+          </div>
         `).join('')}
       </div>
-      <label>Cantidad:
-        <input type="number" id="cantidad-pizza" min="1" value="1">
-      </label>
       
-      <button id="btn-continuar-ingredientes" style="margin-top: 20px; padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Continuar</button>
-      <button id="btn-volver-tamano" class="btn-volver">← Volver</button>
-      <div id="msg-error-ingredientes" style="color:#e74c3c;margin-top:8px;"></div>
+      <div class="sabor-pizza-cantidad-container">
+        <label class="cantidad-label">Cantidad:</label>
+        <div class="cantidad-input-container">
+          <input type="number" id="cantidad-pizza" min="1" value="1" class="cantidad-input-moderno">
+        </div>
+      </div>
+      
+      <div class="selector-botones">
+        <button id="btn-continuar-ingredientes" class="btn-principal">
+          <span>✓</span>
+          Continuar
+        </button>
+        <button id="btn-volver-tamano" class="btn-secundario">
+          <span>←</span>
+          Volver
+        </button>
+      </div>
+      
+      <div id="msg-error-ingredientes" class="mensaje-estado"></div>
     </div>
   `;
   
   const checkboxes = document.querySelectorAll('.chk-ingrediente');
+  const saborCards = document.querySelectorAll('.sabor-pizza-card');
   
   function actualizarEstadoCheckboxes() {
     const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
     const cantidadSeleccionados = seleccionados.length;
     
-    checkboxes.forEach(cb => {
-      const label = cb.parentElement;
+    checkboxes.forEach((cb, index) => {
+      const card = cb.closest('.sabor-pizza-card');
+      const customCheckbox = cb.nextElementSibling;
+      
       if (cb.checked) {
         // Los seleccionados siempre están habilitados
         cb.disabled = false;
-        label.classList.remove('disabled');
+        card.classList.remove('disabled');
+        customCheckbox.style.backgroundColor = 'var(--azul-pipers)';
+        customCheckbox.style.borderColor = 'var(--azul-pipers)';
       } else {
         // Los no seleccionados se deshabilitan si ya se alcanzó el máximo
         if (cantidadSeleccionados >= regla.max) {
           cb.disabled = true;
-          label.classList.add('disabled');
+          card.classList.add('disabled');
+          customCheckbox.style.backgroundColor = '#e9ecef';
+          customCheckbox.style.borderColor = '#dee2e6';
         } else {
           cb.disabled = false;
-          label.classList.remove('disabled');
+          card.classList.remove('disabled');
+          customCheckbox.style.backgroundColor = '#fff';
+          customCheckbox.style.borderColor = '#dee2e6';
         }
       }
     });
@@ -378,19 +481,45 @@ function renderSelectorIngredientesPizza() {
     // Actualizar mensaje de estado
     const msgElement = document.getElementById('msg-error-ingredientes');
     if (cantidadSeleccionados < regla.min) {
-      msgElement.textContent = `Selecciona al menos ${regla.min} ingrediente${regla.min > 1 ? 's' : ''} (${cantidadSeleccionados}/${regla.max})`;
-      msgElement.style.color = '#f39c12';
+      msgElement.textContent = `Selecciona al menos ${regla.min} sabor${regla.min > 1 ? 'es' : ''} (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.className = 'mensaje-estado mensaje-advertencia';
     } else if (cantidadSeleccionados > regla.max) {
-      msgElement.textContent = `Máximo ${regla.max} ingredientes permitidos (${cantidadSeleccionados}/${regla.max})`;
-      msgElement.style.color = '#e74c3c';
+      msgElement.textContent = `Máximo ${regla.max} sabores permitidos (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.className = 'mensaje-estado mensaje-error';
     } else {
-      msgElement.textContent = `Perfecto! ${cantidadSeleccionados} ingrediente${cantidadSeleccionados > 1 ? 's' : ''} seleccionado${cantidadSeleccionados > 1 ? 's' : ''} (${cantidadSeleccionados}/${regla.max})`;
-      msgElement.style.color = '#27ae60';
+      msgElement.textContent = `¡Perfecto! ${cantidadSeleccionados} sabor${cantidadSeleccionados > 1 ? 'es' : ''} seleccionado${cantidadSeleccionados > 1 ? 's' : ''} (${cantidadSeleccionados}/${regla.max})`;
+      msgElement.className = 'mensaje-estado mensaje-exito';
     }
   }
   
+  // Event listeners para las tarjetas de sabores
+  saborCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      // No activar si se hace clic en el checkbox directamente
+      if (e.target.type === 'checkbox') {
+        return;
+      }
+      
+      const checkbox = this.querySelector('.chk-ingrediente');
+      const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
+      const cantidadSeleccionados = seleccionados.length;
+      
+      // Si intenta seleccionar más del máximo, no permitir
+      if (!checkbox.checked && cantidadSeleccionados >= regla.max) {
+        return;
+      }
+      
+      checkbox.checked = !checkbox.checked;
+      
+      // Disparar el evento change del checkbox
+      const event = new Event('change');
+      checkbox.dispatchEvent(event);
+    });
+  });
+  
+  // Event listeners para los checkboxes
   checkboxes.forEach(cb => {
-    cb.onchange = () => {
+    cb.addEventListener('change', () => {
       const seleccionados = document.querySelectorAll('.chk-ingrediente:checked');
       const cantidadSeleccionados = seleccionados.length;
       
@@ -402,7 +531,7 @@ function renderSelectorIngredientesPizza() {
       
       // Actualizar el estado de todos los checkboxes
       actualizarEstadoCheckboxes();
-    };
+    });
   });
   
   // Inicializar el estado
@@ -411,7 +540,9 @@ function renderSelectorIngredientesPizza() {
   document.getElementById('btn-continuar-ingredientes').onclick = () => {
     const seleccionados = Array.from(document.querySelectorAll('.chk-ingrediente:checked')).map(cb => cb.value);
     if (seleccionados.length < regla.min) {
-      document.getElementById('msg-error-ingredientes').textContent = `Debes seleccionar al menos ${regla.min} ingrediente${regla.min > 1 ? 's' : ''}.`;
+      const msgElement = document.getElementById('msg-error-ingredientes');
+      msgElement.textContent = `Debes seleccionar al menos ${regla.min} sabor${regla.min > 1 ? 'es' : ''}.`;
+      msgElement.className = 'mensaje-estado mensaje-error';
       return;
     }
     pedidoActual.detalles.ingredientes = seleccionados;
@@ -462,40 +593,126 @@ function renderSelectorCantidadProducto() {
 
 function renderSelectorBebidas() {
   menuDinamico.innerHTML = `
-    <div class="form-pizza">
-      <h3>Selecciona tus bebidas</h3>
-      <div class="selector-bebidas">
+    <div class="form-pizza-moderno">
+      <div class="selector-header">
+        <div class="selector-icono">🥤</div>
+        <h3 class="selector-titulo">Selecciona tus bebidas</h3>
+        <p class="selector-subtitulo">Elige las bebidas que acompañarán tu pedido</p>
+      </div>
+      
+      <div class="selector-bebidas-moderno">
         ${bebidasDisponibles.map((b, i) => `
-          <label style="display:block;margin-bottom:15px;padding:10px;border:1px solid #ddd;border-radius:5px;">
-            <input type="checkbox" class="chk-bebida" value="${b.nombre}" data-tipo="${b.tipo || 'simple'}" data-index="${i}"> 
-            <strong>${b.nombre}</strong>
-            ${b.tipo === 'jugos' ? `<span class="precio">$${b.tipos[0].precio.toLocaleString()} - $${b.tipos[1].precio.toLocaleString()}</span>` : 
-              b.tipo === 'limonadas' ? `<span class="precio">$${b.precio.toLocaleString()}</span>` :
-              `<span class="precio">$${b.precio.toLocaleString()}</span>`}
-          </label>
+          <div class="bebida-card" data-index="${i}">
+            <div class="bebida-card-content">
+              <div class="bebida-checkbox">
+                <input type="checkbox" class="chk-bebida" value="${b.nombre}" data-tipo="${b.tipo || 'simple'}" data-index="${i}">
+                <div class="checkbox-custom"></div>
+              </div>
+              <div class="bebida-icono-grande">${getBebidaIcono(b.tipo)}</div>
+              <div class="bebida-info">
+                <h4 class="bebida-nombre-moderno">${b.nombre}</h4>
+                <div class="bebida-descripcion">${getBebidaDescripcion(b.tipo)}</div>
+                <div class="bebida-precio-moderno">
+                  ${b.tipo === 'jugos' ? `$${b.tipos[0].precio.toLocaleString()} - $${b.tipos[1].precio.toLocaleString()}` : 
+                    b.tipo === 'limonadas' ? `$${b.precio.toLocaleString()}` :
+                    `$${b.precio.toLocaleString()}`}
+                </div>
+              </div>
+              <div class="bebida-arrow">→</div>
+            </div>
+          </div>
         `).join('')}
       </div>
-      <label>Cantidad:
-        <input type="number" id="cantidad-bebidas" min="1" value="1">
-      </label>
-      <button id="btn-continuar-bebidas" style="margin-top: 20px; padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Continuar</button>
-      <button id="btn-volver-bebidas" class="btn-volver">← Volver</button>
+      
+      <div class="bebidas-cantidad-container">
+        <label class="cantidad-label">Cantidad de bebidas:</label>
+        <div class="cantidad-input-container">
+          <input type="number" id="cantidad-bebidas" min="1" value="1" class="cantidad-input-moderno">
+        </div>
+      </div>
+      
+      <div class="selector-botones">
+        <button id="btn-volver-bebidas" class="btn-secundario">
+          <span>←</span>
+          Volver
+        </button>
+        <button id="btn-continuar-bebidas" class="btn-principal">
+          <span>🥤</span>
+          Continuar
+        </button>
+      </div>
     </div>
   `;
   
-  // Event listeners para checkboxes
+  // Event listeners para checkboxes principales
   document.querySelectorAll('.chk-bebida').forEach(cb => {
     cb.addEventListener('change', function() {
       const tipo = this.getAttribute('data-tipo');
       const index = parseInt(this.getAttribute('data-index'));
       
+      console.log('Checkbox principal change event - tipo:', tipo, 'index:', index, 'checked:', this.checked);
+      
       if (this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
-        // Mostrar selector de sabores
+        console.log('Mostrando selector de sabores para:', tipo);
         mostrarSelectorSabores(tipo, index);
       } else if (!this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
-        // Limpiar todos los sabores y tipos seleccionados cuando se desmarca
+        console.log('Limpiando selector de sabores para:', tipo);
         limpiarSaboresSeleccionados(tipo, index);
       }
+      
+      // Actualizar la apariencia visual del checkbox custom
+      const bebidaCard = this.closest('.bebida-card');
+      const checkboxCustom = bebidaCard.querySelector('.checkbox-custom');
+      if (checkboxCustom) {
+        if (this.checked) {
+          checkboxCustom.style.backgroundColor = 'var(--dorado-pipers)';
+          checkboxCustom.style.borderColor = 'var(--dorado-pipers)';
+        } else {
+          checkboxCustom.style.backgroundColor = '#ffffff';
+          checkboxCustom.style.borderColor = 'var(--azul-pipers)';
+        }
+      }
+    });
+  });
+  
+  // Event listeners para las tarjetas de bebidas
+  document.querySelectorAll('.bebida-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      console.log('Bebida card clickeada, target:', e.target.tagName, 'class:', e.target.className);
+      
+      // No activar si se hace clic en el checkbox directamente o en elementos dentro del selector de sabores
+      if (e.target.type === 'checkbox' || e.target.closest('.selector-sabores-moderno') || e.target.classList.contains('selector-sabores-moderno')) {
+        console.log('Click ignorado - checkbox o selector de sabores');
+        return;
+      }
+      
+      // Solo verificar si el click está dentro del área del selector de sabores
+      // No bloquear el click si está en el área principal de la tarjeta
+      const selectorSabores = this.querySelector('.selector-sabores-moderno');
+      if (selectorSabores && e.target.closest('.selector-sabores-moderno')) {
+        console.log('Click ignorado - dentro del selector de sabores');
+        return;
+      }
+      
+      const checkbox = this.querySelector('.chk-bebida');
+      const wasChecked = checkbox.checked;
+      checkbox.checked = !wasChecked;
+      
+      console.log('Checkbox principal cambiado de', wasChecked, 'a', checkbox.checked);
+      
+      // Si se está deseleccionando, limpiar inmediatamente
+      if (!checkbox.checked) {
+        const tipo = checkbox.getAttribute('data-tipo');
+        const index = parseInt(checkbox.getAttribute('data-index'));
+        if (tipo === 'jugos' || tipo === 'limonadas') {
+          console.log('Deselección detectada, limpiando sabores inmediatamente');
+          limpiarSaboresSeleccionados(tipo, index);
+        }
+      }
+      
+      // Disparar el evento change del checkbox
+      const event = new Event('change');
+      checkbox.dispatchEvent(event);
     });
   });
   
@@ -510,27 +727,39 @@ function renderSelectorBebidas() {
     const seleccionadas = [];
     let hayError = false;
     
+    console.log('Bebidas marcadas:', bebidasMarcadas.length);
+    
     bebidasMarcadas.forEach(cb => {
-      if (hayError) return; // Si ya hay error, no procesar más
+      if (hayError) return;
       
       const tipo = cb.getAttribute('data-tipo');
       const index = parseInt(cb.getAttribute('data-index'));
       const bebida = bebidasDisponibles[index];
       
       if (tipo === 'jugos') {
-        // Buscar el contenedor específico de esta bebida
-        const label = cb.parentElement;
-        const selectorSabores = label.querySelector('.selector-sabores');
+        const bebidaCard = cb.closest('.bebida-card');
+        const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
         
         if (selectorSabores) {
+          console.log('Procesando selector de sabores para jugos');
+          const todosSabores = selectorSabores.querySelectorAll('.chk-sabor-jugo');
+          const todosTipos = selectorSabores.querySelectorAll('.chk-tipo-jugo');
+          console.log('Total de checkboxes de sabores encontrados:', todosSabores.length);
+          console.log('Total de checkboxes de tipos encontrados:', todosTipos.length);
+          
           const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-jugo:checked')).map(s => s.value);
           const tiposSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-tipo-jugo:checked')).map(t => t.value);
+          
+          console.log('Sabores seleccionados:', saboresSeleccionados);
+          console.log('Tipos seleccionados:', tiposSeleccionados);
           
           if (saboresSeleccionados.length === 0 || tiposSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor y un tipo para los jugos.');
             hayError = true;
             return;
           }
+          
+          console.log('Jugos seleccionados - Sabores:', saboresSeleccionados, 'Tipos:', tiposSeleccionados);
           
           seleccionadas.push({
             nombre: bebida.nombre,
@@ -541,18 +770,25 @@ function renderSelectorBebidas() {
           });
         }
       } else if (tipo === 'limonadas') {
-        // Buscar el contenedor específico de esta bebida
-        const label = cb.parentElement;
-        const selectorSabores = label.querySelector('.selector-sabores');
+        const bebidaCard = cb.closest('.bebida-card');
+        const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
         
         if (selectorSabores) {
+          console.log('Procesando selector de sabores para limonadas');
+          const todosSabores = selectorSabores.querySelectorAll('.chk-sabor-limonada');
+          console.log('Total de checkboxes de sabores de limonada encontrados:', todosSabores.length);
+          
           const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-limonada:checked')).map(s => s.value);
+          
+          console.log('Sabores de limonada seleccionados:', saboresSeleccionados);
           
           if (saboresSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor para las limonadas.');
             hayError = true;
             return;
           }
+          
+          console.log('Limonadas seleccionadas - Sabores:', saboresSeleccionados);
           
           seleccionadas.push({
             nombre: bebida.nombre,
@@ -563,7 +799,6 @@ function renderSelectorBebidas() {
           });
         }
       } else {
-        // Bebidas simples (gaseosas)
         seleccionadas.push({
           nombre: bebida.nombre,
           tipo: 'simple',
@@ -574,8 +809,10 @@ function renderSelectorBebidas() {
     });
     
     if (hayError || seleccionadas.length === 0) {
-      return; // No continuar si hay errores
+      return;
     }
+    
+    console.log('Seleccionadas finales:', seleccionadas);
     
     pedidoActual.detalles.bebidas = seleccionadas;
     pedidoActual.detalles.cantidad = document.getElementById('cantidad-bebidas').value;
@@ -587,29 +824,38 @@ function renderSelectorBebidas() {
 
 function mostrarSelectorSabores(tipo, index) {
   const bebida = bebidasDisponibles[index];
-  const checkbox = document.querySelector(`[data-tipo="${tipo}"][data-index="${index}"]`);
-  const label = checkbox.parentElement;
+  const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
+  const bebidaCard = checkbox.closest('.bebida-card');
   
   let contenidoSabores = '';
   
   if (tipo === 'jugos') {
     contenidoSabores = `
-      <div class="selector-sabores" data-bebida-index="${index}" style="margin-top:10px;padding:10px;background:#f9f9f9;border-radius:5px;">
-        <h4>Sabores disponibles:</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div>
-            <strong>Sabores:</strong><br>
+      <div class="selector-sabores-moderno" data-bebida-index="${index}">
+        <div class="sabores-header">
+          <h4>Sabores disponibles:</h4>
+          <button class="btn-limpiar-seleccion" onclick="limpiarSeleccionBebida('${tipo}', ${index})">
+            ✕ Limpiar selección
+          </button>
+        </div>
+        <div class="sabores-grid">
+          <div class="sabores-columna">
+            <h5>Sabores:</h5>
             ${bebida.sabores.map(sabor => `
-              <label style="display:block;margin:5px 0;">
-                <input type="checkbox" class="chk-sabor-jugo" data-bebida-index="${index}" value="${sabor}"> ${sabor}
+              <label class="sabor-checkbox-moderno">
+                <input type="checkbox" class="chk-sabor-jugo" data-bebida-index="${index}" value="${sabor}">
+                <span class="checkbox-custom-sabor"></span>
+                <span class="sabor-texto">${sabor}</span>
               </label>
             `).join('')}
           </div>
-          <div>
-            <strong>Tipo:</strong><br>
+          <div class="sabores-columna">
+            <h5>Tipo:</h5>
             ${bebida.tipos.map(tipo => `
-              <label style="display:block;margin:5px 0;">
-                <input type="checkbox" class="chk-tipo-jugo" data-bebida-index="${index}" value="${tipo.nombre}" data-precio="${tipo.precio}"> ${tipo.nombre} ($${tipo.precio.toLocaleString()})
+              <label class="sabor-checkbox-moderno">
+                <input type="checkbox" class="chk-tipo-jugo" data-bebida-index="${index}" value="${tipo.nombre}" data-precio="${tipo.precio}">
+                <span class="checkbox-custom-sabor"></span>
+                <span class="sabor-texto">${tipo.nombre} ($${tipo.precio.toLocaleString()})</span>
               </label>
             `).join('')}
           </div>
@@ -618,36 +864,202 @@ function mostrarSelectorSabores(tipo, index) {
     `;
   } else if (tipo === 'limonadas') {
     contenidoSabores = `
-      <div class="selector-sabores" data-bebida-index="${index}" style="margin-top:10px;padding:10px;background:#f9f9f9;border-radius:5px;">
-        <h4>Sabores disponibles:</h4>
-        ${bebida.sabores.map(sabor => `
-          <label style="display:block;margin:5px 0;">
-            <input type="checkbox" class="chk-sabor-limonada" data-bebida-index="${index}" value="${sabor}"> ${sabor}
-          </label>
-        `).join('')}
+      <div class="selector-sabores-moderno" data-bebida-index="${index}">
+        <div class="sabores-header">
+          <h4>Sabores disponibles:</h4>
+          <button class="btn-limpiar-seleccion" onclick="limpiarSeleccionBebida('${tipo}', ${index})">
+            ✕ Limpiar selección
+          </button>
+        </div>
+        <div class="sabores-grid">
+          <div class="sabores-columna">
+            ${bebida.sabores.map(sabor => `
+              <label class="sabor-checkbox-moderno">
+                <input type="checkbox" class="chk-sabor-limonada" data-bebida-index="${index}" value="${sabor}">
+                <span class="checkbox-custom-sabor"></span>
+                <span class="sabor-texto">${sabor}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
       </div>
     `;
   }
   
   // Remover selector anterior si existe
-  const selectorAnterior = label.querySelector('.selector-sabores');
+  const selectorAnterior = bebidaCard.querySelector('.selector-sabores-moderno');
   if (selectorAnterior) {
-    selectorAnterior.remove();
+    console.log('Removiendo selector anterior antes de crear uno nuevo');
+    // Remover todos los event listeners antes de eliminar
+    const newSelector = selectorAnterior.cloneNode(true);
+    selectorAnterior.parentNode.replaceChild(newSelector, selectorAnterior);
+    newSelector.remove();
   }
   
   // Agregar nuevo selector
-  label.insertAdjacentHTML('beforeend', contenidoSabores);
+  bebidaCard.insertAdjacentHTML('beforeend', contenidoSabores);
+  console.log('Selector de sabores agregado al DOM');
+  console.log('Contenido HTML generado:', contenidoSabores);
+  
+  // Agregar event listeners para los checkboxes de sabores
+  const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
+  console.log('Selector de sabores encontrado:', selectorSabores);
+  if (selectorSabores) {
+    console.log('HTML del selector de sabores:', selectorSabores.outerHTML);
+  }
+  if (selectorSabores) {
+    // Marcar el selector como activo
+    selectorSabores.setAttribute('data-active', 'true');
+    
+    // Prevenir que los clicks en el selector se propaguen al bebida-card
+    selectorSabores.addEventListener('click', function(e) {
+      e.stopPropagation();
+      console.log('Click en selector de sabores - propagación detenida');
+    });
+    
+    // Event listeners específicos para los checkboxes de sabores
+    const checkboxesSabores = selectorSabores.querySelectorAll('input[type="checkbox"]');
+    console.log('Checkboxes de sabores encontrados:', checkboxesSabores.length);
+    
+    checkboxesSabores.forEach((checkbox, index) => {
+      console.log(`Configurando checkbox ${index}:`, checkbox.value, checkbox.className);
+      
+      // Event listener para el checkbox oculto
+      checkbox.addEventListener('change', function(e) {
+        e.stopPropagation();
+        console.log('Checkbox de sabor cambiado:', this.value, 'checked:', this.checked, 'class:', this.className);
+      });
+      
+      // Event listener para el label completo (área clickeable)
+      const label = checkbox.closest('.sabor-checkbox-moderno');
+      if (label) {
+        console.log(`Configurando label para checkbox ${index}:`, label);
+        
+        label.addEventListener('click', function(e) {
+          console.log('Click en label detectado:', checkbox.value);
+          e.stopPropagation();
+          e.preventDefault();
+          
+          // Toggle el checkbox manualmente
+          const nuevoEstado = !checkbox.checked;
+          checkbox.checked = nuevoEstado;
+          
+          // Actualizar la apariencia visual inmediatamente
+          const checkboxCustom = label.querySelector('.checkbox-custom-sabor');
+          if (checkboxCustom) {
+            if (nuevoEstado) {
+              checkboxCustom.style.backgroundColor = 'var(--dorado-pipers)';
+              checkboxCustom.style.borderColor = 'var(--dorado-pipers)';
+            } else {
+              checkboxCustom.style.backgroundColor = '#ffffff';
+              checkboxCustom.style.borderColor = 'var(--azul-pipers)';
+            }
+          }
+          
+          // Disparar el evento change
+          const changeEvent = new Event('change', { bubbles: true });
+          checkbox.dispatchEvent(changeEvent);
+          
+          console.log('Label de sabor clickeado:', checkbox.value, 'nuevo estado:', checkbox.checked);
+        });
+        
+        // Event listener específico para el checkbox custom (área visual)
+        const checkboxCustom = label.querySelector('.checkbox-custom-sabor');
+        if (checkboxCustom) {
+          console.log(`Configurando checkbox custom para checkbox ${index}:`, checkboxCustom);
+          
+          checkboxCustom.addEventListener('click', function(e) {
+            console.log('Click en checkbox custom detectado:', checkbox.value);
+            e.stopPropagation();
+            e.preventDefault();
+            
+            // Toggle el checkbox manualmente
+            const nuevoEstado = !checkbox.checked;
+            checkbox.checked = nuevoEstado;
+            
+            // Actualizar la apariencia visual inmediatamente
+            if (nuevoEstado) {
+              checkboxCustom.style.backgroundColor = 'var(--dorado-pipers)';
+              checkboxCustom.style.borderColor = 'var(--dorado-pipers)';
+            } else {
+              checkboxCustom.style.backgroundColor = '#ffffff';
+              checkboxCustom.style.borderColor = 'var(--azul-pipers)';
+            }
+            
+            // Disparar el evento change
+            const changeEvent = new Event('change', { bubbles: true });
+            checkbox.dispatchEvent(changeEvent);
+            
+            console.log('Checkbox custom clickeado:', checkbox.value, 'nuevo estado:', checkbox.checked);
+          });
+        } else {
+          console.log(`No se encontró checkbox custom para checkbox ${index}`);
+        }
+      } else {
+        console.log(`No se encontró label para checkbox ${index}`);
+      }
+    });
+    
+    // Event listener para toda el área del selector
+    const saboresGrid = selectorSabores.querySelector('.sabores-grid');
+    if (saboresGrid) {
+      saboresGrid.addEventListener('click', function(e) {
+        e.stopPropagation();
+        console.log('Click en grid de sabores - propagación detenida');
+      });
+    }
+  }
+}
+
+// Función global para limpiar selección de bebida (llamada desde el botón)
+function limpiarSeleccionBebida(tipo, index) {
+  console.log('Función global limpiarSeleccionBebida llamada para:', tipo, 'index:', index);
+  
+  // Desmarcar el checkbox principal
+  const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
+  if (checkbox) {
+    checkbox.checked = false;
+    console.log('Checkbox principal desmarcado desde función global');
+  }
+  
+  // Limpiar los sabores seleccionados
+  limpiarSaboresSeleccionados(tipo, index);
 }
 
 function limpiarSaboresSeleccionados(tipo, index) {
-  const checkbox = document.querySelector(`[data-tipo="${tipo}"][data-index="${index}"]`);
-  const label = checkbox.parentElement;
+  const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
+  const bebidaCard = checkbox.closest('.bebida-card');
+  
+  console.log('Limpiando sabores seleccionados para:', tipo, 'index:', index);
   
   // Remover el selector de sabores
-  const selectorSabores = label.querySelector('.selector-sabores');
+  const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
   if (selectorSabores) {
-    selectorSabores.remove();
+    console.log('Removiendo selector de sabores existente');
+    // Remover todos los event listeners antes de eliminar
+    const newSelector = selectorSabores.cloneNode(true);
+    selectorSabores.parentNode.replaceChild(newSelector, selectorSabores);
+    newSelector.remove();
+  } else {
+    console.log('No se encontró selector de sabores para remover');
   }
+  
+  // Asegurar que el checkbox principal esté desmarcado
+  if (checkbox) {
+    checkbox.checked = false;
+    console.log('Checkbox principal desmarcado');
+  }
+  
+  // Resetear cualquier estado interno que pueda estar causando el "congelamiento"
+  setTimeout(() => {
+    console.log('Reseteando estado interno después de limpiar sabores');
+    // Forzar un re-render del estado visual
+    const checkboxCustom = bebidaCard.querySelector('.checkbox-custom');
+    if (checkboxCustom) {
+      checkboxCustom.style.backgroundColor = '#ffffff';
+      checkboxCustom.style.borderColor = 'var(--azul-pipers)';
+    }
+  }, 100);
 }
 
 function agregarAlPedido() {
@@ -658,25 +1070,31 @@ function agregarAlPedido() {
     const bebidas = pedidoActual.detalles.bebidas;
     const cantidad = parseInt(pedidoActual.detalles.cantidad) || 1;
     
+    console.log('Procesando bebidas en agregarAlPedido:', bebidas);
+    
     bebidas.forEach(bebida => {
       if (bebida.tipo === 'jugos') {
-        // Para jugos, crear un ítem por cada combinación de sabor y tipo
+        // Para jugos, crear un ítem por cada combinación de sabor y tipo SELECCIONADOS
+        // bebida.sabores y bebida.tipos ya contienen solo los seleccionados
         bebida.sabores.forEach(sabor => {
           bebida.tipos.forEach(tipoSeleccionado => {
             const tipoBebida = bebida.bebida.tipos.find(t => t.nombre === tipoSeleccionado);
-            pedido.push({
-              categoria: 'Bebidas',
-              tamano: 'unidad',
-              descripcion: `Jugo de ${sabor} ${tipoSeleccionado}`,
-              cantidad: cantidad,
-              cantidadOriginal: cantidad,
-              precio: tipoBebida.precio,
-              bebidas: []
-            });
+            if (tipoBebida) {
+              pedido.push({
+                categoria: 'Bebidas',
+                tamano: 'unidad',
+                descripcion: `Jugo de ${sabor} ${tipoSeleccionado}`,
+                cantidad: cantidad,
+                cantidadOriginal: cantidad,
+                precio: tipoBebida.precio,
+                bebidas: []
+              });
+            }
           });
         });
       } else if (bebida.tipo === 'limonadas') {
-        // Para limonadas, crear un ítem por cada sabor
+        // Para limonadas, crear un ítem por cada sabor SELECCIONADO
+        // bebida.sabores ya contiene solo los seleccionados
         bebida.sabores.forEach(sabor => {
           pedido.push({
             categoria: 'Bebidas',
@@ -1259,6 +1677,16 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarSeccion('menu');
         renderSelectorTipoProducto();
       }
+    });
+  }
+  
+  // Evento para el botón "Realizar Pedido"
+  const realizarPedidoBtn = document.getElementById('realizar-pedido');
+  if (realizarPedidoBtn) {
+    realizarPedidoBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      mostrarSeccion('menu');
+      renderSelectorTipoProducto();
     });
   }
 }); 

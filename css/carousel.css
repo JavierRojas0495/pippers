@@ -1,0 +1,309 @@
+/* ===== CARRUSELES ===== */
+
+/* Carrusel Coverflow */
+.coverflow-carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 32px auto 32px auto;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.coverflow-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 220px;
+  perspective: 1200px;
+  position: relative;
+}
+
+.coverflow-slide {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  transform: translateX(-50%);
+  transition: transform 0.5s cubic-bezier(.4,2,.6,1), opacity 0.5s;
+  opacity: 0.5;
+  z-index: 1;
+  box-shadow: 0 4px 24px #28529333;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  border: 3px solid #285293;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coverflow-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.coverflow-slide.active {
+  opacity: 1;
+  z-index: 3;
+  transform: translateX(-50%) scale(1.15) rotateY(0deg);
+  border: 3px solid #ffd700;
+  box-shadow: 0 8px 32px #28529355;
+}
+
+.coverflow-slide.left {
+  transform: translateX(-120%) scale(0.9) rotateY(30deg);
+  z-index: 2;
+  opacity: 0.7;
+}
+
+.coverflow-slide.right {
+  transform: translateX(20%) scale(0.9) rotateY(-30deg);
+  z-index: 2;
+  opacity: 0.7;
+}
+
+.coverflow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--azul-pipers);
+  color: var(--dorado-pipers);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 2em;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 8px #28529333;
+  transition: background 0.2s, color 0.2s;
+}
+
+.coverflow-btn:hover {
+  background: var(--dorado-pipers);
+  color: var(--azul-pipers);
+}
+
+.coverflow-btn-prev {
+  left: -24px;
+}
+
+.coverflow-btn-next {
+  right: -24px;
+}
+
+/* Carrusel de Promociones */
+.promo-carrusel-container {
+  background: linear-gradient(120deg, #ffd700 60%, #fff 100%);
+  box-shadow: 0 4px 20px rgba(40, 82, 147, 0.15);
+  border-radius: 20px;
+  padding: 40px 30px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 50px auto;
+  animation: fadeInUp 1.2s;
+  justify-content: center;
+  max-width: 800px;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-carrusel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.promo-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 100%;
+  transition: opacity 0.3s;
+}
+
+.promo-slide:not(.active) {
+  display: none;
+}
+
+.promo-icono {
+  font-size: 3em;
+  margin-bottom: 16px;
+  color: var(--azul-pipers);
+}
+
+.promo-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.promo-content h3 {
+  color: var(--azul-pipers);
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.promo-content p {
+  color: var(--azul-pipers);
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.promo-precio {
+  color: var(--dorado-pipers);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.promo-btn-container {
+  margin-top: 16px;
+}
+
+.promo-btn {
+  background: var(--azul-pipers);
+  color: var(--dorado-pipers);
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(40, 82, 147, 0.2);
+}
+
+.promo-btn:hover {
+  background: var(--dorado-pipers);
+  color: var(--azul-pipers);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 82, 147, 0.3);
+}
+
+.promo-carrusel-btn {
+  background: var(--dorado-pipers);
+  color: var(--azul-pipers);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.8em;
+  cursor: pointer;
+  margin: 0 12px;
+  box-shadow: 0 4px 12px rgba(40, 82, 147, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.promo-carrusel-btn:hover {
+  background: var(--azul-pipers);
+  color: var(--dorado-pipers);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(40, 82, 147, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .coverflow-carousel-container {
+    max-width: 98vw;
+    height: 140px;
+  }
+  .coverflow-carousel {
+    height: 140px;
+  }
+  .coverflow-slide {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+  }
+  .coverflow-slide img {
+    border-radius: 8px;
+  }
+  .coverflow-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2em;
+  }
+  .coverflow-btn-prev {
+    left: -12px;
+  }
+  .coverflow-btn-next {
+    right: -12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .promo-carrusel-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px 20px;
+    border-radius: 15px;
+    margin: 30px auto;
+  }
+  
+  .promo-content {
+    max-width: 100%;
+  }
+  
+  .promo-content h3 {
+    font-size: 1.3em;
+  }
+  
+  .promo-content p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .promo-carrusel-container {
+    max-width: 95vw;
+    margin: 20px auto;
+    padding: 25px 15px;
+    border-radius: 12px;
+    gap: 15px;
+  }
+  
+  .promo-icono {
+    font-size: 2.5em;
+    margin-bottom: 12px;
+  }
+  
+  .promo-content h3 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  
+  .promo-content p {
+    font-size: 0.95em;
+    margin-bottom: 15px;
+  }
+  
+  .promo-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  
+  .promo-carrusel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.5em;
+    margin: 0 8px;
+  }
+} 

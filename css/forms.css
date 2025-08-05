@@ -1,0 +1,220 @@
+/* ===== FORMULARIOS Y SELECTORES ===== */
+
+/* Selectores de tipo y tamaño */
+.selector-tipo-producto,
+.selector-tamano-pizza {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-tipo-pizza,
+.btn-tamano-pizza {
+    background: linear-gradient(135deg, #285293 0%, #1d3a6b 100%);
+    color: #ffd700;
+    border: none;
+    padding: 20px 16px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(40,82,147,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 100px;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-tipo-pizza:hover,
+.btn-tamano-pizza:hover {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #285293;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(40,82,147,0.3);
+}
+
+/* Selector de ingredientes */
+.selector-ingredientes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.ingrediente-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.ingrediente-checkbox:hover {
+    background: #e9ecef;
+    border-color: #285293;
+}
+
+.ingrediente-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #285293;
+    cursor: pointer;
+}
+
+.ingrediente-texto {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Selector de bebidas */
+.selector-bebidas {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #28529333;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    background: #f3ebd3;
+}
+
+.selector-bebidas label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.selector-bebidas label:hover {
+    background: #28529311;
+}
+
+.selector-bebidas input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #285293;
+}
+
+/* Botón de enviar */
+.btn-enviar {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(39,174,96,0.15);
+    margin-top: 16px;
+    font-size: 1.1em;
+}
+
+.btn-enviar:hover {
+    background: #229954;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(39,174,96,0.25);
+}
+
+/* Estados deshabilitados */
+.ingrediente-checkbox input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ingrediente-checkbox input[type="checkbox"]:disabled + .ingrediente-texto {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.ingrediente-checkbox.disabled {
+    background: #f5f5f5;
+    border-color: #ddd;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Mensaje de error */
+#msg-error-ingredientes {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .selector-tipo-producto,
+    .selector-tamano-pizza {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+    
+    .btn-tipo-pizza,
+    .btn-tamano-pizza {
+        min-height: 90px;
+    }
+}
+
+@media (max-width: 600px) {
+    .selector-tipo-producto,
+    .selector-tamano-pizza {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .btn-tipo-pizza,
+    .btn-tamano-pizza {
+        min-height: 80px;
+        padding: 16px 12px;
+    }
+    
+    .producto-icono {
+        font-size: 2em;
+    }
+    
+    .producto-nombre {
+        font-size: 1em;
+    }
+    
+    .form-pizza, form, #resumen-pedido {
+        padding: 20px;
+        margin: 15px 0;
+    }
+    
+    .selector-ingredientes {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .ingrediente-checkbox {
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+    
+    .ingrediente-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+} 

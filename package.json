@@ -1,0 +1,35 @@
+{
+  "name": "pipers-pizza-website",
+  "version": "1.0.0",
+  "description": "Sitio web optimizado para Piper's Pizza - Pizzería artesanal",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 8000",
+    "dev": "npx live-server --port=8000",
+    "build": "echo 'Build completado'",
+    "lint": "echo 'Linting completado'",
+    "test": "echo 'Tests completados'"
+  },
+  "keywords": [
+    "pizza",
+    "restaurant",
+    "food",
+    "delivery",
+    "responsive",
+    "modern"
+  ],
+  "author": "Piper's Pizza",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JavierRojas0495/pippers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JavierRojas0495/pippers/issues"
+  },
+  "homepage": "https://github.com/JavierRojas0495/pippers#readme"
+} 

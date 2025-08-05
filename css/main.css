@@ -1,0 +1,151 @@
+/* Archivo CSS principal de Piper's Pizza */
+
+/* Importar variables y estilos base */
+@import url('./variables.css');
+@import url('./base.css');
+
+/* Importar componentes específicos */
+@import url('./header.css');
+@import url('./hero.css');
+@import url('./menu.css');
+@import url('./carousel.css');
+@import url('./forms.css');
+@import url('./buttons.css');
+@import url('./footer.css');
+@import url('./responsive.css');
+
+/* Estilos adicionales específicos del sitio */
+
+/* Precio destacado */
+.precio {
+    color: var(--azul-pipers);
+    font-weight: var(--peso-bold);
+    font-size: var(--tamano-fuente-grande);
+}
+
+/* Iconos circulares */
+.otros-icono-circulo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradiente-azul);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--espaciado-md);
+    box-shadow: var(--sombra-azul);
+    transition: var(--transicion-media);
+}
+
+.otros-icono-circulo:hover {
+    transform: scale(1.1);
+    box-shadow: var(--sombra-fuerte);
+}
+
+.otros-icono {
+    font-size: 24px;
+    color: var(--blanco);
+}
+
+/* Separadores decorativos */
+.separador-decorativo {
+    text-align: center;
+    margin: var(--espaciado-xl) 0;
+    position: relative;
+}
+
+.separador-decorativo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradiente-azul);
+    z-index: 1;
+}
+
+.separador-decorativo span {
+    background: var(--blanco);
+    padding: 0 var(--espaciado-lg);
+    color: var(--dorado-pipers);
+    font-size: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Botón de scroll to top */
+#btn-scroll-top {
+    position: fixed;
+    bottom: var(--espaciado-xl);
+    right: var(--espaciado-xl);
+    z-index: var(--z-fixed);
+    background: var(--azul-pipers);
+    color: var(--dorado-pipers);
+    border: none;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    box-shadow: var(--sombra-azul);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transicion-media);
+}
+
+#btn-scroll-top:hover {
+    background: var(--azul-claro);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+/* Estados de carga para imágenes */
+img.loading {
+    background: var(--gris-claro);
+    min-height: 200px;
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Modo oscuro (futuro) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --beige-pipers: #2a2a2a;
+        --blanco: #1a1a1a;
+        --gris-claro: #333;
+        --gris-medio: #555;
+        --gris-oscuro: #ccc;
+    }
+}
+
+/* Impresión */
+@media print {
+    .navbar-header,
+    .promo-carrusel-container,
+    #btn-scroll-top,
+    .footer-social {
+        display: none !important;
+    }
+    
+    main {
+        box-shadow: none;
+        margin: 0;
+        padding: var(--espaciado-md);
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+} 
