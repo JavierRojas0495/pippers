@@ -6,11 +6,30 @@ export const APP_CONFIG = {
     company: {
         name: "Piper's Pizza",
         slogan: "Las mejores pizzas artesanales, con los ingredientes más frescos y deliciosos. ¡Haz tu pedido ahora!",
-        phone: "+57 320 718 2705",
+        phone: {
+            full: "+57 320 718 2705",
+            display: "320 718 2705"
+        },
         email: "info@piperspizza.com",
         address: "Cl. 55A #47-08, Navarro, Cali, Valle del Cauca",
-        whatsapp: "573207182705",
+        whatsapp: {
+            number: "573207182705",
+            url: "https://wa.me/573207182705"
+        },
         mapsUrl: "https://maps.app.goo.gl/dWiA2RXapeMZohcBA"
+    },
+
+    // Textos del footer
+    footer: {
+        tiktok: {
+            text: "TikTok: PIPER'S PIZZA"
+        },
+        instagram: {
+            text: "Instagram: @PIPERSPIZZA01"
+        },
+        whatsapp: {
+            text: "WhatsApp: 320 718 2705"
+        }
     },
 
     // Configuración de la API y servicios

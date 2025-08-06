@@ -216,23 +216,17 @@
                     <div class="contacto-info">
                         <div class="contacto-item">
                             <span class="contacto-label">📱 WhatsApp:</span>
-                            <a href="https://wa.me/573207182705" target="_blank" class="contacto-link">320 718 2705</a>
+                            <a href="#" target="_blank" class="contacto-link" data-config="company.whatsapp.url" data-text="company.phone.display">Cargando...</a>
                         </div>
                         <div class="contacto-item">
                             <span class="contacto-label">📍 Dirección:</span>
-                            <a href="https://maps.app.goo.gl/dWiA2RXapeMZohcBA" target="_blank" class="contacto-link">Cl. 55A #47-08, Navarro, Cali, Valle del Cauca</a>
+                            <a href="#" target="_blank" class="contacto-link" data-config="company.mapsUrl" data-text="company.address">Cargando...</a>
                         </div>
                         <div class="contacto-item horarios-item">
                             <span class="contacto-label">🕒 Horarios:</span>
-                            <div class="horarios-grid">
-                                <div class="horario-bloque">
-                                    <span class="dias">Lunes a Viernes</span>
-                                    <span class="horas">06:00 PM - 10:30 PM</span>
-                                </div>
-                                <div class="horario-bloque">
-                                    <span class="dias">Sábado, Domingo y Festivos</span>
-                                    <span class="horas">06:00 PM - 11:30 PM</span>
-                                </div>
+                            <div class="horarios-grid" data-config="hours">
+                                <!-- Los horarios se cargan dinámicamente -->
+                                <div class="loading-placeholder">Cargando horarios...</div>
                             </div>
                         </div>
                     </div>
@@ -243,15 +237,15 @@
                     <div class="contacto-icono">🌐</div>
                     <h3>Síguenos en Redes</h3>
                     <div class="redes-sociales">
-                        <a href="https://www.tiktok.com/@pipers.pizza3" target="_blank" class="red-social-link">
+                        <a href="#" target="_blank" class="red-social-link" data-config="social.tiktok.url">
                             <img src="img/RedesSociales/tik-tok.png" alt="TikTok" class="red-social-icono">
-                            <span>@pipers.pizza3</span>
+                            <span data-text="social.tiktok.username">Cargando...</span>
                         </a>
-                        <a href="https://www.instagram.com/piperspizza01" target="_blank" class="red-social-link">
+                        <a href="#" target="_blank" class="red-social-link" data-config="social.instagram.url">
                             <img src="img/RedesSociales/instagram.png" alt="Instagram" class="red-social-icono">
-                            <span>@piperspizza01</span>
+                            <span data-text="social.instagram.username">Cargando...</span>
                         </a>
-                        <a href="https://wa.me/573207182705" target="_blank" class="red-social-link">
+                        <a href="#" target="_blank" class="red-social-link" data-config="social.whatsapp.url">
                             <img src="img/RedesSociales/whatsapp.png" alt="WhatsApp" class="red-social-icono">
                             <span>WhatsApp</span>
                         </a>
@@ -279,26 +273,26 @@
       <div class="footer-container footer-columna">
         <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.13_61ef9f11.jpg" alt="Logo Piper's Pizza" class="footer-logo">
         <div class="footer-social">
-          <a href="https://www.tiktok.com/@pipers.pizza3" target="_blank" rel="noopener" title="TikTok">
+          <a href="#" target="_blank" rel="noopener" title="TikTok" data-config="social.tiktok.url">
             <span class="icono-red">
               <img src="img/RedesSociales/tik-tok.png" alt="TikTok Piper's Pizza" class="icono-img-red">
             </span>
           </a>
-          <a href="https://www.instagram.com/piperspizza01" target="_blank" rel="noopener" title="Instagram">
+          <a href="#" target="_blank" rel="noopener" title="Instagram" data-config="social.instagram.url">
             <span class="icono-red">
               <img src="img/RedesSociales/instagram.png" alt="Instagram Piper's Pizza" class="icono-img-red">
             </span>
           </a>
-          <a href="https://wa.me/573207182705?text=Estoy%20interesado%20en%20Piper's%20Pizza" target="_blank" rel="noopener" title="WhatsApp">
+          <a href="#" target="_blank" rel="noopener" title="WhatsApp" data-config="social.whatsapp.url">
             <span class="icono-red">
               <img src="img/RedesSociales/whatsapp.png" alt="WhatsApp Piper's Pizza" class="icono-img-red">
             </span>
           </a>
         </div>
         <div class="footer-links">
-          <a href="https://www.tiktok.com/@pipers.pizza3" target="_blank" rel="noopener">TikTok: PIPER'S PIZZA</a>
-          <a href="https://www.instagram.com/piperspizza01" target="_blank" rel="noopener">Instagram: @PIPERSPIZZA01</a>
-          <a href="https://wa.me/573207182705?text=Estoy%20interesado%20en%20Piper's%20Pizza" target="_blank" rel="noopener">WhatsApp: 3207182705</a>
+          <a href="#" target="_blank" rel="noopener" data-config="social.tiktok.url" data-text="footer.tiktok.text">Cargando...</a>
+          <a href="#" target="_blank" rel="noopener" data-config="social.instagram.url" data-text="footer.instagram.text">Cargando...</a>
+          <a href="#" target="_blank" rel="noopener" data-config="social.whatsapp.url" data-text="footer.whatsapp.text">Cargando...</a>
         </div>
         <p class="footer-copy">&copy; 2025 Piper's Pizza. Todos los derechos reservados.</p>
       </div>
