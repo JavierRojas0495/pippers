@@ -399,4 +399,113 @@
         font-size: 1.05em;
         border-radius: 30px;
     }
+}
+
+/* Estilos para horarios organizados */
+.horarios-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.horario-bloque {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(40, 82, 147, 0.1);
+    min-height: 85px;
+    text-align: center;
+}
+
+.horario-bloque:hover {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border-color: var(--azul-pipers);
+    box-shadow: 0 5px 15px rgba(40, 82, 147, 0.2);
+    transform: translateY(-3px);
+}
+
+.dias {
+    font-weight: 600;
+    color: var(--azul-pipers);
+    font-size: 0.85em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    line-height: 1.3;
+}
+
+.horas {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95em;
+    background: linear-gradient(145deg, #fff 0%, #f8f9fa 100%);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    margin-top: auto;
+}
+
+/* Responsive para horarios */
+@media (min-width: 768px) {
+    .horarios-grid {
+        gap: 20px;
+    }
+    
+    .horario-bloque {
+        padding: 18px 24px;
+        min-height: 95px;
+    }
+    
+    .dias {
+        font-size: 0.9em;
+        margin-bottom: 10px;
+    }
+    
+    .horas {
+        font-size: 1em;
+        padding: 10px 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .horarios-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .horario-bloque {
+        min-height: 75px;
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .horario-bloque {
+        padding: 12px 15px;
+        min-height: 70px;
+    }
+    
+    .dias {
+        font-size: 0.8em;
+        margin-bottom: 6px;
+    }
+    
+    .horas {
+        font-size: 0.85em;
+        padding: 6px 10px;
+    }
 } 
