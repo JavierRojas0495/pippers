@@ -5,11 +5,12 @@ export const APP_CONFIG = {
     // Información de la empresa
     company: {
         name: "Piper's Pizza",
-        slogan: "Las mejores pizzas artesanales",
-        phone: "+57 300 123 4567",
+        slogan: "Las mejores pizzas artesanales, con los ingredientes más frescos y deliciosos. ¡Haz tu pedido ahora!",
+        phone: "+57 320 718 2705",
         email: "info@piperspizza.com",
-        address: "Calle Principal #123, Ciudad",
-        whatsapp: "573001234567"
+        address: "Cl. 55A #47-08, Navarro, Cali, Valle del Cauca",
+        whatsapp: "573207182705",
+        mapsUrl: "https://maps.app.goo.gl/dWiA2RXapeMZohcBA"
     },
 
     // Configuración de la API y servicios
@@ -70,12 +71,13 @@ export const APP_CONFIG = {
     // Configuración de redes sociales
     social: {
         whatsapp: {
-            number: "573001234567",
-            message: "Hola, me gustaría hacer un pedido"
+            number: "573207182705",
+            message: "Estoy interesado en Piper's Pizza",
+            url: "https://wa.me/573207182705"
         },
         instagram: {
-            username: "@pipers.pizza",
-            url: "https://www.instagram.com/pipers.pizza"
+            username: "@piperspizza01",
+            url: "https://www.instagram.com/piperspizza01"
         },
         tiktok: {
             username: "@pipers.pizza3",
@@ -85,13 +87,16 @@ export const APP_CONFIG = {
 
     // Configuración de horarios
     hours: {
-        monday: { open: "11:00", close: "22:00" },
-        tuesday: { open: "11:00", close: "22:00" },
-        wednesday: { open: "11:00", close: "22:00" },
-        thursday: { open: "11:00", close: "22:00" },
-        friday: { open: "11:00", close: "23:00" },
-        saturday: { open: "12:00", close: "23:00" },
-        sunday: { open: "12:00", close: "21:00" }
+        weekdays: {
+            days: "Lunes a Viernes",
+            open: "06:00 PM",
+            close: "10:30 PM"
+        },
+        weekends: {
+            days: "Sábado, Domingo y Festivos",
+            open: "06:00 PM",
+            close: "11:30 PM"
+        }
     },
 
     // Configuración de delivery

@@ -1,3 +1,150 @@
+// ===== CONFIGURACIÓN GLOBAL Y DATOS DINÁMICOS =====
+
+// Importar configuración
+let APP_CONFIG = null;
+
+// Función para cargar configuración
+async function cargarConfiguracion() {
+  try {
+    const module = await import('./js/config.js');
+    APP_CONFIG = module.default;
+    aplicarConfiguracionAlHTML();
+  } catch (error) {
+    console.warn('No se pudo cargar la configuración, usando valores por defecto');
+    usarConfiguracionPorDefecto();
+  }
+}
+
+// Configuración por defecto (fallback)
+function usarConfiguracionPorDefecto() {
+  APP_CONFIG = {
+    company: {
+      name: "Piper's Pizza",
+      phone: "+57 320 718 2705",
+      address: "Cl. 55A #47-08, Navarro, Cali, Valle del Cauca",
+      whatsapp: "573207182705",
+      mapsUrl: "https://maps.app.goo.gl/dWiA2RXapeMZohcBA"
+    },
+    social: {
+      whatsapp: {
+        number: "573207182705",
+        url: "https://wa.me/573207182705"
+      },
+      instagram: {
+        username: "@piperspizza01",
+        url: "https://www.instagram.com/piperspizza01"
+      },
+      tiktok: {
+        username: "@pipers.pizza3",
+        url: "https://www.tiktok.com/@pipers.pizza3"
+      }
+    },
+    hours: {
+      weekdays: {
+        days: "Lunes a Viernes",
+        open: "06:00 PM",
+        close: "10:30 PM"
+      },
+      weekends: {
+        days: "Sábado, Domingo y Festivos",
+        open: "06:00 PM",
+        close: "11:30 PM"
+      }
+    }
+  };
+  aplicarConfiguracionAlHTML();
+}
+
+// Función para aplicar configuración al HTML
+function aplicarConfiguracionAlHTML() {
+  if (!APP_CONFIG) return;
+
+  // Actualizar información de contacto
+  actualizarContacto();
+  // Actualizar horarios
+  actualizarHorarios();
+  // Actualizar redes sociales
+  actualizarRedesSociales();
+}
+
+// Función para actualizar información de contacto
+function actualizarContacto() {
+  const config = APP_CONFIG.company;
+  
+  // Actualizar WhatsApp
+  const whatsappLinks = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]');
+  whatsappLinks.forEach(link => {
+    link.href = `https://wa.me/${config.whatsapp}`;
+    if (link.textContent.includes('320')) {
+      link.textContent = config.phone.replace('+57 ', '');
+    }
+  });
+
+  // Actualizar dirección
+  const direccionLinks = document.querySelectorAll('a[href*="maps.app.goo.gl"]');
+  direccionLinks.forEach(link => {
+    link.href = config.mapsUrl;
+    if (link.textContent.includes('Cl.')) {
+      link.textContent = config.address;
+    }
+  });
+}
+
+// Función para actualizar horarios dinámicamente
+function actualizarHorarios() {
+  const horariosGrid = document.querySelector('.horarios-grid');
+  if (!horariosGrid || !APP_CONFIG.hours) return;
+
+  const { weekdays, weekends } = APP_CONFIG.hours;
+  
+  horariosGrid.innerHTML = `
+    <div class="horario-bloque">
+      <span class="dias">${weekdays.days}</span>
+      <span class="horas">${weekdays.open} - ${weekdays.close}</span>
+    </div>
+    <div class="horario-bloque">
+      <span class="dias">${weekends.days}</span>
+      <span class="horas">${weekends.open} - ${weekends.close}</span>
+    </div>
+  `;
+}
+
+// Función para actualizar redes sociales
+function actualizarRedesSociales() {
+  const social = APP_CONFIG.social;
+  
+  // Actualizar enlaces de TikTok
+  const tiktokLinks = document.querySelectorAll('a[href*="tiktok"]');
+  tiktokLinks.forEach(link => {
+    link.href = social.tiktok.url;
+    const span = link.querySelector('span');
+    if (span && span.textContent.includes('@')) {
+      span.textContent = social.tiktok.username;
+    }
+  });
+
+  // Actualizar enlaces de Instagram
+  const instagramLinks = document.querySelectorAll('a[href*="instagram"]');
+  instagramLinks.forEach(link => {
+    link.href = social.instagram.url;
+    const span = link.querySelector('span');
+    if (span && span.textContent.includes('@')) {
+      span.textContent = social.instagram.username;
+    }
+  });
+
+  // Actualizar enlaces de WhatsApp en redes sociales
+  const whatsappSocialLinks = document.querySelectorAll('a[href*="wa.me"] span');
+  whatsappSocialLinks.forEach(span => {
+    if (span.textContent === 'WhatsApp') {
+      span.parentElement.href = social.whatsapp.url;
+    }
+  });
+}
+
+// Inicializar configuración cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', cargarConfiguracion);
+
 // ===== FUNCIÓN PARA OBTENER PRECIOS DESDE VARIABLES CSS =====
 function obtenerPrecioCSS(variable) {
   const valor = getComputedStyle(document.documentElement).getPropertyValue(variable);
