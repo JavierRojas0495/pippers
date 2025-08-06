@@ -6,6 +6,9 @@ export const APP_CONFIG = {
     company: {
         name: "Piper's Pizza",
         slogan: "Las mejores pizzas artesanales, con los ingredientes más frescos y deliciosos. ¡Haz tu pedido ahora!",
+        welcome: "¡Bienvenido a Piper's Pizza!",
+        mission: "Ofrecer las mejores pizzas artesanales con ingredientes frescos y de alta calidad, preparadas con pasión y dedicación. Nos comprometemos a brindar un servicio excepcional y crear momentos de felicidad a través de la gastronomía italiana auténtica.",
+        vision: "Ser reconocidos como la pizzería líder en la región, destacando por la calidad artesanal de nuestras pizzas, la frescura de nuestros ingredientes y la excelencia en el servicio al cliente, creando experiencias gastronómicas únicas que deleiten a nuestros comensales.",
         phone: {
             full: "+57 320 718 2705",
             display: "320 718 2705"
@@ -17,6 +20,14 @@ export const APP_CONFIG = {
             url: "https://wa.me/573207182705"
         },
         mapsUrl: "https://maps.app.goo.gl/dWiA2RXapeMZohcBA"
+    },
+
+    // Textos de la interfaz
+    texts: {
+        orderTitle: "¿Listo para ordenar?",
+        orderDescription: "Explora nuestro menú y realiza tu pedido de las mejores pizzas artesanales",
+        orderButton: "Ver Menú y Realizar Pedido",
+        copyright: "© 2025 Piper's Pizza. Todos los derechos reservados."
     },
 
     // Textos del footer
