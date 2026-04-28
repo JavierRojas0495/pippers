@@ -27,7 +27,7 @@ export const APP_CONFIG = {
         orderTitle: "¿Listo para ordenar?",
         orderDescription: "Explora nuestro menú y realiza tu pedido de las mejores pizzas artesanales",
         orderButton: "Ver Menú y Realizar Pedido",
-        copyright: "© 2025 Piper's Pizza. Todos los derechos reservados."
+        copyright: "© 2026 Piper's Pizza. Todos los derechos reservados."
     },
 
     // Textos del footer

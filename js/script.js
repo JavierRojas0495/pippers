@@ -1,4 +1,4 @@
-// ===== CONFIGURACIÓN GLOBAL Y DATOS DINÁMICOS =====
+﻿// ===== CONFIGURACIÓN GLOBAL Y DATOS DINÁMICOS =====
 
 // Importar configuración
 let APP_CONFIG = null;
@@ -6,7 +6,7 @@ let APP_CONFIG = null;
 // Función para cargar configuración
 async function cargarConfiguracion() {
   try {
-    const module = await import('./js/config.js');
+    const module = await import('./config.js');
     APP_CONFIG = module.default;
     aplicarConfiguracionAlHTML();
   } catch (error) {
@@ -39,7 +39,7 @@ function usarConfiguracionPorDefecto() {
       orderTitle: "¿Listo para ordenar?",
       orderDescription: "Explora nuestro menú y realiza tu pedido de las mejores pizzas artesanales",
       orderButton: "Ver Menú y Realizar Pedido",
-      copyright: "© 2025 Piper's Pizza. Todos los derechos reservados."
+      copyright: "© 2026 Piper's Pizza. Todos los derechos reservados."
     },
     footer: {
       tiktok: {
@@ -95,6 +95,13 @@ function aplicarConfiguracionAlHTML() {
 // Función para obtener valor anidado de objeto usando notación de punto
 function obtenerValorAnidado(obj, path) {
   return path.split('.').reduce((current, key) => current && current[key], obj);
+}
+
+/** Número WhatsApp para wa.me (solo dígitos), sincronizado con config cuando está cargada */
+function obtenerNumeroWhatsAppPedido() {
+  const raw = APP_CONFIG && obtenerValorAnidado(APP_CONFIG, 'company.whatsapp.number');
+  const digits = raw != null ? String(raw).replace(/\D/g, '') : '';
+  return digits || '573207182705';
 }
 
 // Función para actualizar elementos con data-config
@@ -202,36 +209,40 @@ function obtenerPreciosDesdeCSS() {
   };
 }
 
-// Carrusel de promociones
+// Carrusel de promociones (si existe en el HTML)
 window.addEventListener('DOMContentLoaded', () => {
-  // Carrusel de promociones
   const promoSlides = document.querySelectorAll('.promo-carrusel .promo-slide');
   const prevBtn = document.querySelector('.promo-carrusel-btn-prev');
   const nextBtn = document.querySelector('.promo-carrusel-btn-next');
   let promoIndex = 0;
 
   function showPromoSlide(idx) {
+    if (promoSlides.length === 0) return;
     promoSlides.forEach((slide, i) => {
       slide.classList.toggle('active', i === idx);
     });
   }
 
   function nextPromo() {
+    if (promoSlides.length === 0) return;
     promoIndex = (promoIndex + 1) % promoSlides.length;
     showPromoSlide(promoIndex);
   }
 
   function prevPromo() {
+    if (promoSlides.length === 0) return;
     promoIndex = (promoIndex - 1 + promoSlides.length) % promoSlides.length;
     showPromoSlide(promoIndex);
   }
 
-  if (promoSlides.length > 1) {
+  if (promoSlides.length === 0) return;
+
+  if (promoSlides.length > 1 && prevBtn && nextBtn) {
     prevBtn.style.display = '';
     nextBtn.style.display = '';
     prevBtn.addEventListener('click', prevPromo);
     nextBtn.addEventListener('click', nextPromo);
-  } else {
+  } else if (prevBtn && nextBtn) {
     prevBtn.style.display = 'none';
     nextBtn.style.display = 'none';
   }
@@ -369,7 +380,7 @@ function obtenerBebidasDesdeCSS() {
   ];
 }
 
-const bebidasDisponibles = obtenerBebidasDesdeCSS();
+var bebidasDisponibles = obtenerBebidasDesdeCSS();
 
 // --- MENÚ DINÁMICO ---
 
@@ -389,7 +400,7 @@ const saboresPorTipo = {
 };
 
 // Precios por tipo y tamaño - Obtenidos desde variables CSS
-let preciosPorTipo = obtenerPreciosDesdeCSS();
+var preciosPorTipo = obtenerPreciosDesdeCSS();
 
 // Reglas de cantidad de ingredientes por tamaño
 const reglasIngredientes = {
@@ -820,13 +831,10 @@ function renderSelectorBebidas() {
       const tipo = this.getAttribute('data-tipo');
       const index = parseInt(this.getAttribute('data-index'));
       
-      console.log('Checkbox principal change event - tipo:', tipo, 'index:', index, 'checked:', this.checked);
       
       if (this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
-        console.log('Mostrando selector de sabores para:', tipo);
         mostrarSelectorSabores(tipo, index);
       } else if (!this.checked && (tipo === 'jugos' || tipo === 'limonadas')) {
-        console.log('Limpiando selector de sabores para:', tipo);
         limpiarSaboresSeleccionados(tipo, index);
       }
       
@@ -848,11 +856,9 @@ function renderSelectorBebidas() {
   // Event listeners para las tarjetas de bebidas
   document.querySelectorAll('.bebida-card').forEach(card => {
     card.addEventListener('click', function(e) {
-      console.log('Bebida card clickeada, target:', e.target.tagName, 'class:', e.target.className);
       
       // No activar si se hace clic en el checkbox directamente o en elementos dentro del selector de sabores
       if (e.target.type === 'checkbox' || e.target.closest('.selector-sabores-moderno') || e.target.classList.contains('selector-sabores-moderno')) {
-        console.log('Click ignorado - checkbox o selector de sabores');
         return;
       }
       
@@ -860,7 +866,6 @@ function renderSelectorBebidas() {
       // No bloquear el click si está en el área principal de la tarjeta
       const selectorSabores = this.querySelector('.selector-sabores-moderno');
       if (selectorSabores && e.target.closest('.selector-sabores-moderno')) {
-        console.log('Click ignorado - dentro del selector de sabores');
         return;
       }
       
@@ -868,14 +873,12 @@ function renderSelectorBebidas() {
       const wasChecked = checkbox.checked;
       checkbox.checked = !wasChecked;
       
-      console.log('Checkbox principal cambiado de', wasChecked, 'a', checkbox.checked);
       
       // Si se está deseleccionando, limpiar inmediatamente
       if (!checkbox.checked) {
         const tipo = checkbox.getAttribute('data-tipo');
         const index = parseInt(checkbox.getAttribute('data-index'));
         if (tipo === 'jugos' || tipo === 'limonadas') {
-          console.log('Deselección detectada, limpiando sabores inmediatamente');
           limpiarSaboresSeleccionados(tipo, index);
         }
       }
@@ -897,7 +900,6 @@ function renderSelectorBebidas() {
     const seleccionadas = [];
     let hayError = false;
     
-    console.log('Bebidas marcadas:', bebidasMarcadas.length);
     
     bebidasMarcadas.forEach(cb => {
       if (hayError) return;
@@ -911,17 +913,12 @@ function renderSelectorBebidas() {
         const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
         
         if (selectorSabores) {
-          console.log('Procesando selector de sabores para jugos');
           const todosSabores = selectorSabores.querySelectorAll('.chk-sabor-jugo');
           const todosTipos = selectorSabores.querySelectorAll('.chk-tipo-jugo');
-          console.log('Total de checkboxes de sabores encontrados:', todosSabores.length);
-          console.log('Total de checkboxes de tipos encontrados:', todosTipos.length);
           
           const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-jugo:checked')).map(s => s.value);
           const tiposSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-tipo-jugo:checked')).map(t => t.value);
           
-          console.log('Sabores seleccionados:', saboresSeleccionados);
-          console.log('Tipos seleccionados:', tiposSeleccionados);
           
           if (saboresSeleccionados.length === 0 || tiposSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor y un tipo para los jugos.');
@@ -929,7 +926,6 @@ function renderSelectorBebidas() {
             return;
           }
           
-          console.log('Jugos seleccionados - Sabores:', saboresSeleccionados, 'Tipos:', tiposSeleccionados);
           
           seleccionadas.push({
             nombre: bebida.nombre,
@@ -944,13 +940,10 @@ function renderSelectorBebidas() {
         const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
         
         if (selectorSabores) {
-          console.log('Procesando selector de sabores para limonadas');
           const todosSabores = selectorSabores.querySelectorAll('.chk-sabor-limonada');
-          console.log('Total de checkboxes de sabores de limonada encontrados:', todosSabores.length);
           
           const saboresSeleccionados = Array.from(selectorSabores.querySelectorAll('.chk-sabor-limonada:checked')).map(s => s.value);
           
-          console.log('Sabores de limonada seleccionados:', saboresSeleccionados);
           
           if (saboresSeleccionados.length === 0) {
             alert('Por favor selecciona al menos un sabor para las limonadas.');
@@ -958,7 +951,6 @@ function renderSelectorBebidas() {
             return;
           }
           
-          console.log('Limonadas seleccionadas - Sabores:', saboresSeleccionados);
           
           seleccionadas.push({
             nombre: bebida.nombre,
@@ -982,7 +974,6 @@ function renderSelectorBebidas() {
       return;
     }
     
-    console.log('Seleccionadas finales:', seleccionadas);
     
     pedidoActual.detalles.bebidas = seleccionadas;
     pedidoActual.detalles.cantidad = document.getElementById('cantidad-bebidas').value;
@@ -995,7 +986,9 @@ function renderSelectorBebidas() {
 function mostrarSelectorSabores(tipo, index) {
   const bebida = bebidasDisponibles[index];
   const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
+  if (!checkbox || !bebida) return;
   const bebidaCard = checkbox.closest('.bebida-card');
+  if (!bebidaCard) return;
   
   let contenidoSabores = '';
   
@@ -1059,7 +1052,6 @@ function mostrarSelectorSabores(tipo, index) {
   // Remover selector anterior si existe
   const selectorAnterior = bebidaCard.querySelector('.selector-sabores-moderno');
   if (selectorAnterior) {
-    console.log('Removiendo selector anterior antes de crear uno nuevo');
     // Remover todos los event listeners antes de eliminar
     const newSelector = selectorAnterior.cloneNode(true);
     selectorAnterior.parentNode.replaceChild(newSelector, selectorAnterior);
@@ -1068,53 +1060,35 @@ function mostrarSelectorSabores(tipo, index) {
   
   // Agregar nuevo selector
   bebidaCard.insertAdjacentHTML('beforeend', contenidoSabores);
-  console.log('Selector de sabores agregado al DOM');
-  console.log('Contenido HTML generado:', contenidoSabores);
   
   // Agregar event listeners para los checkboxes de sabores
   const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
-  console.log('Selector de sabores encontrado:', selectorSabores);
   if (selectorSabores) {
-    console.log('HTML del selector de sabores:', selectorSabores.outerHTML);
-  }
-  if (selectorSabores) {
-    // Marcar el selector como activo
     selectorSabores.setAttribute('data-active', 'true');
     
-    // Prevenir que los clicks en el selector se propaguen al bebida-card
     selectorSabores.addEventListener('click', function(e) {
       e.stopPropagation();
-      console.log('Click en selector de sabores - propagación detenida');
     });
     
-    // Event listeners específicos para los checkboxes de sabores
     const checkboxesSabores = selectorSabores.querySelectorAll('input[type="checkbox"]');
-    console.log('Checkboxes de sabores encontrados:', checkboxesSabores.length);
     
-    checkboxesSabores.forEach((checkbox, index) => {
-      console.log(`Configurando checkbox ${index}:`, checkbox.value, checkbox.className);
+    checkboxesSabores.forEach((chk) => {
       
-      // Event listener para el checkbox oculto
-      checkbox.addEventListener('change', function(e) {
+      chk.addEventListener('change', function(e) {
         e.stopPropagation();
-        console.log('Checkbox de sabor cambiado:', this.value, 'checked:', this.checked, 'class:', this.className);
       });
       
-      // Event listener para el label completo (área clickeable)
-      const label = checkbox.closest('.sabor-checkbox-moderno');
+      const label = chk.closest('.sabor-checkbox-moderno');
       if (label) {
-        console.log(`Configurando label para checkbox ${index}:`, label);
         
         label.addEventListener('click', function(e) {
-          console.log('Click en label detectado:', checkbox.value);
           e.stopPropagation();
           e.preventDefault();
           
           // Toggle el checkbox manualmente
-          const nuevoEstado = !checkbox.checked;
-          checkbox.checked = nuevoEstado;
+          const nuevoEstado = !chk.checked;
+          chk.checked = nuevoEstado;
           
-          // Actualizar la apariencia visual inmediatamente
           const checkboxCustom = label.querySelector('.checkbox-custom-sabor');
           if (checkboxCustom) {
             if (nuevoEstado) {
@@ -1126,26 +1100,20 @@ function mostrarSelectorSabores(tipo, index) {
             }
           }
           
-          // Disparar el evento change
           const changeEvent = new Event('change', { bubbles: true });
-          checkbox.dispatchEvent(changeEvent);
+          chk.dispatchEvent(changeEvent);
           
-          console.log('Label de sabor clickeado:', checkbox.value, 'nuevo estado:', checkbox.checked);
         });
         
-        // Event listener específico para el checkbox custom (área visual)
         const checkboxCustom = label.querySelector('.checkbox-custom-sabor');
         if (checkboxCustom) {
-          console.log(`Configurando checkbox custom para checkbox ${index}:`, checkboxCustom);
           
           checkboxCustom.addEventListener('click', function(e) {
-            console.log('Click en checkbox custom detectado:', checkbox.value);
             e.stopPropagation();
             e.preventDefault();
             
-            // Toggle el checkbox manualmente
-            const nuevoEstado = !checkbox.checked;
-            checkbox.checked = nuevoEstado;
+            const nuevoEstado = !chk.checked;
+            chk.checked = nuevoEstado;
             
             // Actualizar la apariencia visual inmediatamente
             if (nuevoEstado) {
@@ -1158,15 +1126,10 @@ function mostrarSelectorSabores(tipo, index) {
             
             // Disparar el evento change
             const changeEvent = new Event('change', { bubbles: true });
-            checkbox.dispatchEvent(changeEvent);
+            chk.dispatchEvent(changeEvent);
             
-            console.log('Checkbox custom clickeado:', checkbox.value, 'nuevo estado:', checkbox.checked);
           });
-        } else {
-          console.log(`No se encontró checkbox custom para checkbox ${index}`);
         }
-      } else {
-        console.log(`No se encontró label para checkbox ${index}`);
       }
     });
     
@@ -1175,7 +1138,6 @@ function mostrarSelectorSabores(tipo, index) {
     if (saboresGrid) {
       saboresGrid.addEventListener('click', function(e) {
         e.stopPropagation();
-        console.log('Click en grid de sabores - propagación detenida');
       });
     }
   }
@@ -1183,13 +1145,9 @@ function mostrarSelectorSabores(tipo, index) {
 
 // Función global para limpiar selección de bebida (llamada desde el botón)
 function limpiarSeleccionBebida(tipo, index) {
-  console.log('Función global limpiarSeleccionBebida llamada para:', tipo, 'index:', index);
-  
-  // Desmarcar el checkbox principal
   const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
   if (checkbox) {
     checkbox.checked = false;
-    console.log('Checkbox principal desmarcado desde función global');
   }
   
   // Limpiar los sabores seleccionados
@@ -1198,31 +1156,27 @@ function limpiarSeleccionBebida(tipo, index) {
 
 function limpiarSaboresSeleccionados(tipo, index) {
   const checkbox = document.querySelector(`.chk-bebida[data-tipo="${tipo}"][data-index="${index}"]`);
+  if (!checkbox) return;
   const bebidaCard = checkbox.closest('.bebida-card');
+  if (!bebidaCard) return;
   
-  console.log('Limpiando sabores seleccionados para:', tipo, 'index:', index);
   
   // Remover el selector de sabores
   const selectorSabores = bebidaCard.querySelector('.selector-sabores-moderno');
   if (selectorSabores) {
-    console.log('Removiendo selector de sabores existente');
     // Remover todos los event listeners antes de eliminar
     const newSelector = selectorSabores.cloneNode(true);
     selectorSabores.parentNode.replaceChild(newSelector, selectorSabores);
     newSelector.remove();
-  } else {
-    console.log('No se encontró selector de sabores para remover');
   }
   
   // Asegurar que el checkbox principal esté desmarcado
   if (checkbox) {
     checkbox.checked = false;
-    console.log('Checkbox principal desmarcado');
   }
   
   // Resetear cualquier estado interno que pueda estar causando el "congelamiento"
   setTimeout(() => {
-    console.log('Reseteando estado interno después de limpiar sabores');
     // Forzar un re-render del estado visual
     const checkboxCustom = bebidaCard.querySelector('.checkbox-custom');
     if (checkboxCustom) {
@@ -1239,8 +1193,6 @@ function agregarAlPedido() {
     // Manejo especial para bebidas
     const bebidas = pedidoActual.detalles.bebidas;
     const cantidad = parseInt(pedidoActual.detalles.cantidad) || 1;
-    
-    console.log('Procesando bebidas en agregarAlPedido:', bebidas);
     
     bebidas.forEach(bebida => {
       if (bebida.tipo === 'jugos') {
@@ -1456,8 +1408,8 @@ function enviarPedidoWhatsApp() {
 function mostrarFormularioContacto() {
   const menuDiv = document.getElementById('menu-dinamico');
   const total = pedido.reduce((acc, item) => {
-    let itemTotal = item.precio;
-    if (item.bebidas) {
+    let itemTotal = item.precio * item.cantidad;
+    if (item.bebidas && item.bebidas.length > 0) {
       itemTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
     }
     return acc + itemTotal;
@@ -1509,7 +1461,11 @@ function mostrarFormularioContacto() {
           <div class="resumen-items">
             ${pedido.map(item => {
               let descripcion = `${item.cantidad} x ${item.descripcion}`;
-              let precio = `$${item.precio.toLocaleString()}`;
+              let lineTotal = item.precio * item.cantidad;
+              if (item.bebidas && item.bebidas.length > 0) {
+                lineTotal += item.bebidas.reduce((bebidaAcc, bebida) => bebidaAcc + bebida.precio, 0);
+              }
+              let precio = `$${lineTotal.toLocaleString()}`;
               let bebidas = '';
               if (item.bebidas && item.bebidas.length > 0) {
                 bebidas = `<div class="item-bebidas">🥤 ${item.bebidas.map(b => b.nombre).join(', ')}</div>`;
@@ -1592,7 +1548,7 @@ function procesarEnvioWhatsApp() {
   mensaje += `📞 Teléfono: ${telefono}`;
   
   // Número de WhatsApp de la pizzería
-  const numero = '573207182705';
+  const numero = obtenerNumeroWhatsAppPedido();
   const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
   
@@ -1601,35 +1557,6 @@ function procesarEnvioWhatsApp() {
   localStorage.removeItem('pippersPedido'); // Limpiar localStorage
   alert('¡Pedido enviado! Gracias por tu compra.');
   renderSelectorTipoProducto();
-}
-
-// Manejo del formulario de contacto/pedido original
-const form = document.getElementById('form-contacto');
-if (form) {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (pedido.length === 0) {
-            alert('Agrega al menos una pizza al pedido.');
-            return;
-        }
-        const nombre = form.nombre.value.trim();
-        const direccion = form.direccion.value.trim();
-        const telefono = form.telefono.value.trim();
-        if (!nombre || !direccion || !telefono) {
-            alert('Por favor, completa todos los datos de contacto.');
-            return;
-        }
-        let mensaje = `¡Hola! Quiero hacer un pedido:\n`;
-        pedido.forEach(item => {
-            mensaje += `- ${item.cantidad} x ${item.categoria} (${item.tamano}), Sabores: ${item.sabores.join(', ')} ($${item.precio.toLocaleString()})\n`;
-        });
-        mensaje += `Total: $${pedido.reduce((acc, item) => acc + item.precio, 0).toLocaleString()}\n`;
-        mensaje += `\nDatos de entrega:\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}`;
-        // Número de WhatsApp de la pizzería (modificar por el real)
-        const numero = '573001234567';
-        const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-    });
 }
 
 // Carruseles de imágenes en la sección de inicio (moderno)
@@ -1768,30 +1695,74 @@ function initCoverflowCarousels() {
   });
 }
 
-// Navegación suave entre secciones
-const links = document.querySelectorAll('nav a');
-const secciones = ['inicio', 'menu', 'contacto'];
+// ——— Navegación por secciones (desktop y móvil): hash en URL, foco accesible y sin saltos bruscos ———
+const SECCIONES_IDS = ['inicio', 'menu', 'contacto'];
 
-function mostrarSeccion(id) {
-    secciones.forEach(sec => {
-        const el = document.getElementById(sec);
-        if (el) el.style.display = (sec === id) ? 'block' : 'none';
-    });
-    // Ya no hace scroll automático
+function mostrarSeccion(id, options = {}) {
+  const { scroll = true, updateHash = true } = options;
+  let secId = SECCIONES_IDS.includes(id) ? id : 'inicio';
+
+  SECCIONES_IDS.forEach((sec) => {
+    const el = document.getElementById(sec);
+    if (!el) return;
+    const visible = sec === secId;
+    if (visible) {
+      el.removeAttribute('hidden');
+      el.style.display = '';
+    } else {
+      el.setAttribute('hidden', '');
+    }
+    el.setAttribute('aria-hidden', visible ? 'false' : 'true');
+  });
+
+  if (updateHash && history.pushState) {
+    const h = `#${secId}`;
+    if (location.hash !== h) {
+      history.pushState({ seccion: secId }, '', h);
+    }
+  }
+
+  if (scroll) {
+    const target = document.getElementById(secId);
+    if (target) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  }
 }
 
-// Aplicar la navegación a cualquier enlace con href="#menu" o href="#inicio" o href="#contacto"
-document.querySelectorAll('a[href="#menu"], a[href="#inicio"], a[href="#contacto"], .logo-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').replace('#', '');
-        mostrarSeccion(targetId);
-    });
+function aplicarHashInicial() {
+  const raw = (location.hash || '#inicio').replace(/^#/, '');
+  const id = SECCIONES_IDS.includes(raw) ? raw : 'inicio';
+  mostrarSeccion(id, { scroll: false, updateHash: false });
+}
+
+document.querySelectorAll('a[href="#menu"], a[href="#inicio"], a[href="#contacto"], .logo-link').forEach((link) => {
+  link.addEventListener('click', function (e) {
+    const href = this.getAttribute('href');
+    if (!href || href.charAt(0) !== '#') return;
+    e.preventDefault();
+    const targetId = href.slice(1);
+    mostrarSeccion(targetId, { scroll: true, updateHash: true });
+  });
 });
 
-// Mostrar solo la sección de inicio al cargar
+window.addEventListener('hashchange', () => {
+  const raw = (location.hash || '#inicio').replace(/^#/, '');
+  const id = SECCIONES_IDS.includes(raw) ? raw : 'inicio';
+  mostrarSeccion(id, { scroll: false, updateHash: false });
+});
+
+window.addEventListener('popstate', () => {
+  const raw = (location.hash || '#inicio').replace(/^#/, '');
+  const id = SECCIONES_IDS.includes(raw) ? raw : 'inicio';
+  mostrarSeccion(id, { scroll: true, updateHash: false });
+});
+
+// Inicializar carruseles y vista según # en la URL (enlaces directos, atrás/adelante)
 window.addEventListener('DOMContentLoaded', () => {
-    mostrarSeccion('inicio');
+    aplicarHashInicial();
     initCoverflowCarousels();
     // Evento para la promo
     const promoBtn = document.querySelector('.promo-btn');
@@ -1812,17 +1783,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Botón flotante para volver arriba
+// Botón flotante para volver arriba (scroll pasivo para mejor rendimiento en móvil)
 window.addEventListener('DOMContentLoaded', () => {
     const btnScrollTop = document.getElementById('btn-scroll-top');
     if (!btnScrollTop) return;
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 200) {
-            btnScrollTop.style.display = 'flex';
-        } else {
-            btnScrollTop.style.display = 'none';
-        }
-    });
+    const toggleScrollBtn = () => {
+        btnScrollTop.hidden = window.scrollY <= 200;
+    };
+    toggleScrollBtn();
+    window.addEventListener('scroll', toggleScrollBtn, { passive: true });
     btnScrollTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -1850,15 +1819,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  // Evento para el botón "Realizar Pedido"
-  const realizarPedidoBtn = document.getElementById('realizar-pedido');
-  if (realizarPedidoBtn) {
-    realizarPedidoBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      mostrarSeccion('menu');
+  /* Reinicia el flujo de pedido al pulsar CTA hero o bloque contacto */
+  document.querySelectorAll('#realizar-pedido, a.btn-realizar-pedido[href="#menu"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
       renderSelectorTipoProducto();
     });
-  }
+  });
 });
 
 // ===== FUNCIONES PARA ACTUALIZAR PRECIOS DINÁMICAMENTE =====

@@ -2,29 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Piper's Pizza — Pizzería artesanal en Cali. Menú, precios y pedidos por WhatsApp.">
+    <meta name="theme-color" content="#31428B">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Piper's Pizza</title>
     <link rel="stylesheet" href="css/precios.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/contact.css">
     <link rel="icon" type="image/jpeg" href="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.13_61ef9f11.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="navbar-header">
+    <header class="navbar-header" role="banner">
         <div class="navbar-logo">
-            <a href="#inicio" class="logo-link"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.08_9dfb03ed.jpg" alt="Logo Piper's Pizza" class="logo" /></a>
+            <a href="#inicio" class="logo-link" aria-label="Inicio Piper's Pizza"><img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.08_9dfb03ed.jpg" alt="Logo Piper's Pizza" class="logo" width="120" height="120" decoding="async" /></a>
         </div>
         <div class="header-title">
-          <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="Logo Piper's Pizza Curvado" class="logo-curvado" />
+          <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.12_d1e3b611.jpg" alt="" class="logo-curvado" width="320" height="120" decoding="async" />
         </div>
         <div class="header-content">
-            <nav>
+            <nav aria-label="Principal">
                 <ul>
                     <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Menú</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                     <li>
-                        <a href="#menu" class="navbar-cart" title="Carrito de compras">
+                        <a href="#menu" class="navbar-cart" title="Carrito de compras" aria-label="Ver carrito y menú de pedidos">
                             <span class="navbar-cart-bg">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#285293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="9" cy="21" r="2.2" fill="#fff"/>
@@ -39,8 +43,8 @@
             </nav>
         </div>
     </header>
-    <main>
-        <section id="inicio">
+    <main id="contenido-principal">
+        <section id="inicio" aria-label="Inicio">
             <div class="hero">
                 <img src="img/logosPipers/Imagen de WhatsApp 2025-07-23 a las 14.29.13_61ef9f11.jpg" alt="Logo Piper's Pizza" class="hero-logo">
                 <div class="hero-content">
@@ -177,10 +181,10 @@
                 </div>
             </div>
                         </section>
-                <section id="menu">
+                <section id="menu" hidden aria-label="Menú y pedido">
                     <div id="menu-dinamico"></div>
                 </section>
-        <section id="contacto">
+        <section id="contacto" hidden aria-label="Contacto">
             <div class="contacto-header">
                 <h2>Contacto</h2>
                 <p class="contacto-subtitulo">¡Conecta con nosotros y descubre la mejor pizza artesanal!</p>
@@ -254,16 +258,16 @@
                 <div class="pedido-content">
                     <h3 data-text="texts.orderTitle">Cargando...</h3>
                     <p data-text="texts.orderDescription">Cargando...</p>
-                    <a href="#inicio" class="btn-realizar-pedido">
-                        <span>🍕</span>
+                    <a href="#menu" class="btn-realizar-pedido">
+                        <span aria-hidden="true">🍕</span>
                         <span data-text="texts.orderButton">Cargando...</span>
                     </a>
                 </div>
             </div>
         </section>
     </main>
-    <button id="btn-scroll-top" title="Volver arriba" style="display:none;position:fixed;bottom:32px;right:32px;z-index:9999;background:#285293;color:#ffd700;border:none;border-radius:50%;width:54px;height:54px;box-shadow:0 4px 16px #28529355;cursor:pointer;font-size:2em;align-items:center;justify-content:center;transition:background 0.2s, color 0.2s;">
-      &#8679;
+    <button type="button" id="btn-scroll-top" class="btn-scroll-top" hidden title="Volver arriba" aria-label="Volver arriba">
+      <span aria-hidden="true">&#8679;</span>
     </button>
     <footer class="footer-pipers">
       <div class="footer-container footer-columna">
@@ -293,6 +297,6 @@
         <p class="footer-copy" data-text="texts.copyright">Cargando...</p>
       </div>
     </footer>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html> 
